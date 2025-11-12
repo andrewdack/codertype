@@ -1,0 +1,11 @@
+{
+    "tailwindCSS.experimental.configFile": null,
+    "tailwindCSS.files.exclude": [
+        "**/.git/**",
+        "**/node_modules/**",
+        "**/.next/**",
+        "**/.hg/**",
+        "**/.svn/**"
+    ],
+    "css.customData": [".vscode/tailwind.json"]
+}
