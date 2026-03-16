@@ -1,0 +1,37 @@
+[
+  {
+    "id": "java-binary-search",
+    "language": "java",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "public static int binarySearch(int[] arr, int target) {\n    int left = 0, right = arr.length - 1;\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n        if (arr[mid] == target) return mid;\n        if (arr[mid] < target) left = mid + 1;\n        else right = mid - 1;\n    }\n    return -1;\n}"
+  },
+  {
+    "id": "java-generic-node",
+    "language": "java",
+    "source": "data structures",
+    "difficulty": "easy",
+    "code": "public class Node<T> {\n    public T data;\n    public Node<T> next;\n\n    public Node(T data) {\n        this.data = data;\n        this.next = null;\n    }\n}"
+  },
+  {
+    "id": "java-two-sum",
+    "language": "java",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "public int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> map = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        int complement = target - nums[i];\n        if (map.containsKey(complement)) {\n            return new int[]{map.get(complement), i};\n        }\n        map.put(nums[i], i);\n    }\n    return new int[]{};\n}"
+  },
+  {
+    "id": "java-singleton",
+    "language": "java",
+    "source": "design patterns",
+    "difficulty": "easy",
+    "code": "public class Singleton {\n    private static Singleton instance;\n\n    private Singleton() {}\n\n    public static Singleton getInstance() {\n        if (instance == null) {\n            instance = new Singleton();\n        }\n        return instance;\n    }\n}"
+  },
+  {
+    "id": "java-reverse-string",
+    "language": "java",
+    "source": "string processing",
+    "difficulty": "easy",
+    "code": "public static String reverse(String s) {\n    StringBuilder sb = new StringBuilder();\n    for (int i = s.length() - 1; i >= 0; i--) {\n        sb.append(s.charAt(i));\n    }\n    return sb.toString();\n}"
+  }
+]

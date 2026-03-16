@@ -1,0 +1,37 @@
+[
+  {
+    "id": "js-debounce",
+    "language": "javascript",
+    "source": "utility functions",
+    "difficulty": "easy",
+    "code": "function debounce(fn, delay) {\n  let timer;\n  return function (...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), delay);\n  };\n}"
+  },
+  {
+    "id": "js-fetch-json",
+    "language": "javascript",
+    "source": "utility functions",
+    "difficulty": "easy",
+    "code": "async function fetchJSON(url) {\n  const response = await fetch(url);\n  if (!response.ok) {\n    throw new Error(`HTTP error: ${response.status}`);\n  }\n  return response.json();\n}"
+  },
+  {
+    "id": "js-chunk",
+    "language": "javascript",
+    "source": "array utilities",
+    "difficulty": "easy",
+    "code": "function chunk(array, size) {\n  const result = [];\n  for (let i = 0; i < array.length; i += size) {\n    result.push(array.slice(i, i + size));\n  }\n  return result;\n}"
+  },
+  {
+    "id": "js-deep-clone",
+    "language": "javascript",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "function deepClone(obj) {\n  if (obj === null || typeof obj !== \"object\") return obj;\n  if (Array.isArray(obj)) return obj.map(deepClone);\n  return Object.fromEntries(\n    Object.entries(obj).map(([k, v]) => [k, deepClone(v)])\n  );\n}"
+  },
+  {
+    "id": "js-throttle",
+    "language": "javascript",
+    "source": "utility functions",
+    "difficulty": "easy",
+    "code": "function throttle(fn, limit) {\n  let lastCall = 0;\n  return function (...args) {\n   const now = Date.now();\n    if (now - lastCall >= limit) {\n      lastCall = now;\n      return fn.apply(this, args);\n    }\n  };\n}"
+  }
+]

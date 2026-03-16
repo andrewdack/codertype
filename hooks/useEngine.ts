@@ -1,29 +1,32 @@
 import { useCallback, useState, useEffect } from "react";
-import useWords from "./useWords";
+// import useWords from "./useWords";
+import useSnippet from "./useSnippet";
 import useCountdownTimer from "./useCountdownTimer";
 import useTypings from "./useTypings";
 import { countErrors } from "@/utils/helpers";
+import { type Language } from "@/lib/snippets";
 
 export type State = "start" | "run" | "finish";
-const NUMBER_OF_WORDS = 10;
-const COUNTDOWN_SECONDS = 30;
+// const NUMBER_OF_WORDS = 10;
+const COUNTDOWN_SECONDS = 10;
 
-export default function useEngine() {
+export default function useEngine(language: Language = "javascript") {
     const [state, setState] = useState<State>("start");
-    const { words, updateWords } = useWords(NUMBER_OF_WORDS);
+    const { snippet, nextSnippet } = useSnippet(language);
     const { timeLeft, startCountdown, resetCountdown } =
         useCountdownTimer(COUNTDOWN_SECONDS);
     const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } =
         useTypings(state !== "finish");
     const [errors, setErrors] = useState(0);
 
+    const words = snippet.code;
     const isStarting = state === "start" && cursor > 0;
     const areWordsFinished = typed.length === words.length;
 
     const sumErrors = useCallback(() => {
         const wordsReached = words.substring(0, cursor);
         setErrors(
-            (prevErrors) => prevErrors + countErrors(typed, wordsReached)
+            (prevErrors) => prevErrors + countErrors(typed, wordsReached),
         );
     }, [typed, words, cursor]);
 
@@ -36,40 +39,47 @@ export default function useEngine() {
 
     useEffect(() => {
         if (timeLeft <= 0) {
-            console.log('timer up');
+            console.log("timer up");
             setState("finish");
             sumErrors();
         }
     }, [timeLeft, sumErrors]);
 
-
-    // when the current words are finished typing by the user
-    // reset and show another set of words
+    // when the current snippet is finished, load the next one
     useEffect(() => {
         if (areWordsFinished) {
-            console.log("words are finished...");
+            console.log("snippet finished, loading next...");
             sumErrors();
-            updateWords();
+            nextSnippet();
             clearTyped();
         }
-     }, [
+    }, [
         cursor,
         words,
         clearTyped,
         typed,
         areWordsFinished,
-        updateWords,
-        sumErrors
+        nextSnippet,
+        sumErrors,
     ]);
-    
-    const restart = useCallback(() => { 
+
+    const restart = useCallback(() => {
         resetCountdown();
         resetTotalTyped();
         setState("start");
         setErrors(0);
-        updateWords();
+        nextSnippet();
         clearTyped();
-    }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
-    
-    return { state, words, timeLeft, typed, errors, totalTyped, restart };
+    }, [clearTyped, nextSnippet, resetCountdown, resetTotalTyped]);
+
+    return { 
+        state,
+        words,
+        timeLeft,
+        typed,
+        errors,
+        totalTyped,
+        restart,
+        snippet,
+    };
 }

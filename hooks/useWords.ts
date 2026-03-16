@@ -1,4 +1,6 @@
 "use client"
+// unused hook for generating random words with faker
+// actually using code snippets now
 
 import { faker } from "@faker-js/faker";
 import { useCallback, useState } from "react";

@@ -1,4 +1,4 @@
-import Caret from "./Caret";
+import Caret from "./TypingArea/Caret";
 import classNames from "classnames";
 export default function UserTypings({
     userInput,

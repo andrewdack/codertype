@@ -17,6 +17,11 @@ export default function useTypings(enabled: boolean) {
                     setCursor((cursor) => cursor - 1);
                     totalTyped.current -= 1;
                     break;
+                case "Enter":
+                    setTyped((prevTypedKeys) => prevTypedKeys + "\n");
+                    setCursor((cursor) => cursor + 1);
+                    totalTyped.current += 1;
+                    break;
                 default:
                     setTyped((prevTypedKeys) => {
                         return prevTypedKeys + key;
@@ -25,7 +30,7 @@ export default function useTypings(enabled: boolean) {
                     totalTyped.current += 1;
             }
         },
-        [enabled]
+        [enabled],
     );
 
     const clearTyped = useCallback(() => {
@@ -65,6 +70,8 @@ function isKeyboardCharacterAllowed(keyCode: string) {
     const explicitAllowed = new Set([
         "Space",
         "Backspace",
+        "Enter",
+        "Tab",
         "Minus",
         "Equal",
         "BracketLeft",

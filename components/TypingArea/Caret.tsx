@@ -8,7 +8,7 @@ export default function Caret() {
             animate={{ opacity: 0 }}
             exit={{ opacity: 1 }}
             transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut" }}
-            className = "inline-block bg-yellow-400 w-0.5 h-7 bg-"
+            className = "inline-block bg-slate-300 w-0.5 h-4 absolute mt-1"
         />
     )
 }
