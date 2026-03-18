@@ -21,9 +21,9 @@ export default function Results({
     }
     return (
         <ul
-            className={`flex flex-col items-center text-yellow-400 space-y-3 ${className}`}
+            className={`flex flex-col items-center text-muted-foreground space-y-3 ${className}`}
         >
-            <li className="text-xl font-semibold">Results</li>
+            <li className="text-xl font-semibold">RESULTS</li>
             <li>Accuracy: {formatPercentage(accuracyPercentage)}</li>
             <li className="text-red-500">Errors: {errors}</li>
             <li>Typed: {total}</li>

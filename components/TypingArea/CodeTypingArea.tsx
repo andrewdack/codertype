@@ -1,5 +1,6 @@
 "use client";
 
+import { State } from "@/hooks/useEngine";
 import LineNumbers from "./LineNumbers";
 import TypingOverlay from "./TypingOverlay";
 
@@ -10,12 +11,14 @@ interface TypingAreaProps {
     code: string;
     typed: string;
     language: string;
+    state: State;
 }
 
 export default function CodeTypingArea({
     code,
     typed,
     language,
+    state
 }: TypingAreaProps) {
     const lineCount = code.split("\n").length;
 
@@ -45,7 +48,7 @@ export default function CodeTypingArea({
                     >
                         {code}
                     </SyntaxHighlighter>
-                    <TypingOverlay code={code} typed={typed} />
+                    <TypingOverlay code={code} typed={typed} state={state} />
                 </div>
             </div>
         </div>

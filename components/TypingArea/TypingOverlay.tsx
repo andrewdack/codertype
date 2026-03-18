@@ -1,13 +1,15 @@
 import { Fragment } from "react";
 import { cn } from "@/lib/utils";
 import Caret from "./Caret";
+import { State } from "@/hooks/useEngine";
 
 interface TypingOverlayProps {
     code: string;
     typed: string;
+    state: State
 }
 
-export default function TypingOverlay({ code, typed }: TypingOverlayProps) {
+export default function TypingOverlay({ code, typed, state }: TypingOverlayProps) {
     const chars = code.split("");
 
     return (
@@ -23,7 +25,7 @@ export default function TypingOverlay({ code, typed }: TypingOverlayProps) {
 
                     return (
                         <Fragment key={index}>
-                            {isCursor && <Caret />}
+                            {isCursor && <Caret blinking={state !== "run"} />}
                             {isNewline ? (
                                 <span
                                     className={cn(
@@ -36,11 +38,11 @@ export default function TypingOverlay({ code, typed }: TypingOverlayProps) {
                             ) : (
                                 <span
                                     className={cn(
-                                        "text-slate-500",
+                                        "text-muted-foreground",
                                         isCorrect &&
                                             !isSpace &&
                                             "text-transparent",
-                                        isIncorrect && "bg-red-500/30",
+                                        isIncorrect && "bg-red-500/30 text-transparent",
                                     )}
                                 >
                                     {char}

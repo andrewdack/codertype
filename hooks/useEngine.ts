@@ -8,7 +8,7 @@ import { type Language } from "@/lib/snippets";
 
 export type State = "start" | "run" | "finish";
 // const NUMBER_OF_WORDS = 10;
-const COUNTDOWN_SECONDS = 10;
+const COUNTDOWN_SECONDS = 3;
 
 export default function useEngine(language: Language = "javascript") {
     const [state, setState] = useState<State>("start");

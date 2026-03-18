@@ -23,7 +23,7 @@ export default function RestartButton({
             className={`block rounded px-8 py-2 hover:bg-slate-700/50 ${className}`}
             onClick={handleClick}
         >
-            <RotateCw className="h-6 w-6 text-yellow-400"/>
+            <RotateCw className="h-6 w-6 text-muted-foreground"/>
         </button>
     );
 }

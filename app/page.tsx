@@ -28,6 +28,7 @@ export default function Home() {
                     code={words}
                     typed={typed}
                     language={snippet.language}
+                    state={state}
                 />
                 <RestartButton onRestart={restart} />
                 <Results
