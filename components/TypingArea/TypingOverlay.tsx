@@ -13,7 +13,7 @@ export default function TypingOverlay({ code, typed, state }: TypingOverlayProps
     const chars = code.split("");
 
     return (
-        <pre className="flex-1 overflow-auto absolute">
+        <pre className="flex-1 overflow-auto absolute ">
             <code>
                 {chars.map((char, index) => {
                     const isCursor = index === typed.length;
@@ -38,7 +38,7 @@ export default function TypingOverlay({ code, typed, state }: TypingOverlayProps
                             ) : (
                                 <span
                                     className={cn(
-                                        "text-muted-foreground",
+                                        "text-slate-700 opacity-75",
                                         isCorrect &&
                                             !isSpace &&
                                             "text-transparent",

@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { State } from "@/hooks/useEngine";
 import LineNumbers from "./LineNumbers";
 import TypingOverlay from "./TypingOverlay";
@@ -18,9 +19,10 @@ export default function CodeTypingArea({
     code,
     typed,
     language,
-    state
+    state,
 }: TypingAreaProps) {
-    const lineCount = code.split("\n").length;
+    // 
+    const lineCount = useMemo(() => code.split("\n").length, [code]); 
 
     return (
         <div className="rounded-lg overflow-hidden border bg-card font-mono text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl w-full">
@@ -32,7 +34,10 @@ export default function CodeTypingArea({
             </div>
 
             <div className="flex p-2 sm:p-3 md:p-4">
-                <LineNumbers lineCount={lineCount} className="mr-2 sm:mr-3 md:mr-4" />
+                <LineNumbers
+                    lineCount={lineCount}
+                    className="mr-2 sm:mr-3 md:mr-4"
+                />
                 <div className="relative flex">
                     {/* Characters */}
                     <SyntaxHighlighter

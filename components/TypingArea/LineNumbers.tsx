@@ -3,7 +3,7 @@ export default function LineNumbers({ lineCount, className }: { lineCount: numbe
         /* Line numbers */
     }
     return (
-        <div aria-hidden className={`${className} text-muted-foreground`}>
+        <div aria-hidden className={`${className} text-gray-600`}>
             {Array.from({ length: lineCount }, (_, i) => (
                 <div key={i}>{i + 1}</div>
             ))}

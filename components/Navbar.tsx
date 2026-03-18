@@ -4,7 +4,7 @@ import { Terminal, Code2, Info, Settings, User } from "lucide-react";
 export default function Navbar({ className }: { className?: string }) {
     return (
         <nav className="border-b border-border w-full">
-            <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+            <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
                 {/* Left side */}
                 <div className="flex items-center gap-6">
                     {/* Logo */}
