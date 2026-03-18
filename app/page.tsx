@@ -17,7 +17,7 @@ export default function Home() {
         totalTyped,
         restart,
         snippet,
-    } = useEngine("javascript");
+    } = useEngine("python");
 
     return (
         <>
