@@ -14,7 +14,7 @@ export default function Caret({ blinking = true }: { blinking?: boolean }) {
                     : { duration: 0 },
                 layout: { duration: 0.05, ease: "easeOut" },
             }}
-            className="inline-block bg-slate-300 w-0.5 h-4 absolute mt-1"
+            className="inline-block bg-slate-300 w-0.5 h-3 sm:h-4 md:h-5 lg:h-5 xl:h-6 absolute mt-0.5 sm:mt-1"
         />
     );
 }

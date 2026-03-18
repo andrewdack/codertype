@@ -20,29 +20,25 @@ export default function Home() {
     } = useEngine("python");
 
     return (
-        <>
-            <nav></nav>
-            <main className="flex flex-col min-h-screen items-center justify-center gap-4 p-12 w-full max-w-4xl mx-auto">
-                <CountdownTimer timeLeft={timeLeft} />
-                <CodeTypingArea
-                    code={words}
-                    typed={typed}
-                    language={snippet.language}
-                    state={state}
-                />
-                <RestartButton onRestart={restart} />
-                <Results
-                    state={state}
-                    className="mt-10"
-                    errors={errors}
-                    accuracyPercentage={calculateAccuracyPercentage(
-                        errors,
-                        totalTyped,
-                    )}
-                    total={totalTyped}
-                />
-            </main>
-            <footer></footer>
-        </>
+        <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-6xl mx-auto">
+            <CountdownTimer timeLeft={timeLeft} />
+            <CodeTypingArea
+                code={words}
+                typed={typed}
+                language={snippet.language}
+                state={state}
+            />
+            <RestartButton onRestart={restart} />
+            <Results
+                state={state}
+                className="mt-10"
+                errors={errors}
+                accuracyPercentage={calculateAccuracyPercentage(
+                    errors,
+                    totalTyped,
+                )}
+                total={totalTyped}
+            />
+        </main>
     );
 }

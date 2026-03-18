@@ -23,17 +23,16 @@ export default function CodeTypingArea({
     const lineCount = code.split("\n").length;
 
     return (
-        <div className="rounded-lg overflow-hidden border bg-card font-mono text-md w-full">
+        <div className="rounded-lg overflow-hidden border bg-card font-mono text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl w-full">
             {/* Editor title bar */}
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-card border-b">
-                <span className="text-xs text-zinc-400 tracking-wide">
+            <div className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-card border-b">
+                <span className="text-xs sm:text-sm text-zinc-400 tracking-wide">
                     {language}
                 </span>
             </div>
 
-            {/* Code body */}
-            <div className="flex p-4">
-                <LineNumbers lineCount={lineCount} className="text-md mr-4" />
+            <div className="flex p-2 sm:p-3 md:p-4">
+                <LineNumbers lineCount={lineCount} className="mr-2 sm:mr-3 md:mr-4" />
                 <div className="relative flex">
                     {/* Characters */}
                     <SyntaxHighlighter

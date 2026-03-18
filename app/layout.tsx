@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Roboto_Mono, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import Navbar from "@/components/Navbar";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
+const jetbrainsMono = JetBrains_Mono({
+    subsets: ["latin"],
+    variable: "--font-mono",
+});
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,10 +31,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={cn(jetbrainsMono.variable, "font-mono")} >
+        <html lang="en" className={cn(jetbrainsMono.variable, "font-mono")}>
             <body
-                className={`${robotoMono.variable} font-mono antialiased dark`}
+                className={`${robotoMono.variable} font-mono antialiased dark min-h-screenflex flex-col`}
             >
+                <Navbar />
                 {children}
             </body>
         </html>
