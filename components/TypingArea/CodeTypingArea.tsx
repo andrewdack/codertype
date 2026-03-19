@@ -21,8 +21,7 @@ export default function CodeTypingArea({
     language,
     state,
 }: TypingAreaProps) {
-    // 
-    const lineCount = useMemo(() => code.split("\n").length, [code]); 
+    const lineCount = useMemo(() => code.split("\n").length, [code]);
 
     return (
         <div className="rounded-lg overflow-hidden border bg-card font-mono text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl w-full">

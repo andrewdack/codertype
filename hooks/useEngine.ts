@@ -3,23 +3,24 @@ import { useCallback, useState, useEffect } from "react";
 import useSnippet from "./useSnippet";
 import useCountdownTimer from "./useCountdownTimer";
 import useTypings from "./useTypings";
-import { countErrors } from "@/utils/helpers";
+import { countErrors } from "@/utils/stats";
 import { type Language } from "@/lib/snippets";
 
 export type State = "start" | "run" | "finish";
 // const NUMBER_OF_WORDS = 10;
-const COUNTDOWN_SECONDS = 20;
+const COUNTDOWN_SECONDS = 200;
 
 export default function useEngine(language: Language = "javascript") {
     const [state, setState] = useState<State>("start");
     const { snippet, nextSnippet } = useSnippet(language);
     const { timeLeft, startCountdown, resetCountdown } =
         useCountdownTimer(COUNTDOWN_SECONDS);
-    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } =
-        useTypings(state !== "finish");
-    const [errors, setErrors] = useState(0);
 
     const words = snippet.code;
+    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } =
+        useTypings(state !== "finish", words);
+    const [errors, setErrors] = useState(0);
+
     const isStarting = state === "start" && cursor > 0;
     const areWordsFinished = typed.length === words.length;
 

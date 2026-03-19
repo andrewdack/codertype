@@ -5,7 +5,7 @@ import RestartButton from "@/components/RestartButton";
 import Results from "@/components/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
 import useEngine from "@/hooks/useEngine";
-import { calculateAccuracyPercentage } from "@/utils/helpers";
+import { calculateAccuracyPercentage } from "@/utils/stats";
 
 export default function Home() {
     const {

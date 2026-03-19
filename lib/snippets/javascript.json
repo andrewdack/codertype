@@ -4,34 +4,34 @@
     "language": "javascript",
     "source": "utility functions",
     "difficulty": "easy",
-    "code": "function debounce(fn, delay) {\n  let timer;\n  return function (...args) {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn.apply(this, args), delay);\n  };\n}"
+    "code": "function debounce(fn, delay) {\n\tlet timer;\n\treturn function (...args) {\n\t\tclearTimeout(timer);\n\t\ttimer = setTimeout(() => fn.apply(this, args), delay);\n\t};\n}"
   },
   {
     "id": "js-fetch-json",
     "language": "javascript",
     "source": "utility functions",
     "difficulty": "easy",
-    "code": "async function fetchJSON(url) {\n  const response = await fetch(url);\n  if (!response.ok) {\n    throw new Error(`HTTP error: ${response.status}`);\n  }\n  return response.json();\n}"
+    "code": "async function fetchJSON(url) {\n\tconst response = await fetch(url);\n\tif (!response.ok) {\n\t\tthrow new Error(`HTTP error: ${response.status}`);\n\t}\n\treturn response.json();\n}"
   },
   {
     "id": "js-chunk",
     "language": "javascript",
     "source": "array utilities",
     "difficulty": "easy",
-    "code": "function chunk(array, size) {\n  const result = [];\n  for (let i = 0; i < array.length; i += size) {\n    result.push(array.slice(i, i + size));\n  }\n  return result;\n}"
+    "code": "function chunk(array, size) {\n\tconst result = [];\n\tfor (let i = 0; i < array.length; i += size) {\n\t\tresult.push(array.slice(i, i + size));\n\t}\n\treturn result;\n}"
   },
   {
     "id": "js-deep-clone",
     "language": "javascript",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "function deepClone(obj) {\n  if (obj === null || typeof obj !== \"object\") return obj;\n  if (Array.isArray(obj)) return obj.map(deepClone);\n  return Object.fromEntries(\n    Object.entries(obj).map(([k, v]) => [k, deepClone(v)])\n  );\n}"
+    "code": "function deepClone(obj) {\n\tif (obj === null || typeof obj !== \"object\") return obj;\n\tif (Array.isArray(obj)) return obj.map(deepClone);\n\treturn Object.fromEntries(\n\t\tObject.entries(obj).map(([k, v]) => [k, deepClone(v)])\n\t);\n}"
   },
   {
     "id": "js-throttle",
     "language": "javascript",
     "source": "utility functions",
     "difficulty": "easy",
-    "code": "function throttle(fn, limit) {\n  let lastCall = 0;\n  return function (...args) {\n   const now = Date.now();\n    if (now - lastCall >= limit) {\n      lastCall = now;\n      return fn.apply(this, args);\n    }\n  };\n}"
+    "code": "function throttle(fn, limit) {\n\tlet lastCall = 0;\n\treturn function (...args) {\n\t\tconst now = Date.now();\n\t\tif (now - lastCall >= limit) {\n\t\t\tlastCall = now;\n\t\t\treturn fn.apply(this, args);\n\t\t}\n\t};\n}"
   }
 ]

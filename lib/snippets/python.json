@@ -4,34 +4,34 @@
     "language": "python",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1"
+    "code": "def binary_search(arr, target):\n\tleft, right = 0, len(arr) - 1\n\twhile left <= right:\n\t\tmid = (left + right) // 2\n\t\tif arr[mid] == target:\n\t\t\treturn mid\n\t\telif arr[mid] < target:\n\t\t\tleft = mid + 1\n\t\telse:\n\t\t\tright = mid - 1\n\treturn -1"
   },
   {
     "id": "python-fibonacci",
     "language": "python",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n    if n < 2:\n        return n\n    return fib(n - 1) + fib(n - 2)"
+    "code": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib(n):\n\tif n < 2:\n\t\treturn n\n\treturn fib(n - 1) + fib(n - 2)"
   },
   {
     "id": "python-stack",
     "language": "python",
     "source": "data structures",
     "difficulty": "easy",
-    "code": "class Stack:\n    def __init__(self):\n        self._items = []\n\n    def push(self, item):\n        self._items.append(item)\n\n    def pop(self):\n        return self._items.pop()\n\n    def is_empty(self):\n        return len(self._items) == 0"
+    "code": "class Stack:\n\tdef __init__(self):\n\t\tself._items = []\n\n\tdef push(self, item):\n\t\tself._items.append(item)\n\n\tdef pop(self):\n\t\treturn self._items.pop()\n\n\tdef is_empty(self):\n\t\treturn len(self._items) == 0"
   },
   {
     "id": "python-flatten",
     "language": "python",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result"
+    "code": "def flatten(lst):\n\tresult = []\n\tfor item in lst:\n\t\tif isinstance(item, list):\n\t\t\tresult.extend(flatten(item))\n\t\telse:\n\t\t\tresult.append(item)\n\treturn result"
   },
   {
     "id": "python-word-count",
     "language": "python",
     "source": "string processing",
     "difficulty": "easy",
-    "code": "def word_count(text):\n    counts = {}\n    for word in text.lower().split():\n        counts[word] = counts.get(word, 0) + 1\n    return counts"
+    "code": "def word_count(text):\n\tcounts = {}\n\tfor word in text.lower().split():\n\t\tcounts[word] = counts.get(word, 0) + 1\n\treturn counts"
   }
 ]
