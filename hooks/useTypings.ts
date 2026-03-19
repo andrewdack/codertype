@@ -19,8 +19,8 @@ export default function useTypings(enabled: boolean, targetCode: string = "") {
     }, [targetCode]);
 
     useEffect(() => {
-        console.log(typed);
-    }, [cursor])
+        console.log(totalTyped);
+    }, [[]])
     const keydownHandler = useCallback(
         (e: KeyboardEvent) => {
             if (!enabled || !isKeyboardCharacterAllowed(e.code)) {
@@ -37,13 +37,14 @@ export default function useTypings(enabled: boolean, targetCode: string = "") {
             switch (key) {
                 case "Backspace":
                     setTyped((prevTypedKeys) => {
-                        // Remove characters including tabs
                         let newTyped = prevTypedKeys.slice(0, -1);
                         
                         return newTyped;
                     });
+                    if (cursor === 0) {
+                        break;
+                    }
                     setCursor((prevCursor) => {
-                        // skip backward over tabs
                         let newCursor = prevCursor;
                         
                         if (newCursor > 0) {
@@ -79,12 +80,12 @@ export default function useTypings(enabled: boolean, targetCode: string = "") {
                 default:
                     setTyped((prevTypedKeys) => {
                         const withChar = prevTypedKeys + key;
-                        // const { newTyped } = autoInsertTabs(withChar, cursor + 1);
-                        return withChar;
+                        const { newTyped } = autoInsertTabs(withChar, cursor + 1);
+                        return newTyped;
                     });
                     setCursor((prevCursor) => {
-                        // const { newPosition } = autoInsertTabs(typed + key, prevCursor + 1);
-                        return prevCursor + 1;
+                        const { newPosition } = autoInsertTabs(typed + key, prevCursor + 1);
+                        return newPosition;
                     });
                     totalTyped.current += 1;
             }
