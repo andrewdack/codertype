@@ -36,17 +36,26 @@ export default function useTypings(enabled: boolean, targetCode: string = "") {
 
             switch (key) {
                 case "Backspace":
-                    setTyped((prevTypedKeys) => {
-                        let newTyped = prevTypedKeys.slice(0, -1);
-                        
-                        return newTyped;
-                    });
+                    // Prevent backspacing over tabs and newlines
+                    if (typed.length > 0) {
+                        const lastChar = targetCode[typed.length - 1];
+                        if (lastChar === '\t' || lastChar === '\n') {
+                            // Don't allow backspace over tabs or newlines
+                            break;
+                        }
+                    }
+
                     if (cursor === 0) {
                         break;
                     }
+
+                    setTyped((prevTypedKeys) => {
+                        let newTyped = prevTypedKeys.slice(0, -1);
+                        return newTyped;
+                    });
                     setCursor((prevCursor) => {
                         let newCursor = prevCursor;
-                        
+
                         if (newCursor > 0) {
                             return newCursor - 1;
                         }

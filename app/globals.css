@@ -124,13 +124,17 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
-  html {
-    @apply font-mono;
+    html {
+        @apply font-mono;
+        font-variant-ligatures: none;
+        font-feature-settings:
+            "liga" 0,
+            "calt" 0;
     }
 }
