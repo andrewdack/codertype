@@ -37,10 +37,10 @@ export default function TypingOverlay({
                                     className={
                                         isIncorrect
                                             ? "text-red-400"
-                                            : "text-gray-600"
+                                            : "text-transparent"
                                     }
                                 >
-                                    {isTyped && " ↵"}
+                                    {isTyped && "↵"}
                                     {"\n"}
                                 </span>
                             ) : isTab ? (
