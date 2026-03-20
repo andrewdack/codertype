@@ -13,6 +13,9 @@ interface TypingAreaProps {
     typed: string;
     language: string;
     state: State;
+    bracketPairs?: Map<number, number>;
+    correctlyTypedOpenings?: Set<number>;
+    autoCompleteBrackets?: boolean;
 }
 
 export default function CodeTypingArea({
@@ -20,6 +23,9 @@ export default function CodeTypingArea({
     typed,
     language,
     state,
+    bracketPairs,
+    correctlyTypedOpenings,
+    autoCompleteBrackets,
 }: TypingAreaProps) {
     const lineCount = useMemo(() => code.split("\n").length, [code]);
 
@@ -51,7 +57,14 @@ export default function CodeTypingArea({
                     >
                         {code}
                     </SyntaxHighlighter>
-                    <TypingOverlay code={code} typed={typed} state={state} />
+                    <TypingOverlay
+                        code={code}
+                        typed={typed}
+                        state={state}
+                        bracketPairs={bracketPairs}
+                        correctlyTypedOpenings={correctlyTypedOpenings}
+                        autoCompleteBrackets={autoCompleteBrackets}
+                    />
                 </div>
             </div>
         </div>

@@ -17,16 +17,32 @@ export default function Home() {
         totalTyped,
         restart,
         snippet,
-    } = useEngine("python");
+        bracketPairs,
+        correctlyTypedOpenings,
+        autoCompleteBrackets,
+        setAutoCompleteBrackets,
+    } = useEngine("java");
 
     return (
         <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-6xl mx-auto">
-            <CountdownTimer timeLeft={timeLeft} />
+            <div className="flex items-center gap-4">
+                <CountdownTimer timeLeft={timeLeft} />
+                <button
+                    onClick={() => setAutoCompleteBrackets(!autoCompleteBrackets)}
+                    className="text-xs px-3 py-1 rounded border border-border hover:bg-muted transition-colors"
+                    title="Toggle auto-complete brackets"
+                >
+                    Auto-complete: {autoCompleteBrackets ? "ON" : "OFF"}
+                </button>
+            </div>
             <CodeTypingArea
                 code={words}
                 typed={typed}
                 language={snippet.language}
                 state={state}
+                bracketPairs={bracketPairs}
+                correctlyTypedOpenings={correctlyTypedOpenings}
+                autoCompleteBrackets={autoCompleteBrackets}
             />
             <RestartButton onRestart={restart} />
             <Results

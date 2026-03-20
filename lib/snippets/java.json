@@ -33,5 +33,12 @@
         "source": "string processing",
         "difficulty": "easy",
         "code": "public static String reverse(String s) {\n\tStringBuilder sb = new StringBuilder();\n\tfor (int i = s.length() - 1; i >= 0; i--) {\n\t\tsb.append(s.charAt(i));\n\t}\n\treturn sb.toString();\n}"
+    },
+    {
+        "id": "java-string-validator",
+        "language": "java",
+        "source": "string processing",
+        "difficulty": "easy",
+        "code": "public static boolean isValid(String input) {\n\tif (input == null || input.isEmpty()) {\n\t\treturn false;\n\t}\n\tchar firstChar = input.charAt(0);\n\treturn firstChar != ' ' && input.contains(\"@\");\n}"
     }
 ]
