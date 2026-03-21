@@ -8,7 +8,6 @@ import { type Language } from "@/lib/snippets";
 import { generateBracketPairs } from "@/utils/bracketMatching";
 
 export type State = "start" | "run" | "finish";
-// const NUMBER_OF_WORDS = 10;
 const COUNTDOWN_SECONDS = 200;
 
 export default function useEngine(language: Language = "javascript") {
@@ -28,10 +27,19 @@ export default function useEngine(language: Language = "javascript") {
     }, [words]);
 
     // Track which opening brackets have been correctly typed
-    const [correctlyTypedOpenings, setCorrectlyTypedOpenings] = useState<Set<number>>(new Set());
+    const [correctlyTypedOpenings, setCorrectlyTypedOpenings] = useState<
+        Set<number>
+    >(new Set());
 
     const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } =
-        useTypings(state !== "finish", words, bracketPairs, correctlyTypedOpenings, setCorrectlyTypedOpenings, autoCompleteBrackets);
+        useTypings(
+            state !== "finish",
+            words,
+            bracketPairs,
+            correctlyTypedOpenings,
+            setCorrectlyTypedOpenings,
+            autoCompleteBrackets,
+        );
     const [errors, setErrors] = useState(0);
 
     const isStarting = state === "start" && cursor > 0;
@@ -63,7 +71,7 @@ export default function useEngine(language: Language = "javascript") {
     useEffect(() => {
         if (areWordsFinished) {
             console.log("snippet finished, loading next...");
-            setState("finish")
+            setState("finish");
             sumErrors();
         }
     }, [
@@ -75,6 +83,13 @@ export default function useEngine(language: Language = "javascript") {
         nextSnippet,
         sumErrors,
     ]);
+
+    // Clear correctly typed openings when auto-complete is turned off
+    useEffect(() => {
+        if (!autoCompleteBrackets) {
+            setCorrectlyTypedOpenings(new Set());
+        }
+    }, [autoCompleteBrackets]);
 
     const restart = useCallback(() => {
         resetCountdown();

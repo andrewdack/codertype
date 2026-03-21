@@ -7,19 +7,20 @@ export function generateBracketPairs(code: string): Map<number, number> {
     const stack: Array<{ char: string; index: number }> = [];
 
     // Define bracket pairs
-    const openingBrackets = new Set(["(", "[", "{", "<"]);
+    const openingBrackets = new Set(["(", "[", "{"]);
     const closingBrackets = new Map([
         [")", "("],
         ["]", "["],
         ["}", "{"],
-        [">", "<"],
     ]);
 
     // Track quote states (since quotes open and close with same character)
     let inDoubleQuote = false;
     let inSingleQuote = false;
+    let inBacktick = false;
     let doubleQuoteStart = -1;
     let singleQuoteStart = -1;
+    let backtickStart = -1;
 
     for (let i = 0; i < code.length; i++) {
         const char = code[i];
@@ -64,8 +65,25 @@ export function generateBracketPairs(code: string): Map<number, number> {
             continue;
         }
 
+        // Handle backticks
+        if (char === "`") {
+            if (!inDoubleQuote && !inSingleQuote) {
+                if (inBacktick) {
+                    // Closing backtick
+                    pairs.set(backtickStart, i);
+                    inBacktick = false;
+                    backtickStart = -1;
+                } else {
+                    // Opening backtick
+                    inBacktick = true;
+                    backtickStart = i;
+                }
+            }
+            continue;
+        }
+
         // Skip bracket matching inside quotes
-        if (inDoubleQuote || inSingleQuote) {
+        if (inDoubleQuote || inSingleQuote || inBacktick) {
             continue;
         }
 
@@ -94,14 +112,14 @@ export function generateBracketPairs(code: string): Map<number, number> {
  * Check if a character at an index is an opening bracket/symbol
  */
 export function isOpeningSymbol(char: string): boolean {
-    return ["(", "[", "{", "<", '"', "'"].includes(char);
+    return ["(", "[", "{", '"', "'", "`"].includes(char);
 }
 
 /**
  * Check if a character at an index is a closing bracket/symbol
  */
 export function isClosingSymbol(char: string): boolean {
-    return [")", "]", "}", ">", '"', "'"].includes(char);
+    return [")", "]", "}", '"', "'", "`"].includes(char);
 }
 
 /**
@@ -112,9 +130,9 @@ export function getClosingChar(openingChar: string): string {
         "(": ")",
         "[": "]",
         "{": "}",
-        "<": ">",
         '"': '"',
         "'": "'",
+        "`": "`",
     };
     return map[openingChar] || openingChar;
 }

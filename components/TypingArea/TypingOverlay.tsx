@@ -43,7 +43,7 @@ export default function TypingOverlay({
     };
 
     return (
-        <pre className="flex-1 overflow-auto absolute ">
+        <pre className="absolute inset-0 m-0">
             <code>
                 {chars.map((char, index) => {
                     const isCursor = index === typed.length;
@@ -77,7 +77,6 @@ export default function TypingOverlay({
                                     className={cn(
                                         "text-slate-700 opacity-75",
                                         isCorrect &&
-                                            !isSpace &&
                                             "text-transparent",
                                         isIncorrect &&
                                             "bg-red-500/30 text-transparent",
