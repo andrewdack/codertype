@@ -38,10 +38,8 @@ export default function useTypings(
         [targetCode],
     );
 
-    useEffect(() => {
-        // console.log(cursor);
-        console.log(totalErrors.current);
-    }, [cursor]);
+    useEffect(() => {}, [cursor]);
+
     const keydownHandler = useCallback(
         (e: KeyboardEvent) => {
             if (!enabled || !isKeyboardCharacterAllowed(e.code)) {
@@ -109,57 +107,60 @@ export default function useTypings(
                     });
                     totalTyped.current += 1;
                     break;
-                    default:
-                        // Check if we're at a closing bracket position and should auto-skip
-                        if (autoCompleteBrackets) {
-                            // Calculate what the cursor position will be after typing this character and auto-inserting tabs
-                            let char = key === "Enter" ? "\n" : key;
-                            const { newPosition: futurePosition } = autoInsertTabs(
-                                typed + char,
-                                cursor + 1,
-                            );
-                            
-                            // Find if the future cursor position would be at a closing bracket
-                            let openingIndex = -1;
-                            for (const [
-                                opening,
-                                closing,
-                            ] of bracketPairs.entries()) {
-                                if (closing === futurePosition) {
-                                    openingIndex = opening;
-                                    break;
-                                }
+                default:
+                    // Check if we're at a closing bracket position and should auto-skip
+                    const char: string = key === "Enter" ? "\n" : key;
+                    const charTypedCorrectly: boolean = char === targetCode[cursor];
+                    if (autoCompleteBrackets) {
+                        // Calculate what the cursor position will be after typing this character and auto-inserting tabs
+                        const { newPosition: futurePosition } = autoInsertTabs(
+                            typed + char,
+                            cursor + 1,
+                        );
+
+                        // Find if the future cursor position would be at a closing bracket
+                        let openingIndex = -1;
+                        for (const [
+                            opening,
+                            closing,
+                        ] of bracketPairs.entries()) {
+                            if (closing === futurePosition) {
+                                openingIndex = opening;
+                                break;
                             }
-                            
-                            // Check if opening was typed correctly (or is being typed correctly now)
-                            const openingTypedCorrectly =
+                        }
+
+                        // Check if opening was typed correctly (or is being typed correctly now)
+                        const openingTypedCorrectly =
                             (cursor === openingIndex &&
                                 char === targetCode[openingIndex]) || // Currently typing the opening
-                                typed[openingIndex] === targetCode[openingIndex]; // Already typed correctly
-                                
-                                // If at closing position and opening was/is typed correctly, auto-skip
-                                if (openingIndex !== -1 && openingTypedCorrectly) {
-                                    // Track error before state updates
-                                    if (char !== targetCode[cursor]) {
-                                        totalErrors.current += 1;
-                                    }
-                                    
-                                    // Collect the first closing bracket
-                                    const closingCharsToInsert: string[] = [
-                                        targetCode[futurePosition],
-                                    ];
-                                    let checkPosition = futurePosition + 1;
-                                    
-                                    // Keep checking for more consecutive closing brackets
-                                    while (checkPosition < targetCode.length) {
-                                        let foundClosing = false;
-                                        
-                                        for (const [
-                                            opening,
-                                            closing,
-                                        ] of bracketPairs.entries()) {
-                                            if (closing === checkPosition) {
-                                                // Check if this opening was typed correctly
+                            typed[openingIndex] === targetCode[openingIndex]; // Already typed correctly
+                        // Autoskip if
+                        // 1. next character(s) are closing brackets
+                        // 2. opening bracket was typed correctly
+                        // 3. the character is typed correctly
+                        if (openingIndex !== -1 && openingTypedCorrectly && charTypedCorrectly) {
+                            // Track error before auto-skip (only if char is incorrect)
+                            if (!charTypedCorrectly) {
+                                totalErrors.current += 1;
+                            }
+
+                            // Collect the first closing bracket
+                            const closingCharsToInsert: string[] = [
+                                targetCode[futurePosition],
+                            ];
+                            let checkPosition = futurePosition + 1;
+
+                            // Keep checking for more consecutive closing brackets
+                            while (checkPosition < targetCode.length) {
+                                let foundClosing = false;
+
+                                for (const [
+                                    opening,
+                                    closing,
+                                ] of bracketPairs.entries()) {
+                                    if (closing === checkPosition) {
+                                        // Check if this opening was typed correctly
                                         if (
                                             typed.length > opening &&
                                             typed[opening] ===
@@ -206,8 +207,7 @@ export default function useTypings(
                     }
                     // Normal typing behavior
                     // Track error before state updates
-                    let char = key === "Enter" ? "\n" : key;
-                    if (char !== targetCode[cursor]) {
+                    if (!charTypedCorrectly) {
                         totalErrors.current += 1;
                     }
 
@@ -267,5 +267,6 @@ export default function useTypings(
         clearTyped,
         resetTotalTyped,
         totalTyped: totalTyped.current,
+        totalErrors: totalErrors.current,
     };
 }

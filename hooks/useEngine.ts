@@ -31,7 +31,7 @@ export default function useEngine(language: Language = "javascript") {
         Set<number>
     >(new Set());
 
-    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped } =
+    const { typed, cursor, clearTyped, resetTotalTyped, totalTyped, totalErrors } =
         useTypings(
             state !== "finish",
             words,
@@ -40,17 +40,14 @@ export default function useEngine(language: Language = "javascript") {
             setCorrectlyTypedOpenings,
             autoCompleteBrackets,
         );
-    const [errors, setErrors] = useState(0);
 
     const isStarting = state === "start" && cursor > 0;
     const areWordsFinished = typed.length === words.length;
 
-    const sumErrors = useCallback(() => {
-        const wordsReached = words.substring(0, cursor);
-        setErrors(
-            (prevErrors) => prevErrors + countErrors(typed, wordsReached),
-        );
-    }, [typed, words, cursor]);
+    // Calculate total errors: real-time tracking + additional errors from countErrors
+    const calculatedErrors = useMemo(() => {
+        return totalErrors + countErrors(typed, words);
+    }, [totalErrors, typed, words]);
 
     useEffect(() => {
         if (isStarting) {
@@ -63,16 +60,14 @@ export default function useEngine(language: Language = "javascript") {
         if (timeLeft <= 0) {
             console.log("timer up");
             setState("finish");
-            sumErrors();
         }
-    }, [timeLeft, sumErrors]);
+    }, [timeLeft]);
 
     // when the current snippet is finished, load the next one
     useEffect(() => {
         if (areWordsFinished) {
             console.log("snippet finished, loading next...");
             setState("finish");
-            sumErrors();
         }
     }, [
         cursor,
@@ -81,7 +76,6 @@ export default function useEngine(language: Language = "javascript") {
         typed,
         areWordsFinished,
         nextSnippet,
-        sumErrors,
     ]);
 
     // Clear correctly typed openings when auto-complete is turned off
@@ -92,10 +86,9 @@ export default function useEngine(language: Language = "javascript") {
     }, [autoCompleteBrackets]);
 
     const restart = useCallback(() => {
-        resetCountdown();
+        resetCountdown(); 
         resetTotalTyped();
         setState("start");
-        setErrors(0);
         nextSnippet();
         clearTyped();
         setCorrectlyTypedOpenings(new Set());
@@ -106,7 +99,7 @@ export default function useEngine(language: Language = "javascript") {
         words,
         timeLeft,
         typed,
-        errors,
+        errors: calculatedErrors,
         totalTyped,
         restart,
         snippet,
