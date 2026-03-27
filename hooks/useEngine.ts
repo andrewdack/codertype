@@ -20,7 +20,8 @@ export default function useEngine(language: Language = "javascript") {
     const [autoCompleteBrackets, setAutoCompleteBrackets] = useState(true);
 
     const words = snippet.code;
-
+    const [startTime, setStartTime] = useState(-1);
+    const [endTime, setEndTime] = useState(-1);
     // Generate bracket pairs map when snippet changes
     const bracketPairs = useMemo(() => {
         return generateBracketPairs(words);
@@ -53,13 +54,16 @@ export default function useEngine(language: Language = "javascript") {
         if (isStarting) {
             setState("run");
             startCountdown();
+            setStartTime(Date.now());
         }
     }, [isStarting, startCountdown, cursor]);
 
     useEffect(() => {
         if (timeLeft <= 0) {
             console.log("timer up");
+            resetCountdown()
             setState("finish");
+            setEndTime(Date.now());
         }
     }, [timeLeft]);
 
@@ -67,7 +71,9 @@ export default function useEngine(language: Language = "javascript") {
     useEffect(() => {
         if (areWordsFinished) {
             console.log("snippet finished, loading next...");
+            resetCountdown()
             setState("finish");
+            setEndTime(Date.now());
         }
     }, [
         cursor,
@@ -100,6 +106,7 @@ export default function useEngine(language: Language = "javascript") {
         timeLeft,
         typed,
         errors: calculatedErrors,
+        durationMilliseconds: endTime - startTime,
         totalTyped,
         restart,
         snippet,

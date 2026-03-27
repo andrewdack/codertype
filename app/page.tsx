@@ -7,7 +7,7 @@ import Results from "@/components/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
 import useEngine from "@/hooks/useEngine";
 
-import { calculateAccuracyPercentage } from "@/utils/stats";
+import * as stats from "@/utils/stats";
 
 export default function Home() {
     const {
@@ -23,8 +23,10 @@ export default function Home() {
         correctlyTypedOpenings,
         autoCompleteBrackets,
         setAutoCompleteBrackets,
+        durationMilliseconds,
     } = useEngine("java");
 
+    
     return (
         <>
             <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
@@ -38,15 +40,26 @@ export default function Home() {
                     correctlyTypedOpenings={correctlyTypedOpenings}
                     autoCompleteBrackets={autoCompleteBrackets}
                 />
-                {/* <RestartButton onRestart={restart} /> */}
+                <RestartButton onRestart={restart} />
                 <Results
                     state={state}
                     className="mt-10"
                     errors={errors}
-                    accuracyPercentage={calculateAccuracyPercentage(
+                    accuracyPercentage={stats.calculateAccuracyPercentage(
                         errors,
                         totalTyped,
                     )}
+                    rawwpm={stats.calculateRawWPM(
+                        totalTyped,
+                        durationMilliseconds,
+                    )}
+                    adjwpm={
+                        (stats.calculateRawWPM(
+                            totalTyped,
+                            durationMilliseconds,
+                        ),
+                        stats.calculateAccuracyPercentage(errors, totalTyped))
+                    }
                     total={totalTyped}
                 />
             </main>

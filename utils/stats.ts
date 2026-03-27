@@ -26,14 +26,14 @@ export function calculateAccuracyPercentage(errors: number, total: number) {
     return 0;
 }
 
-export function calculateRawWPM(typed: string, milliseconds: number) {
+export function calculateRawWPM(totalTyped: number, milliseconds: number) {
     const minutes = milliseconds / (60 * 10000);
 
     // number of words in a character by default
     const wordLengthConstant = 5;
     let wpm = 0
     if (minutes > 0) {
-        wpm = (typed.length / wordLengthConstant) / minutes;
+        wpm = (totalTyped / wordLengthConstant) / minutes;
     }
     return wpm;
 }

@@ -112,7 +112,7 @@ export default function useTypings(
                     const char: string = key === "Enter" ? "\n" : key;
                     const charTypedCorrectly: boolean = char === targetCode[cursor];
                     if (autoCompleteBrackets) {
-                        // Calculate what the cursor position will be after typing this character and auto-inserting tabs
+                        //mes Calculate what the cursor position will be after typing this character and auto-inserting tabs
                         const { newPosition: futurePosition } = autoInsertTabs(
                             typed + char,
                             cursor + 1,

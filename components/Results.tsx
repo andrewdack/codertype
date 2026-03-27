@@ -6,6 +6,8 @@ interface resultsType {
     errors: number;
     accuracyPercentage: number;
     total: number;
+    rawwpm: number;
+    adjwpm: number;
     className?: string;
 }
 
@@ -14,6 +16,8 @@ export default function Results({
     errors,
     accuracyPercentage,
     total,
+    rawwpm,
+    adjwpm,
     className,
 }: resultsType) {
     if (state !== "finish") {
