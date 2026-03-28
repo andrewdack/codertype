@@ -24,9 +24,17 @@ export default function Home() {
         autoCompleteBrackets,
         setAutoCompleteBrackets,
         durationMilliseconds,
-    } = useEngine("java");
+    } = useEngine("javascript");
 
-    
+    const accuracyPercent = stats.calculateAccuracyPercentage(
+        errors,
+        totalTyped,
+    );
+    const rawwpm = stats.calculateRawWPM(
+        totalTyped,
+        durationMilliseconds,
+    );
+    const adjwpm = stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
     return (
         <>
             <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
@@ -45,21 +53,9 @@ export default function Home() {
                     state={state}
                     className="mt-10"
                     errors={errors}
-                    accuracyPercentage={stats.calculateAccuracyPercentage(
-                        errors,
-                        totalTyped,
-                    )}
-                    rawwpm={stats.calculateRawWPM(
-                        totalTyped,
-                        durationMilliseconds,
-                    )}
-                    adjwpm={
-                        (stats.calculateRawWPM(
-                            totalTyped,
-                            durationMilliseconds,
-                        ),
-                        stats.calculateAccuracyPercentage(errors, totalTyped))
-                    }
+                    accuracyPercentage={parseFloat(accuracyPercent.toFixed(2))}
+                    rawwpm={parseFloat(rawwpm.toFixed(2))}
+                    adjwpm={parseFloat(adjwpm.toFixed(2))}
                     total={totalTyped}
                 />
             </main>

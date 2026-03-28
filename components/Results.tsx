@@ -30,6 +30,8 @@ export default function Results({
             <li className="text-xl font-semibold">RESULTS</li>
             <li>Accuracy: {formatPercentage(accuracyPercentage)}</li>
             <li className="text-red-500">Errors: {errors}</li>
+            <li>Raw Wpm: {rawwpm}</li>
+            <li>Adj Wpm: {adjwpm}</li>
             <li>Typed: {total}</li>
         </ul>
     );

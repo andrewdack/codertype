@@ -27,7 +27,7 @@ export function calculateAccuracyPercentage(errors: number, total: number) {
 }
 
 export function calculateRawWPM(totalTyped: number, milliseconds: number) {
-    const minutes = milliseconds / (60 * 10000);
+    const minutes = milliseconds / 60000;
 
     // number of words in a character by default
     const wordLengthConstant = 5;
