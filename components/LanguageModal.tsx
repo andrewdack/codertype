@@ -70,7 +70,7 @@ export default function LanguageModal({
                         initial={{ opacity: 0, scale: 0.95, x: "-50%" }}
                         animate={{ opacity: 1, scale: 1, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.95, x: "-50%" }}
-                        transition={{ duration: 0.05, ease: "easeOut" }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
                     >
                         {/* header */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-border">

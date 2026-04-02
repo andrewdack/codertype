@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { Mail, Github, Palette, ChevronUp } from "lucide-react";
+import { Mail, Github } from "lucide-react";
+import ThemeSelector, { Theme } from "./ThemeSelector";
 
-export default function Footer() {
+interface FooterProps {
+    selectedThemeName: string;
+    onSelectTheme: (name: string, style: Theme) => void;
+}
+
+export default function Footer({ selectedThemeName, onSelectTheme }: FooterProps) {
     return (
         <footer className="w-full">
             <div className="max-w-360 mx-auto px-4 sm:px-6 h-8 sm:h-10 flex items-center justify-between text-xs sm:text-sm">
@@ -24,20 +30,10 @@ export default function Footer() {
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-6 text-muted-foreground">
-                    {/* <Link href="/terms" className="hover:text-foreground transition-colors">
-                        terms
-                    </Link>
-                    <Link href="/security" className="hover:text-foreground transition-colors">
-                        security
-                    </Link>
-                    <Link href="/privacy" className="hover:text-foreground transition-colors">
-                        privacy
-                    </Link> */}
-                    <button className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors">
-                        <Palette className="w-4 h-4 sm:w-6 sm:h-6" />
-                        <span className="hidden sm:inline">theme</span>
-                        <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
-                    </button>
+                    <ThemeSelector
+                        selectedThemeName={selectedThemeName}
+                        onSelectTheme={onSelectTheme}
+                    />
                 </div>
             </div>
         </footer>

@@ -3,17 +3,25 @@
 import { useState } from "react";
 import CountdownTimer from "@/components/CountdownTimer";
 import RestartButton from "@/components/RestartButton";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import Results from "@/components/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
 import LanguageSelectorButton from "@/components/LanguageSelector";
 import useEngine from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
+import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
 
 import * as stats from "@/utils/stats";
 
 export default function Home() {
     const [selectedLanguage, setSelectedLanguage] = useState<Language>("python");
+    const [selectedThemeName, setSelectedThemeName] = useState(DEFAULT_THEME.name);
+    const [selectedThemeStyle, setSelectedThemeStyle] = useState<Theme>(DEFAULT_THEME.style);
+
+    function handleSelectTheme(name: string, style: Theme) {
+        setSelectedThemeName(name);
+        setSelectedThemeStyle(style);
+    }
 
     const {
         state,
@@ -66,6 +74,7 @@ export default function Home() {
                         bracketPairs={bracketPairs}
                         correctlyTypedOpenings={correctlyTypedOpenings}
                         autoCompleteBrackets={autoCompleteBrackets}
+                        theme={selectedThemeStyle}
                     />
                 </div>
                 <RestartButton onRestart={restart} />
@@ -79,7 +88,10 @@ export default function Home() {
                     total={totalTyped}
                 />
             </main>
-            <Footer />
+            <Footer
+                selectedThemeName={selectedThemeName}
+                onSelectTheme={handleSelectTheme}
+            />
         </>
     );
 }
