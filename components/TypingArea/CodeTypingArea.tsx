@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { State } from "@/hooks/useEngine";
 import LineNumbers from "./LineNumbers";
 import TypingOverlay from "./TypingOverlay";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark, gruvboxDark, dracula, gradientDark, atelierCaveDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { atomOneDark, xcode, gruvboxDark, dracula, gradientDark, atelierCaveDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { CSSProperties } from "react";
 
 interface TypingAreaProps {
     code: string;
@@ -17,6 +18,9 @@ interface TypingAreaProps {
     bracketPairs?: Map<number, number>;
     correctlyTypedOpenings?: Set<number>;
     autoCompleteBrackets?: boolean;
+    theme?: {
+    [key: string]: CSSProperties;
+};
 }
 
 export default function CodeTypingArea({
@@ -27,8 +31,19 @@ export default function CodeTypingArea({
     bracketPairs,
     correctlyTypedOpenings,
     autoCompleteBrackets,
+    theme = atomOneDark,
 }: TypingAreaProps) {
     const lineCount = useMemo(() => code.split("\n").length, [code]);
+
+    const [syntaxTheme, setSyntaxTheme] = useState<typeof theme>(theme);
+
+    // get rid of the bodl and italic styles that mess up the overlay
+    const fixedSyntaxStyle = Object.fromEntries(
+    Object.entries(syntaxTheme).map(([key, value]) => [
+        key,
+        { ...value, fontWeight: "normal", fontStyle: "normal" }
+    ])
+    );
 
     return (
         <div className="font-mono text-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full">
@@ -48,7 +63,7 @@ export default function CodeTypingArea({
                     {/* Characters */}
                     <SyntaxHighlighter
                         language={language}
-                        style={atelierCaveDark}
+                        style={fixedSyntaxStyle}
                         // showLineNumbers={true}
                         lineNumberStyle={{ color: "#71717b" }}
                         customStyle={{

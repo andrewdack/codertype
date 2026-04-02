@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Github, Palette } from "lucide-react";
+import { Mail, Github, Palette, ChevronUp } from "lucide-react";
 
 export default function Footer() {
     return (
@@ -36,6 +36,7 @@ export default function Footer() {
                     <button className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors">
                         <Palette className="w-4 h-4 sm:w-6 sm:h-6" />
                         <span className="hidden sm:inline">theme</span>
+                        <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
                     </button>
                 </div>
             </div>
