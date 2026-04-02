@@ -47,7 +47,8 @@ export default function useEngine(language: Language = "javascript") {
 
     // Calculate total errors: real-time tracking + additional errors from countErrors
     const calculatedErrors = useMemo(() => {
-        return totalErrors + countErrors(typed, words);
+        // return totalErrors + countErrors(typed, words);
+        return totalErrors;
     }, [totalErrors, typed, words]);
 
     useEffect(() => {

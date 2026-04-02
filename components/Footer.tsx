@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Github } from "lucide-react";
+import { Mail, Github, Palette} from "lucide-react";
 
 export default function Footer() {
     return (
@@ -8,24 +8,28 @@ export default function Footer() {
                 <div className="flex items-center gap-3 sm:gap-6 text-muted-foreground">
                     <Link href="mailto:dackcodes@gmail.com" className="hover:text-foreground transition-colors flex items-center gap-1">
                         <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span className="hidden sm:inline">Contact</span>
+                        <span className="hidden sm:inline">contact</span>
                     </Link>
                     <Link href="https://github.com/andrewdack/codertype" className="hover:text-foreground transition-colors flex items-center gap-1" target="_blank">
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
-                        <span className="hidden sm:inline">GitHub</span>
+                        <span className="hidden sm:inline">gitHub</span>
                     </Link>
                 </div>
 
                 <div className="flex items-center gap-3 sm:gap-6 text-muted-foreground">
-                    <Link href="/terms" className="hover:text-foreground transition-colors">
-                        Terms
+                    {/* <Link href="/terms" className="hover:text-foreground transition-colors">
+                        terms
                     </Link>
                     <Link href="/security" className="hover:text-foreground transition-colors">
-                        Security
+                        security
                     </Link>
                     <Link href="/privacy" className="hover:text-foreground transition-colors">
-                        Privacy
-                    </Link>
+                        privacy
+                    </Link> */}
+                    <button className="flex inline">
+                        <Palette className="w-4 h-4 sm:w-6 sm:h-6 " />
+                        <span className="hidden sm:inline">theme</span>
+                    </button>
                 </div>
             </div>
         </footer>

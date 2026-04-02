@@ -38,7 +38,7 @@ export default function useTypings(
         [targetCode],
     );
 
-    useEffect(() => {}, [cursor]);
+    useEffect(() => {console.log(totalErrors.current)}, [cursor]);
 
     const keydownHandler = useCallback(
         (e: KeyboardEvent) => {

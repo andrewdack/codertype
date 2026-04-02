@@ -6,7 +6,8 @@ import LineNumbers from "./LineNumbers";
 import TypingOverlay from "./TypingOverlay";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { atomOneDark, gruvboxDark, dracula, gradientDark, atelierCaveDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface TypingAreaProps {
     code: string;
@@ -47,7 +48,7 @@ export default function CodeTypingArea({
                     {/* Characters */}
                     <SyntaxHighlighter
                         language={language}
-                        style={gruvboxDark}
+                        style={atelierCaveDark}
                         // showLineNumbers={true}
                         lineNumberStyle={{ color: "#71717b" }}
                         customStyle={{

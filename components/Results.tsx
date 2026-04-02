@@ -1,5 +1,6 @@
 import { State } from "@/hooks/useEngine";
 import { formatPercentage } from "@/utils/helpers";
+import { Line, LineChart } from "recharts";
 
 interface resultsType {
     state: State;
@@ -24,6 +25,7 @@ export default function Results({
         return null;
     }
     return (
+        // <LineChart></LineChart>
         <ul
             className={`flex flex-col items-center text-muted-foreground space-y-3 ${className}`}
         >
