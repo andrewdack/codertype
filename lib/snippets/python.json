@@ -33,5 +33,75 @@
     "source": "string processing",
     "difficulty": "easy",
     "code": "def word_count(text):\n\tcounts = {}\n\tfor word in text.lower().split():\n\t\tcounts[word] = counts.get(word, 0) + 1\n\treturn counts"
+  },
+  {
+    "id": "python-two-sum",
+    "language": "python",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "def two_sum(nums, target):\n\tseen = {}\n\tfor i, num in enumerate(nums):\n\t\tcomplement = target - num\n\t\tif complement in seen:\n\t\t\treturn [seen[complement], i]\n\t\tseen[num] = i\n\treturn []"
+  },
+  {
+    "id": "python-merge-sort",
+    "language": "python",
+    "source": "classic algorithm",
+    "difficulty": "medium",
+    "code": "def merge_sort(arr):\n\tif len(arr) <= 1:\n\t\treturn arr\n\tmid = len(arr) // 2\n\tleft = merge_sort(arr[:mid])\n\tright = merge_sort(arr[mid:])\n\treturn merge(left, right)\n\ndef merge(left, right):\n\tresult, i, j = [], 0, 0\n\twhile i < len(left) and j < len(right):\n\t\tif left[i] <= right[j]:\n\t\t\tresult.append(left[i]); i += 1\n\t\telse:\n\t\t\tresult.append(right[j]); j += 1\n\treturn result + left[i:] + right[j:]"
+  },
+  {
+    "id": "python-linked-list",
+    "language": "python",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "class Node:\n\tdef __init__(self, val=0, next=None):\n\t\tself.val = val\n\t\tself.next = next\n\nclass LinkedList:\n\tdef __init__(self):\n\t\tself.head = None\n\n\tdef append(self, val):\n\t\tif not self.head:\n\t\t\tself.head = Node(val)\n\t\t\treturn\n\t\tcurr = self.head\n\t\twhile curr.next:\n\t\t\tcurr = curr.next\n\t\tcurr.next = Node(val)"
+  },
+  {
+    "id": "python-decorator",
+    "language": "python",
+    "source": "design patterns",
+    "difficulty": "medium",
+    "code": "import time\n\ndef timer(func):\n\tdef wrapper(*args, **kwargs):\n\t\tstart = time.perf_counter()\n\t\tresult = func(*args, **kwargs)\n\t\tend = time.perf_counter()\n\t\tprint(f\"{func.__name__} took {end - start:.4f}s\")\n\t\treturn result\n\treturn wrapper\n\n@timer\ndef slow_function():\n\ttime.sleep(0.1)"
+  },
+  {
+    "id": "python-tree",
+    "language": "python",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "class TreeNode:\n\tdef __init__(self, val=0, left=None, right=None):\n\t\tself.val = val\n\t\tself.left = left\n\t\tself.right = right\n\ndef inorder(root):\n\tif not root:\n\t\treturn []\n\treturn inorder(root.left) + [root.val] + inorder(root.right)"
+  },
+  {
+    "id": "python-queue",
+    "language": "python",
+    "source": "data structures",
+    "difficulty": "easy",
+    "code": "from collections import deque\n\nclass Queue:\n\tdef __init__(self):\n\t\tself._data = deque()\n\n\tdef enqueue(self, item):\n\t\tself._data.append(item)\n\n\tdef dequeue(self):\n\t\tif self.is_empty():\n\t\t\traise IndexError(\"dequeue from empty queue\")\n\t\treturn self._data.popleft()\n\n\tdef is_empty(self):\n\t\treturn len(self._data) == 0"
+  },
+  {
+    "id": "python-valid-parens",
+    "language": "python",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "def is_valid(s):\n\tstack = []\n\tpairs = {')': '(', ']': '[', '}': '{'}\n\tfor ch in s:\n\t\tif ch in '([{':\n\t\t\tstack.append(ch)\n\t\telif ch in pairs:\n\t\t\tif not stack or stack[-1] != pairs[ch]:\n\t\t\t\treturn False\n\t\t\tstack.pop()\n\treturn len(stack) == 0"
+  },
+  {
+    "id": "python-generator",
+    "language": "python",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "def fibonacci():\n\ta, b = 0, 1\n\twhile True:\n\t\tyield a\n\t\ta, b = b, a + b\n\ngen = fibonacci()\nfirst_ten = [next(gen) for _ in range(10)]"
+  },
+  {
+    "id": "python-context-manager",
+    "language": "python",
+    "source": "design patterns",
+    "difficulty": "medium",
+    "code": "class ManagedFile:\n\tdef __init__(self, path, mode='r'):\n\t\tself.path = path\n\t\tself.mode = mode\n\n\tdef __enter__(self):\n\t\tself.file = open(self.path, self.mode)\n\t\treturn self.file\n\n\tdef __exit__(self, exc_type, exc_val, exc_tb):\n\t\tself.file.close()\n\t\treturn False"
+  },
+  {
+    "id": "python-dfs",
+    "language": "python",
+    "source": "classic algorithm",
+    "difficulty": "medium",
+    "code": "def dfs(graph, start, visited=None):\n\tif visited is None:\n\t\tvisited = set()\n\tvisited.add(start)\n\tfor neighbor in graph.get(start, []):\n\t\tif neighbor not in visited:\n\t\t\tdfs(graph, neighbor, visited)\n\treturn visited"
   }
 ]

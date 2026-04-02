@@ -33,5 +33,75 @@
     "source": "utility functions",
     "difficulty": "easy",
     "code": "function throttle(fn, limit) {\n\tlet lastCall = 0;\n\treturn function (...args) {\n\t\tconst now = Date.now();\n\t\tif (now - lastCall >= limit) {\n\t\t\tlastCall = now;\n\t\t\treturn fn.apply(this, args);\n\t\t}\n\t};\n}"
+  },
+  {
+    "id": "js-flatten",
+    "language": "javascript",
+    "source": "array utilities",
+    "difficulty": "easy",
+    "code": "function flatten(arr) {\n\treturn arr.reduce(\n\t\t(flat, item) => flat.concat(Array.isArray(item) ? flatten(item) : item),\n\t\t[]\n\t);\n}"
+  },
+  {
+    "id": "js-memoize",
+    "language": "javascript",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "function memoize(fn) {\n\tconst cache = new Map();\n\treturn function (...args) {\n\t\tconst key = JSON.stringify(args);\n\t\tif (cache.has(key)) return cache.get(key);\n\t\tconst result = fn.apply(this, args);\n\t\tcache.set(key, result);\n\t\treturn result;\n\t};\n}"
+  },
+  {
+    "id": "js-event-emitter",
+    "language": "javascript",
+    "source": "design patterns",
+    "difficulty": "medium",
+    "code": "class EventEmitter {\n\tconstructor() {\n\t\tthis.events = {};\n\t}\n\ton(event, listener) {\n\t\t(this.events[event] ??= []).push(listener);\n\t\treturn this;\n\t}\n\temit(event, ...args) {\n\t\tthis.events[event]?.forEach(fn => fn(...args));\n\t}\n\toff(event, listener) {\n\t\tthis.events[event] = this.events[event]?.filter(fn => fn !== listener);\n\t}\n}"
+  },
+  {
+    "id": "js-binary-search",
+    "language": "javascript",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "function binarySearch(arr, target) {\n\tlet left = 0, right = arr.length - 1;\n\twhile (left <= right) {\n\t\tconst mid = Math.floor((left + right) / 2);\n\t\tif (arr[mid] === target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}"
+  },
+  {
+    "id": "js-merge-sort",
+    "language": "javascript",
+    "source": "classic algorithm",
+    "difficulty": "medium",
+    "code": "function mergeSort(arr) {\n\tif (arr.length <= 1) return arr;\n\tconst mid = Math.floor(arr.length / 2);\n\tconst left = mergeSort(arr.slice(0, mid));\n\tconst right = mergeSort(arr.slice(mid));\n\treturn merge(left, right);\n}\n\nfunction merge(left, right) {\n\tconst result = [];\n\tlet i = 0, j = 0;\n\twhile (i < left.length && j < right.length) {\n\t\tresult.push(left[i] <= right[j] ? left[i++] : right[j++]);\n\t}\n\treturn result.concat(left.slice(i), right.slice(j));\n}"
+  },
+  {
+    "id": "js-linked-list",
+    "language": "javascript",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "class LinkedList {\n\tconstructor() {\n\t\tthis.head = null;\n\t\tthis.size = 0;\n\t}\n\tpush(val) {\n\t\tconst node = { val, next: null };\n\t\tif (!this.head) {\n\t\t\tthis.head = node;\n\t\t} else {\n\t\t\tlet curr = this.head;\n\t\t\twhile (curr.next) curr = curr.next;\n\t\t\tcurr.next = node;\n\t\t}\n\t\tthis.size++;\n\t}\n}"
+  },
+  {
+    "id": "js-two-sum",
+    "language": "javascript",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "function twoSum(nums, target) {\n\tconst seen = new Map();\n\tfor (let i = 0; i < nums.length; i++) {\n\t\tconst complement = target - nums[i];\n\t\tif (seen.has(complement)) {\n\t\t\treturn [seen.get(complement), i];\n\t\t}\n\t\tseen.set(nums[i], i);\n\t}\n\treturn [];\n}"
+  },
+  {
+    "id": "js-curry",
+    "language": "javascript",
+    "source": "functional programming",
+    "difficulty": "medium",
+    "code": "function curry(fn) {\n\treturn function curried(...args) {\n\t\tif (args.length >= fn.length) {\n\t\t\treturn fn.apply(this, args);\n\t\t}\n\t\treturn function (...moreArgs) {\n\t\t\treturn curried.apply(this, args.concat(moreArgs));\n\t\t};\n\t};\n}"
+  },
+  {
+    "id": "js-pipe",
+    "language": "javascript",
+    "source": "functional programming",
+    "difficulty": "easy",
+    "code": "const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);\n\nconst transform = pipe(\n\tx => x * 2,\n\tx => x + 1,\n\tx => x ** 2\n);"
+  },
+  {
+    "id": "js-observable",
+    "language": "javascript",
+    "source": "design patterns",
+    "difficulty": "hard",
+    "code": "class Observable {\n\tconstructor(fn) {\n\t\tthis._fn = fn;\n\t}\n\tsubscribe(observer) {\n\t\treturn this._fn(observer);\n\t}\n\tstatic of(...values) {\n\t\treturn new Observable(obs => {\n\t\t\tvalues.forEach(v => obs.next(v));\n\t\t\tobs.complete();\n\t\t});\n\t}\n}"
   }
 ]

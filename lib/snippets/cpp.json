@@ -1,0 +1,107 @@
+[
+  {
+    "id": "cpp-binary-search",
+    "language": "cpp",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "int binarySearch(const std::vector<int>& arr, int target) {\n\tint left = 0, right = arr.size() - 1;\n\twhile (left <= right) {\n\t\tint mid = left + (right - left) / 2;\n\t\tif (arr[mid] == target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}"
+  },
+  {
+    "id": "cpp-template-max",
+    "language": "cpp",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "template <typename T>\nT maxElement(const std::vector<T>& vec) {\n\tif (vec.empty()) throw std::runtime_error(\"empty vector\");\n\tT result = vec[0];\n\tfor (const T& val : vec) {\n\t\tif (val > result) result = val;\n\t}\n\treturn result;\n}"
+  },
+  {
+    "id": "cpp-linked-list",
+    "language": "cpp",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "struct Node {\n\tint val;\n\tNode* next;\n\tNode(int val) : val(val), next(nullptr) {}\n};\n\nclass LinkedList {\n\tNode* head = nullptr;\npublic:\n\tvoid push(int val) {\n\t\tNode* node = new Node(val);\n\t\tnode->next = head;\n\t\thead = node;\n\t}\n\t~LinkedList() {\n\t\twhile (head) {\n\t\t\tNode* tmp = head;\n\t\t\thead = head->next;\n\t\t\tdelete tmp;\n\t\t}\n\t}\n};"
+  },
+  {
+    "id": "cpp-smart-pointer",
+    "language": "cpp",
+    "source": "memory management",
+    "difficulty": "medium",
+    "code": "class Resource {\npublic:\n\tResource() { std::cout << \"acquired\\n\"; }\n\t~Resource() { std::cout << \"released\\n\"; }\n\tvoid use() { std::cout << \"in use\\n\"; }\n};\n\nvoid demo() {\n\tauto res = std::make_unique<Resource>();\n\tres->use();\n\t// automatically released when res goes out of scope\n}"
+  },
+  {
+    "id": "cpp-lambda",
+    "language": "cpp",
+    "source": "functional programming",
+    "difficulty": "easy",
+    "code": "auto numbers = std::vector<int>{5, 2, 8, 1, 9, 3};\n\nstd::sort(numbers.begin(), numbers.end(),\n\t[](int a, int b) { return a < b; });\n\nauto evens = std::count_if(numbers.begin(), numbers.end(),\n\t[](int n) { return n % 2 == 0; });"
+  },
+  {
+    "id": "cpp-raii",
+    "language": "cpp",
+    "source": "design patterns",
+    "difficulty": "hard",
+    "code": "class FileHandle {\n\tstd::FILE* file;\npublic:\n\texplicit FileHandle(const char* path, const char* mode) {\n\t\tfile = std::fopen(path, mode);\n\t\tif (!file) throw std::runtime_error(\"cannot open file\");\n\t}\n\t~FileHandle() { if (file) std::fclose(file); }\n\tFileHandle(const FileHandle&) = delete;\n\tFileHandle& operator=(const FileHandle&) = delete;\n\tstd::FILE* get() const { return file; }\n};"
+  },
+  {
+    "id": "cpp-vector2d",
+    "language": "cpp",
+    "source": "object oriented",
+    "difficulty": "medium",
+    "code": "class Vector2D {\npublic:\n\tdouble x, y;\n\tVector2D(double x, double y) : x(x), y(y) {}\n\tVector2D operator+(const Vector2D& other) const {\n\t\treturn {x + other.x, y + other.y};\n\t}\n\tdouble magnitude() const {\n\t\treturn std::sqrt(x * x + y * y);\n\t}\n\tVector2D normalized() const {\n\t\tdouble mag = magnitude();\n\t\treturn {x / mag, y / mag};\n\t}\n};"
+  },
+  {
+    "id": "cpp-two-sum",
+    "language": "cpp",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "std::vector<int> twoSum(std::vector<int>& nums, int target) {\n\tstd::unordered_map<int, int> seen;\n\tfor (int i = 0; i < nums.size(); i++) {\n\t\tint complement = target - nums[i];\n\t\tif (seen.count(complement)) {\n\t\t\treturn {seen[complement], i};\n\t\t}\n\t\tseen[nums[i]] = i;\n\t}\n\treturn {};\n}"
+  },
+  {
+    "id": "cpp-stack",
+    "language": "cpp",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "template <typename T>\nclass Stack {\n\tstd::vector<T> data;\npublic:\n\tvoid push(const T& val) { data.push_back(val); }\n\tvoid pop() {\n\t\tif (data.empty()) throw std::underflow_error(\"empty stack\");\n\t\tdata.pop_back();\n\t}\n\tT& top() {\n\t\tif (data.empty()) throw std::underflow_error(\"empty stack\");\n\t\treturn data.back();\n\t}\n\tbool empty() const { return data.empty(); }\n};"
+  },
+  {
+    "id": "cpp-fibonacci",
+    "language": "cpp",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "long long fibonacci(int n) {\n\tif (n <= 1) return n;\n\tlong long a = 0, b = 1;\n\tfor (int i = 2; i <= n; i++) {\n\t\tlong long tmp = a + b;\n\t\ta = b;\n\t\tb = tmp;\n\t}\n\treturn b;\n}"
+  },
+  {
+    "id": "cpp-move-semantics",
+    "language": "cpp",
+    "source": "memory management",
+    "difficulty": "hard",
+    "code": "class Buffer {\n\tstd::vector<uint8_t> data;\npublic:\n\texplicit Buffer(size_t size) : data(size) {}\n\tBuffer(Buffer&& other) noexcept = default;\n\tBuffer& operator=(Buffer&& other) noexcept = default;\n\tBuffer(const Buffer&) = delete;\n\tBuffer& operator=(const Buffer&) = delete;\n\tsize_t size() const { return data.size(); }\n};"
+  },
+  {
+    "id": "cpp-optional",
+    "language": "cpp",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "std::optional<int> divide(int a, int b) {\n\tif (b == 0) return std::nullopt;\n\treturn a / b;\n}\n\nauto result = divide(10, 2);\nif (result) {\n\tstd::cout << \"result: \" << *result << \"\\n\";\n} else {\n\tstd::cout << \"division by zero\\n\";\n}"
+  },
+  {
+    "id": "cpp-merge-sort",
+    "language": "cpp",
+    "source": "classic algorithm",
+    "difficulty": "hard",
+    "code": "void merge(std::vector<int>& arr, int l, int m, int r) {\n\tstd::vector<int> left(arr.begin() + l, arr.begin() + m + 1);\n\tstd::vector<int> right(arr.begin() + m + 1, arr.begin() + r + 1);\n\tint i = 0, j = 0, k = l;\n\twhile (i < left.size() && j < right.size())\n\t\tarr[k++] = left[i] <= right[j] ? left[i++] : right[j++];\n\twhile (i < left.size()) arr[k++] = left[i++];\n\twhile (j < right.size()) arr[k++] = right[j++];\n}"
+  },
+  {
+    "id": "cpp-split",
+    "language": "cpp",
+    "source": "string processing",
+    "difficulty": "easy",
+    "code": "std::vector<std::string> split(const std::string& s, char delim) {\n\tstd::vector<std::string> tokens;\n\tstd::stringstream ss(s);\n\tstd::string token;\n\twhile (std::getline(ss, token, delim)) {\n\t\tif (!token.empty()) tokens.push_back(token);\n\t}\n\treturn tokens;\n}"
+  },
+  {
+    "id": "cpp-range",
+    "language": "cpp",
+    "source": "utility functions",
+    "difficulty": "hard",
+    "code": "template <typename T>\nclass Range {\n\tT start_, end_, step_;\npublic:\n\tRange(T start, T end, T step = 1) : start_(start), end_(end), step_(step) {}\n\tstruct Iterator {\n\t\tT val, step;\n\t\tT operator*() const { return val; }\n\t\tIterator& operator++() { val += step; return *this; }\n\t\tbool operator!=(const Iterator& o) const { return val < o.val; }\n\t};\n\tIterator begin() const { return {start_, step_}; }\n\tIterator end() const { return {end_, step_}; }\n};"
+  }
+]

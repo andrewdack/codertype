@@ -1,44 +1,107 @@
 [
-    {
-        "id": "java-binary-search",
-        "language": "java",
-        "source": "classic algorithm",
-        "difficulty": "easy",
-        "code": "public static int binarySearch(int[] arr, int target) {\n\tint left = 0, right = arr.length - 1;\n\twhile (left <= right) {\n\t\tint mid = left + (right - left) / 2;\n\t\tif (arr[mid] == target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}"
-    },
-    {
-        "id": "java-generic-node",
-        "language": "java",
-        "source": "data structures",
-        "difficulty": "easy",
-        "code": "public class Node<T> {\n\tpublic T data;\n\tpublic Node<T> next;\n\n\tpublic Node(T data) {\n\t\tthis.data = data;\n\t\tthis.next = null;\n\t}\n}"
-    },
-    {
-        "id": "java-two-sum",
-        "language": "java",
-        "source": "leetcode",
-        "difficulty": "easy",
-        "code": "public int[] twoSum(int[] nums, int target) {\n\tMap<Integer, Integer> map = new HashMap<>();\n\tfor (int i = 0; i < nums.length; i++) {\n\t\tint complement = target - nums[i];\n\t\tif (map.containsKey(complement)) {\n\t\t\treturn new int[]{map.get(complement), i};\n\t\t}\n\t\tmap.put(nums[i], i);\n\t}\n\treturn new int[]{};\n}"
-    },
-    {
-        "id": "java-singleton",
-        "language": "java",
-        "source": "design patterns",
-        "difficulty": "easy",
-        "code": "public class Singleton {\n\tprivate static Singleton instance;\n\n\tprivate Singleton() {}\n\n\tpublic static Singleton getInstance() {\n\t\tif (instance == null) {\n\t\t\tinstance = new Singleton();\n\t\t}\n\t\treturn instance;\n\t}\n}"
-    },
-    {
-        "id": "java-reverse-string",
-        "language": "java",
-        "source": "string processing",
-        "difficulty": "easy",
-        "code": "public static String reverse(String s) {\n\tStringBuilder sb = new StringBuilder();\n\tfor (int i = s.length() - 1; i >= 0; i--) {\n\t\tsb.append(s.charAt(i));\n\t}\n\treturn sb.toString();\n}"
-    },
-    {
-        "id": "java-string-validator",
-        "language": "java",
-        "source": "string processing",
-        "difficulty": "easy",
-        "code": "public static boolean isValid(String input) {\n\tif (input == null || input.isEmpty()) {\n\t\treturn false;\n\t}\n\tchar firstChar = input.charAt(0);\n\treturn firstChar != ' ' && input.contains(\"@\");\n}"
-    }
+  {
+    "id": "java-binary-search",
+    "language": "java",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "public static int binarySearch(int[] arr, int target) {\n\tint left = 0, right = arr.length - 1;\n\twhile (left <= right) {\n\t\tint mid = left + (right - left) / 2;\n\t\tif (arr[mid] == target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}"
+  },
+  {
+    "id": "java-generic-node",
+    "language": "java",
+    "source": "data structures",
+    "difficulty": "easy",
+    "code": "public class Node<T> {\n\tpublic T data;\n\tpublic Node<T> next;\n\n\tpublic Node(T data) {\n\t\tthis.data = data;\n\t\tthis.next = null;\n\t}\n}"
+  },
+  {
+    "id": "java-two-sum",
+    "language": "java",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "code": "public int[] twoSum(int[] nums, int target) {\n\tMap<Integer, Integer> map = new HashMap<>();\n\tfor (int i = 0; i < nums.length; i++) {\n\t\tint complement = target - nums[i];\n\t\tif (map.containsKey(complement)) {\n\t\t\treturn new int[]{map.get(complement), i};\n\t\t}\n\t\tmap.put(nums[i], i);\n\t}\n\treturn new int[]{};\n}"
+  },
+  {
+    "id": "java-singleton",
+    "language": "java",
+    "source": "design patterns",
+    "difficulty": "easy",
+    "code": "public class Singleton {\n\tprivate static Singleton instance;\n\n\tprivate Singleton() {}\n\n\tpublic static Singleton getInstance() {\n\t\tif (instance == null) {\n\t\t\tinstance = new Singleton();\n\t\t}\n\t\treturn instance;\n\t}\n}"
+  },
+  {
+    "id": "java-reverse-string",
+    "language": "java",
+    "source": "string processing",
+    "difficulty": "easy",
+    "code": "public static String reverse(String s) {\n\tStringBuilder sb = new StringBuilder();\n\tfor (int i = s.length() - 1; i >= 0; i--) {\n\t\tsb.append(s.charAt(i));\n\t}\n\treturn sb.toString();\n}"
+  },
+  {
+    "id": "java-string-validator",
+    "language": "java",
+    "source": "string processing",
+    "difficulty": "easy",
+    "code": "public static boolean isValid(String input) {\n\tif (input == null || input.isEmpty()) {\n\t\treturn false;\n\t}\n\tchar firstChar = input.charAt(0);\n\treturn firstChar != ' ' && input.contains(\"@\");\n}"
+  },
+  {
+    "id": "java-stack",
+    "language": "java",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "public class Stack<T> {\n\tprivate List<T> items = new ArrayList<>();\n\n\tpublic void push(T item) { items.add(item); }\n\n\tpublic T pop() {\n\t\tif (isEmpty()) throw new EmptyStackException();\n\t\treturn items.remove(items.size() - 1);\n\t}\n\n\tpublic T peek() {\n\t\tif (isEmpty()) throw new EmptyStackException();\n\t\treturn items.get(items.size() - 1);\n\t}\n\n\tpublic boolean isEmpty() { return items.isEmpty(); }\n}"
+  },
+  {
+    "id": "java-fibonacci",
+    "language": "java",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "code": "public static long fibonacci(int n) {\n\tif (n <= 1) return n;\n\tlong a = 0, b = 1;\n\tfor (int i = 2; i <= n; i++) {\n\t\tlong temp = a + b;\n\t\ta = b;\n\t\tb = temp;\n\t}\n\treturn b;\n}"
+  },
+  {
+    "id": "java-linked-list",
+    "language": "java",
+    "source": "data structures",
+    "difficulty": "medium",
+    "code": "public class LinkedList<T> {\n\tprivate Node<T> head;\n\n\tpublic void add(T data) {\n\t\tNode<T> node = new Node<>(data);\n\t\tif (head == null) { head = node; return; }\n\t\tNode<T> curr = head;\n\t\twhile (curr.next != null) curr = curr.next;\n\t\tcurr.next = node;\n\t}\n\n\tpublic int size() {\n\t\tint count = 0;\n\t\tNode<T> curr = head;\n\t\twhile (curr != null) { count++; curr = curr.next; }\n\t\treturn count;\n\t}\n}"
+  },
+  {
+    "id": "java-observer",
+    "language": "java",
+    "source": "design patterns",
+    "difficulty": "medium",
+    "code": "public interface Observer {\n\tvoid update(String event, Object data);\n}\n\npublic class EventBus {\n\tprivate Map<String, List<Observer>> listeners = new HashMap<>();\n\n\tpublic void subscribe(String event, Observer obs) {\n\t\tlisteners.computeIfAbsent(event, k -> new ArrayList<>()).add(obs);\n\t}\n\n\tpublic void publish(String event, Object data) {\n\t\tlisteners.getOrDefault(event, List.of()).forEach(o -> o.update(event, data));\n\t}\n}"
+  },
+  {
+    "id": "java-builder",
+    "language": "java",
+    "source": "design patterns",
+    "difficulty": "medium",
+    "code": "public class Person {\n\tprivate final String name;\n\tprivate final int age;\n\n\tprivate Person(Builder b) {\n\t\tthis.name = b.name;\n\t\tthis.age = b.age;\n\t}\n\n\tpublic static class Builder {\n\t\tprivate String name;\n\t\tprivate int age;\n\t\tpublic Builder name(String name) { this.name = name; return this; }\n\t\tpublic Builder age(int age) { this.age = age; return this; }\n\t\tpublic Person build() { return new Person(this); }\n\t}\n}"
+  },
+  {
+    "id": "java-streams",
+    "language": "java",
+    "source": "functional programming",
+    "difficulty": "medium",
+    "code": "List<String> names = Arrays.asList(\"Alice\", \"Bob\", \"Charlie\");\n\nList<String> result = names.stream()\n\t.filter(name -> name.length() > 3)\n\t.map(String::toUpperCase)\n\t.sorted()\n\t.collect(Collectors.toList());"
+  },
+  {
+    "id": "java-optional",
+    "language": "java",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "public Optional<User> findUser(String id) {\n\treturn users.stream()\n\t\t.filter(u -> u.getId().equals(id))\n\t\t.findFirst();\n}\n\nString email = findUser(\"123\")\n\t.map(User::getEmail)\n\t.orElse(\"unknown@example.com\");"
+  },
+  {
+    "id": "java-merge-sort",
+    "language": "java",
+    "source": "classic algorithm",
+    "difficulty": "hard",
+    "code": "public static void mergeSort(int[] arr, int left, int right) {\n\tif (left < right) {\n\t\tint mid = (left + right) / 2;\n\t\tmergeSort(arr, left, mid);\n\t\tmergeSort(arr, mid + 1, right);\n\t\tmerge(arr, left, mid, right);\n\t}\n}"
+  },
+  {
+    "id": "java-comparator",
+    "language": "java",
+    "source": "utility functions",
+    "difficulty": "medium",
+    "code": "List<Student> students = new ArrayList<>();\nstudents.sort(Comparator\n\t.comparingInt(Student::getGrade).reversed()\n\t.thenComparing(Student::getName));"
+  }
 ]

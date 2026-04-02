@@ -2,9 +2,8 @@
 
 import { useState, useRef } from "react";
 import { ChevronDown } from "lucide-react";
-import { Language } from "@/lib/snippets";
+import { Language, LANGUAGE_ICONS as ICONS } from "@/lib/snippets";
 import LanguageModal from "./LanguageModal";
-import { LANGUAGE_ICONS as ICONS } from "@/lib/snippets";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface LanguageSelectorProps {
