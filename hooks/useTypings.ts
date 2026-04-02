@@ -17,7 +17,7 @@ export default function useTypings(
     const totalErrors = useRef(0);
 
     // Helper function to auto-insert tabs and skip to next non-tab character
-    const autoInsertTabs = useCallback(
+    const autoInsertTabsAndEmptyLines = useCallback(
         (
             typedSoFar: string,
             position: number,
@@ -25,12 +25,22 @@ export default function useTypings(
             let newTyped = typedSoFar;
             let newPosition = position;
 
-            while (
-                newPosition < targetCode.length &&
-                targetCode[newPosition] === "\t"
-            ) {
-                newTyped += "\t";
-                newPosition++;
+            while (newPosition < targetCode.length) {
+                if (targetCode[newPosition] === "\t") {
+                    // auto-skip indentation
+                    newTyped += "\t";
+                    newPosition++;
+                } else if (
+                    targetCode[newPosition] === "\n" &&
+                    newPosition > 0 &&
+                    targetCode[newPosition - 1] === "\n"
+                ) {
+                    // auto-skip empty lines (consecutive \n)
+                    newTyped += "\n";
+                    newPosition++;
+                } else {
+                    break;
+                }
             }
 
             return { newTyped, newPosition };
@@ -113,7 +123,7 @@ export default function useTypings(
                     const charTypedCorrectly: boolean = char === targetCode[cursor];
                     if (autoCompleteBrackets) {
                         //mes Calculate what the cursor position will be after typing this character and auto-inserting tabs
-                        const { newPosition: futurePosition } = autoInsertTabs(
+                        const { newPosition: futurePosition } = autoInsertTabsAndEmptyLines(
                             typed + char,
                             cursor + 1,
                         );
@@ -184,7 +194,7 @@ export default function useTypings(
                             setTyped((prevTypedKeys) => {
                                 // First add the character and auto-insert tabs
                                 const withChar = prevTypedKeys + char;
-                                const { newTyped: withTabs } = autoInsertTabs(
+                                const { newTyped: withTabs } = autoInsertTabsAndEmptyLines(
                                     withChar,
                                     cursor + 1,
                                 );
@@ -196,7 +206,7 @@ export default function useTypings(
                                 // Calculate final position: after character + tabs + closing brackets
                                 const withChar = typed + char;
                                 const { newPosition: tabPosition } =
-                                    autoInsertTabs(withChar, cursor + 1);
+                                    autoInsertTabsAndEmptyLines(withChar, cursor + 1);
                                 return (
                                     tabPosition + closingCharsToInsert.length
                                 );
@@ -213,7 +223,7 @@ export default function useTypings(
 
                     setTyped((prevTypedKeys) => {
                         const withChar = prevTypedKeys + char;
-                        const { newTyped } = autoInsertTabs(
+                        const { newTyped } = autoInsertTabsAndEmptyLines(
                             withChar,
                             cursor + 1,
                         );
@@ -221,7 +231,7 @@ export default function useTypings(
                     });
 
                     setCursor((prevCursor) => {
-                        const { newPosition } = autoInsertTabs(
+                        const { newPosition } = autoInsertTabsAndEmptyLines(
                             typed + char,
                             prevCursor + 1,
                         );
@@ -236,7 +246,7 @@ export default function useTypings(
             typed,
             cursor,
             targetCode,
-            autoInsertTabs,
+            autoInsertTabsAndEmptyLines,
             autoCompleteBrackets,
             bracketPairs,
             correctlyTypedOpenings,

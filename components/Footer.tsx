@@ -1,16 +1,23 @@
 import Link from "next/link";
-import { Mail, Github, Palette} from "lucide-react";
+import { Mail, Github, Palette } from "lucide-react";
 
 export default function Footer() {
     return (
         <footer className="w-full">
             <div className="max-w-360 mx-auto px-4 sm:px-6 h-8 sm:h-10 flex items-center justify-between text-xs sm:text-sm">
                 <div className="flex items-center gap-3 sm:gap-6 text-muted-foreground">
-                    <Link href="mailto:dackcodes@gmail.com" className="hover:text-foreground transition-colors flex items-center gap-1">
+                    <Link
+                        href="mailto:dackcodes@gmail.com"
+                        className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors"
+                    >
                         <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">contact</span>
                     </Link>
-                    <Link href="https://github.com/andrewdack/codertype" className="hover:text-foreground transition-colors flex items-center gap-1" target="_blank">
+                    <Link
+                        href="https://github.com/andrewdack/codertype"
+                        className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors"
+                        target="_blank"
+                    >
                         <Github className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">gitHub</span>
                     </Link>
@@ -26,8 +33,8 @@ export default function Footer() {
                     <Link href="/privacy" className="hover:text-foreground transition-colors">
                         privacy
                     </Link> */}
-                    <button className="flex inline">
-                        <Palette className="w-4 h-4 sm:w-6 sm:h-6 " />
+                    <button className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors">
+                        <Palette className="w-4 h-4 sm:w-6 sm:h-6" />
                         <span className="hidden sm:inline">theme</span>
                     </button>
                 </div>

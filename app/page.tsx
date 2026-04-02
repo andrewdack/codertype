@@ -13,10 +13,7 @@ import { Language } from "@/lib/snippets";
 import * as stats from "@/utils/stats";
 
 export default function Home() {
-    // Lifted language state so LanguageSelector can change it.
-    // When the user picks a new language we also call restart() so the
-    // engine immediately loads a snippet in that language.
-    const [selectedLanguage, setSelectedLanguage] = useState<Language>("javascript");
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>("python");
 
     const {
         state,
