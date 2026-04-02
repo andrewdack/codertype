@@ -10,13 +10,19 @@ import LanguageSelectorButton from "@/components/LanguageSelector";
 import useEngine from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
+import { AnimatePresence, motion } from "framer-motion";
 
 import * as stats from "@/utils/stats";
 
 export default function Home() {
-    const [selectedLanguage, setSelectedLanguage] = useState<Language>("python");
-    const [selectedThemeName, setSelectedThemeName] = useState(DEFAULT_THEME.name);
-    const [selectedThemeStyle, setSelectedThemeStyle] = useState<Theme>(DEFAULT_THEME.style);
+    const [selectedLanguage, setSelectedLanguage] =
+        useState<Language>("python");
+    const [selectedThemeName, setSelectedThemeName] = useState(
+        DEFAULT_THEME.name,
+    );
+    const [selectedThemeStyle, setSelectedThemeStyle] = useState<Theme>(
+        DEFAULT_THEME.style,
+    );
 
     function handleSelectTheme(name: string, style: Theme) {
         setSelectedThemeName(name);
@@ -39,7 +45,10 @@ export default function Home() {
         durationMilliseconds,
     } = useEngine(selectedLanguage);
 
-    const accuracyPercent = stats.calculateAccuracyPercentage(errors, totalTyped);
+    const accuracyPercent = stats.calculateAccuracyPercentage(
+        errors,
+        totalTyped,
+    );
     const rawwpm = stats.calculateRawWPM(totalTyped, durationMilliseconds);
     const adjwpm = stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
 
@@ -52,7 +61,6 @@ export default function Home() {
         <>
             <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
                 <div className="w-full flex flex-col gap-3 sm:gap-4">
-                    
                     <div className="grid grid-cols-3 items-center w-full">
                         <CountdownTimer
                             timeLeft={timeLeft}
@@ -61,23 +69,45 @@ export default function Home() {
                         <div className="flex justify-center">
                             <LanguageSelectorButton
                                 visible={state !== "run"}
+                                snippetId={snippet.id}
                                 selectedLanguage={selectedLanguage}
                                 onSelectLanguage={handleSelectLanguage}
                             />
                         </div>
                     </div>
-                    <CodeTypingArea
-                        code={words}
-                        typed={typed}
-                        language={snippet.language}
-                        state={state}
-                        bracketPairs={bracketPairs}
-                        correctlyTypedOpenings={correctlyTypedOpenings}
-                        autoCompleteBrackets={autoCompleteBrackets}
-                        theme={selectedThemeStyle}
-                    />
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={`${snippet.id}-${selectedThemeName}`}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                        >
+                            <CodeTypingArea
+                                code={words}
+                                typed={typed}
+                                language={snippet.language}
+                                state={state}
+                                bracketPairs={bracketPairs}
+                                correctlyTypedOpenings={correctlyTypedOpenings}
+                                autoCompleteBrackets={autoCompleteBrackets}
+                                theme={selectedThemeStyle}
+                            />
+                        </motion.div>
+                    </AnimatePresence>
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            className="flex justify-center"
+                            key={snippet.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.15 }}
+                        >
+                            <RestartButton onRestart={restart} />
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
-                <RestartButton onRestart={restart} />
                 <Results
                     state={state}
                     className="mt-10"

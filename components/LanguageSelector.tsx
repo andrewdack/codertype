@@ -8,12 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface LanguageSelectorProps {
     visible?: boolean;
+    snippetId?: string;
     selectedLanguage: Language;
     onSelectLanguage: (lang: Language) => void;
 }
 
 export default function LanguageSelector({
     visible = true,
+    snippetId,
     selectedLanguage,
     onSelectLanguage,
 }: LanguageSelectorProps) {
@@ -44,8 +46,9 @@ export default function LanguageSelector({
 
 
     return (
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
             {visible && <motion.div
+                key={snippetId}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}

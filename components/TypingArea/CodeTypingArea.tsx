@@ -7,8 +7,8 @@ import TypingOverlay from "./TypingOverlay";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Theme } from "../Footer/ThemeSelector";
-import {motion, AnimatePresence} from "framer-motion";
+import { DEFAULT_THEME, Theme } from "../Footer/ThemeSelector";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TypingAreaProps {
     code: string;
@@ -18,8 +18,8 @@ interface TypingAreaProps {
     bracketPairs?: Map<number, number>;
     correctlyTypedOpenings?: Set<number>;
     autoCompleteBrackets?: boolean;
-    theme?: Theme
-};
+    theme?: Theme;
+}
 
 export default function CodeTypingArea({
     code,
@@ -34,22 +34,32 @@ export default function CodeTypingArea({
     const lineCount = useMemo(() => code.split("\n").length, [code]);
 
     // get rid of the bold and italic styles that mess up the overlay
-    const fixedSyntaxStyle = useMemo(() => Object.fromEntries(
-        Object.entries(theme).map(([key, value]) => [
-            key,
-            { ...value, fontWeight: "normal", fontStyle: "normal" }
-        ])
-    ), [theme]);
+    const fixedSyntaxStyle = useMemo(
+        () =>
+            Object.fromEntries(
+                Object.entries(theme).map(([key, value]) => [
+                    key,
+                    { ...value, fontWeight: "normal", fontStyle: "normal" },
+                ]),
+            ),
+        [theme],
+    );
 
     return (
         <AnimatePresence>
             <div className="font-mono text-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full">
                 <div className="flex pr-2 pb-2sm:pr-3 sm:pb-3 md:pr-4 md:pb-4 w-full">
                     <LineNumbers
-                        lineCount={lineCount}
+                        lineCount={Math.max(lineCount, 10)}
                         className="mr-2 sm:mr-3 md:mr-4"
                     />
-                    <div className="relative flex flex-1">
+                    <motion.div
+                        className="relative flex flex-1"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                    >
                         {/* Characters */}
                         <SyntaxHighlighter
                             language={language}
@@ -74,7 +84,7 @@ export default function CodeTypingArea({
                             correctlyTypedOpenings={correctlyTypedOpenings}
                             autoCompleteBrackets={autoCompleteBrackets}
                         />
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </AnimatePresence>
