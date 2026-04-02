@@ -52,12 +52,12 @@ export default function LanguageModal({
             {isOpen && (
                 // overlay: backdrop blur + click-outside to close
                 <motion.div
-                    className="fixed inset-0 z-50 backdrop-blur-sm bg-black/50"
+                    className="fixed inset-0 z-50 backdrop-blur-xs bg-black/50"
                     onClick={onClose}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15 }}
+                    transition={{ duration: 0.05 }}
                 >
                     {/* card positioned directly over the button, centered on its midpoint */}
                     <motion.div
@@ -70,7 +70,7 @@ export default function LanguageModal({
                         initial={{ opacity: 0, scale: 0.95, x: "-50%" }}
                         animate={{ opacity: 1, scale: 1, x: "-50%" }}
                         exit={{ opacity: 0, scale: 0.95, x: "-50%" }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        transition={{ duration: 0.05, ease: "easeOut" }}
                     >
                         {/* header */}
                         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
