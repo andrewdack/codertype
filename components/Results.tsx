@@ -27,12 +27,12 @@ export default function Results({
         <ul
             className={`flex flex-col items-center text-muted-foreground space-y-3 ${className}`}
         >
-            <li className="text-xl font-semibold">RESULTS</li>
-            <li>Accuracy: {formatPercentage(accuracyPercentage)}</li>
-            <li className="text-red-500">Errors: {errors}</li>
-            <li>Raw Wpm: {rawwpm}</li>
-            <li>Adj Wpm: {adjwpm}</li>
-            <li>Typed: {total}</li>
+            <li className="text-xl font-semibold text-foreground">RESULTS</li>
+            <li><span>Accuracy: </span><span className="text-vscode-blue">{formatPercentage(accuracyPercentage)}</span></li>
+            <li><span>Errors: </span><span className="text-red-500">{errors}</span></li>
+            <li><span>Raw Wpm: </span><span className="text-vscode-blue">{rawwpm}</span></li>
+            <li><span>Adj Wpm: </span><span className="text-vscode-blue">{adjwpm}</span></li>
+            <li><span>Typed: </span><span className="text-vscode-blue">{total}</span></li>
         </ul>
     );
 }

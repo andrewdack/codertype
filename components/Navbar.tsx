@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Terminal, Code2, Info, Settings, User, Trophy, TrophyIcon } from "lucide-react";
+import { Terminal, Code2, Info, Settings, User, Trophy, SquareTerminal } from "lucide-react";
 
 export default function Navbar({ className }: { className?: string }) {
     return (
@@ -10,10 +10,10 @@ export default function Navbar({ className }: { className?: string }) {
                     {/* Logo */}
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                        className="flex items-center gap-2"
                     >
-                        <Terminal className="w-6 h-6 sm:w-10 sm:h-10" />
-                        <span className="font-extrabold sm:text-xl">codertype</span>
+                        <SquareTerminal className="w-10 h-8 sm:w-12 sm:h-12 text-vscode-blue" />
+                        <span className="font-extrabold text-xl sm:text-3xl text-foreground">codertype</span>
                     </Link>
 
                     {/* Navigation links */}

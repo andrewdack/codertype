@@ -20,10 +20,10 @@ export default function RestartButton({
         <button
             ref={buttonRef}
             type="button"
-            className={`block rounded px-8 py-2 hover:bg-slate-700/50 ${className}`}
+            className={`block rounded px-8 py-2 text-muted-foreground hover:text-foreground transition-colors ${className}`}
             onClick={handleClick}
         >
-            <RotateCw className="h-6 w-6 text-muted-foreground"/>
+            <RotateCw className="h-6 w-6"/>
         </button>
     );
 }

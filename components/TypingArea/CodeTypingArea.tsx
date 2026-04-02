@@ -30,7 +30,7 @@ export default function CodeTypingArea({
     const lineCount = useMemo(() => code.split("\n").length, [code]);
 
     return (
-        <div className="rounded-sm overflow-hidden border bg-card font-mono text-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full">
+        <div className="font-mono text-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full">
             {/* Editor title bar */}
             {/* <div className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-card border-b">
                 <span className="text-xs sm:text-sm text-zinc-400 tracking-wide">
@@ -38,7 +38,7 @@ export default function CodeTypingArea({
                 </span>
             </div> */}
 
-            <div className="flex p-2 sm:p-3 md:p-4 w-full">
+            <div className="flex pr-2 pb-2sm:pr-3 sm:pb-3 md:pr-4 md:pb-4 w-full">
                 <LineNumbers
                     lineCount={lineCount}
                     className="mr-2 sm:mr-3 md:mr-4"

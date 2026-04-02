@@ -30,24 +30,27 @@ export default function Home() {
         errors,
         totalTyped,
     );
-    const rawwpm = stats.calculateRawWPM(
-        totalTyped,
-        durationMilliseconds,
-    );
+    
+    const rawwpm = stats.calculateRawWPM(totalTyped, durationMilliseconds);
     const adjwpm = stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
     return (
         <>
             <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
-                <CountdownTimer timeLeft={timeLeft} />
-                <CodeTypingArea
-                    code={words}
-                    typed={typed}
-                    language={snippet.language}
-                    state={state}
-                    bracketPairs={bracketPairs}
-                    correctlyTypedOpenings={correctlyTypedOpenings}
-                    autoCompleteBrackets={autoCompleteBrackets}
-                />
+                <div className="w-full flex flex-col gap-3 sm:gap-4">
+                    <CountdownTimer
+                        timeLeft={timeLeft}
+                        isVisible={state === "run"}
+                    />
+                    <CodeTypingArea
+                        code={words}
+                        typed={typed}
+                        language={snippet.language}
+                        state={state}
+                        bracketPairs={bracketPairs}
+                        correctlyTypedOpenings={correctlyTypedOpenings}
+                        autoCompleteBrackets={autoCompleteBrackets}
+                    />
+                </div>
                 <RestartButton onRestart={restart} />
                 <Results
                     state={state}

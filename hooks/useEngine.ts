@@ -8,7 +8,7 @@ import { type Language } from "@/lib/snippets";
 import { generateBracketPairs } from "@/utils/bracketMatching";
 
 export type State = "start" | "run" | "finish";
-const COUNTDOWN_SECONDS = 200;
+const COUNTDOWN_SECONDS = 30;
 
 export default function useEngine(language: Language = "javascript") {
     const [state, setState] = useState<State>("start");
