@@ -4,104 +4,119 @@
     "language": "ruby",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "def fibonacci(n)\n\treturn n if n <= 1\n\ta, b = 0, 1\n\t(n - 1).times { a, b = b, a + b }\n\tb\nend"
+    "code": "def fibonacci(n)\n\treturn n if n <= 1\n\ta, b = 0, 1\n\t(n - 1).times { a, b = b, a + b }\n\tb\nend",
+    "length": "short"
   },
   {
     "id": "ruby-binary-search",
     "language": "ruby",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "def binary_search(arr, target)\n\tleft, right = 0, arr.length - 1\n\twhile left <= right\n\t\tmid = (left + right) / 2\n\t\treturn mid if arr[mid] == target\n\t\tarr[mid] < target ? left = mid + 1 : right = mid - 1\n\tend\n\t-1\nend"
+    "code": "def binary_search(arr, target)\n\tleft, right = 0, arr.length - 1\n\twhile left <= right\n\t\tmid = (left + right) / 2\n\t\treturn mid if arr[mid] == target\n\t\tarr[mid] < target ? left = mid + 1 : right = mid - 1\n\tend\n\t-1\nend",
+    "length": "long"
   },
   {
     "id": "ruby-stack",
     "language": "ruby",
     "source": "data structures",
     "difficulty": "easy",
-    "code": "class Stack\n\tdef initialize\n\t\t@data = []\n\tend\n\n\tdef push(item)\n\t\t@data.push(item)\n\t\tself\n\tend\n\n\tdef pop\n\t\traise \"stack underflow\" if empty?\n\t\t@data.pop\n\tend\n\n\tdef empty?\n\t\t@data.empty?\n\tend\nend"
+    "code": "class Stack\n\tdef initialize\n\t\t@data = []\n\tend\n\n\tdef push(item)\n\t\t@data.push(item)\n\t\tself\n\tend\n\n\tdef pop\n\t\traise \"stack underflow\" if empty?\n\t\t@data.pop\n\tend\n\n\tdef empty?\n\t\t@data.empty?\n\tend\nend",
+    "length": "medium"
   },
   {
     "id": "ruby-linked-list",
     "language": "ruby",
     "source": "data structures",
     "difficulty": "medium",
-    "code": "Node = Struct.new(:val, :next_node)\n\nclass LinkedList\n\tdef initialize\n\t\t@head = nil\n\tend\n\n\tdef append(val)\n\t\tnode = Node.new(val)\n\t\tif @head.nil?\n\t\t\t@head = node\n\t\telse\n\t\t\tcurr = @head\n\t\t\tcurr = curr.next_node while curr.next_node\n\t\t\tcurr.next_node = node\n\t\tend\n\tend\nend"
+    "code": "Node = Struct.new(:val, :next_node)\n\nclass LinkedList\n\tdef initialize\n\t\t@head = nil\n\tend\n\n\tdef append(val)\n\t\tnode = Node.new(val)\n\t\tif @head.nil?\n\t\t\t@head = node\n\t\telse\n\t\t\tcurr = @head\n\t\t\tcurr = curr.next_node while curr.next_node\n\t\t\tcurr.next_node = node\n\t\tend\n\tend\nend",
+    "length": "long"
   },
   {
     "id": "ruby-merge-sort",
     "language": "ruby",
     "source": "classic algorithm",
     "difficulty": "medium",
-    "code": "def merge_sort(arr)\n\treturn arr if arr.length <= 1\n\tmid = arr.length / 2\n\tleft = merge_sort(arr[0...mid])\n\tright = merge_sort(arr[mid..])\n\tmerge(left, right)\nend\n\ndef merge(left, right)\n\tresult = []\n\tuntil left.empty? || right.empty?\n\t\tresult << (left.first <= right.first ? left.shift : right.shift)\n\tend\n\tresult + left + right\nend"
+    "code": "def merge_sort(arr)\n\treturn arr if arr.length <= 1\n\tmid = arr.length / 2\n\tleft = merge_sort(arr[0...mid])\n\tright = merge_sort(arr[mid..])\n\tmerge(left, right)\nend\n\ndef merge(left, right)\n\tresult = []\n\tuntil left.empty? || right.empty?\n\t\tresult << (left.first <= right.first ? left.shift : right.shift)\n\tend\n\tresult + left + right\nend",
+    "length": "long"
   },
   {
     "id": "ruby-two-sum",
     "language": "ruby",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "def two_sum(nums, target)\n\tseen = {}\n\tnums.each_with_index do |num, i|\n\t\tcomplement = target - num\n\t\treturn [seen[complement], i] if seen.key?(complement)\n\t\tseen[num] = i\n\tend\n\t[]\nend"
+    "code": "def two_sum(nums, target)\n\tseen = {}\n\tnums.each_with_index do |num, i|\n\t\tcomplement = target - num\n\t\treturn [seen[complement], i] if seen.key?(complement)\n\t\tseen[num] = i\n\tend\n\t[]\nend",
+    "length": "medium"
   },
   {
     "id": "ruby-word-count",
     "language": "ruby",
     "source": "string processing",
     "difficulty": "easy",
-    "code": "def word_count(text)\n\ttext.downcase.split.each_with_object(Hash.new(0)) do |word, counts|\n\t\tcounts[word] += 1\n\tend\nend"
+    "code": "def word_count(text)\n\ttext.downcase.split.each_with_object(Hash.new(0)) do |word, counts|\n\t\tcounts[word] += 1\n\tend\nend",
+    "length": "short"
   },
   {
     "id": "ruby-flatten",
     "language": "ruby",
     "source": "array utilities",
     "difficulty": "easy",
-    "code": "def flatten(arr)\n\tarr.each_with_object([]) do |item, result|\n\t\titem.is_a?(Array) ? result.concat(flatten(item)) : result << item\n\tend\nend"
+    "code": "def flatten(arr)\n\tarr.each_with_object([]) do |item, result|\n\t\titem.is_a?(Array) ? result.concat(flatten(item)) : result << item\n\tend\nend",
+    "length": "short"
   },
   {
     "id": "ruby-valid-parens",
     "language": "ruby",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "def valid_parens?(s)\n\tstack = []\n\tpairs = { ')' => '(', ']' => '[', '}' => '{' }\n\ts.each_char do |ch|\n\t\tif '([{'.include?(ch)\n\t\t\tstack.push(ch)\n\t\telsif pairs.key?(ch)\n\t\t\treturn false if stack.empty? || stack.last != pairs[ch]\n\t\t\tstack.pop\n\t\tend\n\tend\n\tstack.empty?\nend"
+    "code": "def valid_parens?(s)\n\tstack = []\n\tpairs = { ')' => '(', ']' => '[', '}' => '{' }\n\ts.each_char do |ch|\n\t\tif '([{'.include?(ch)\n\t\t\tstack.push(ch)\n\t\telsif pairs.key?(ch)\n\t\t\treturn false if stack.empty? || stack.last != pairs[ch]\n\t\t\tstack.pop\n\t\tend\n\tend\n\tstack.empty?\nend",
+    "length": "long"
   },
   {
     "id": "ruby-memoize",
     "language": "ruby",
     "source": "functional programming",
     "difficulty": "medium",
-    "code": "def memoize(&block)\n\tcache = {}\n\tlambda do |*args|\n\t\tcache[args] ||= block.call(*args)\n\tend\nend\n\nfib = memoize { |n| n < 2 ? n : fib.call(n - 1) + fib.call(n - 2) }"
+    "code": "def memoize(&block)\n\tcache = {}\n\tlambda do |*args|\n\t\tcache[args] ||= block.call(*args)\n\tend\nend\n\nfib = memoize { |n| n < 2 ? n : fib.call(n - 1) + fib.call(n - 2) }",
+    "length": "short"
   },
   {
     "id": "ruby-class",
     "language": "ruby",
     "source": "object oriented",
     "difficulty": "easy",
-    "code": "class Animal\n\tattr_reader :name, :sound\n\n\tdef initialize(name, sound)\n\t\t@name = name\n\t\t@sound = sound\n\tend\n\n\tdef speak\n\t\t\"#{@name} says #{@sound}\"\n\tend\n\n\tdef to_s\n\t\t@name\n\tend\nend"
+    "code": "class Animal\n\tattr_reader :name, :sound\n\n\tdef initialize(name, sound)\n\t\t@name = name\n\t\t@sound = sound\n\tend\n\n\tdef speak\n\t\t\"#{@name} says #{@sound}\"\n\tend\n\n\tdef to_s\n\t\t@name\n\tend\nend",
+    "length": "medium"
   },
   {
     "id": "ruby-module-mixin",
     "language": "ruby",
     "source": "design patterns",
     "difficulty": "medium",
-    "code": "module Greetable\n\tdef greet(other)\n\t\t\"Hello, #{other}! I am #{name}.\"\n\tend\nend\n\nclass Person\n\tinclude Greetable\n\tattr_reader :name\n\n\tdef initialize(name)\n\t\t@name = name\n\tend\nend"
+    "code": "module Greetable\n\tdef greet(other)\n\t\t\"Hello, #{other}! I am #{name}.\"\n\tend\nend\n\nclass Person\n\tinclude Greetable\n\tattr_reader :name\n\n\tdef initialize(name)\n\t\t@name = name\n\tend\nend",
+    "length": "short"
   },
   {
     "id": "ruby-each-map",
     "language": "ruby",
     "source": "functional programming",
     "difficulty": "easy",
-    "code": "numbers = [1, 2, 3, 4, 5]\n\nsquares = numbers.map { |n| n ** 2 }\nevens = numbers.select(&:even?)\ntotal = numbers.reduce(:+)\npairs = numbers.each_with_object([]) { |n, arr| arr << [n, n ** 2] }"
+    "code": "numbers = [1, 2, 3, 4, 5]\n\nsquares = numbers.map { |n| n ** 2 }\nevens = numbers.select(&:even?)\ntotal = numbers.reduce(:+)\npairs = numbers.each_with_object([]) { |n, arr| arr << [n, n ** 2] }",
+    "length": "medium"
   },
   {
     "id": "ruby-comparable",
     "language": "ruby",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "class Box\n\tinclude Comparable\n\tattr_accessor :volume\n\n\tdef initialize(volume)\n\t\t@volume = volume\n\tend\n\n\tdef <=>(other)\n\t\t@volume <=> other.volume\n\tend\nend\n\nboxes = [Box.new(10), Box.new(3), Box.new(7)]\nboxes.sort.map(&:volume)"
+    "code": "class Box\n\tinclude Comparable\n\tattr_accessor :volume\n\n\tdef initialize(volume)\n\t\t@volume = volume\n\tend\n\n\tdef <=>(other)\n\t\t@volume <=> other.volume\n\tend\nend\n\nboxes = [Box.new(10), Box.new(3), Box.new(7)]\nboxes.sort.map(&:volume)",
+    "length": "long"
   },
   {
     "id": "ruby-open-struct",
     "language": "ruby",
     "source": "utility functions",
     "difficulty": "easy",
-    "code": "require 'ostruct'\n\ndef build_config(opts = {})\n\tOpenStruct.new({\n\t\thost: 'localhost',\n\t\tport: 3000,\n\t\tdebug: false\n\t}.merge(opts))\nend\n\nconfig = build_config(port: 8080, debug: true)"
+    "code": "require 'ostruct'\n\ndef build_config(opts = {})\n\tOpenStruct.new({\n\t\thost: 'localhost',\n\t\tport: 3000,\n\t\tdebug: false\n\t}.merge(opts))\nend\n\nconfig = build_config(port: 8080, debug: true)",
+    "length": "medium"
   }
 ]

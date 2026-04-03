@@ -21,10 +21,17 @@ export default function TypingSettingsSelector({
     onTestingTypeChange,
 }: TypingSettingsSelectorProps) {
     return (
-        <div className="p-4 rounded-md bg-card">
-            <h2 className="text-lg text-muted-foreground font-semibold">
-                Settings Selector
-            </h2>
+        <div className="flex bg-card w-full">
+            <div>
+                {/* select the test types*/}
+                <button>time</button>
+                <button>length</button>
+                <button>difficulty</button>
+            </div>
+
+            <div>
+                
+            </div>
         </div>
     );
 }

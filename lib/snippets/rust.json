@@ -4,104 +4,119 @@
     "language": "rust",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "fn fibonacci(n: u64) -> u64 {\n\tif n <= 1 { return n; }\n\tlet (mut a, mut b) = (0u64, 1u64);\n\tfor _ in 2..=n {\n\t\tlet tmp = a + b;\n\t\ta = b;\n\t\tb = tmp;\n\t}\n\tb\n}"
+    "code": "fn fibonacci(n: u64) -> u64 {\n\tif n <= 1 { return n; }\n\tlet (mut a, mut b) = (0u64, 1u64);\n\tfor _ in 2..=n {\n\t\tlet tmp = a + b;\n\t\ta = b;\n\t\tb = tmp;\n\t}\n\tb\n}",
+    "length": "short"
   },
   {
     "id": "rust-binary-search",
     "language": "rust",
     "source": "classic algorithm",
     "difficulty": "medium",
-    "code": "fn binary_search(arr: &[i32], target: i32) -> Option<usize> {\n\tlet (mut left, mut right) = (0, arr.len().saturating_sub(1));\n\twhile left <= right {\n\t\tlet mid = left + (right - left) / 2;\n\t\tmatch arr[mid].cmp(&target) {\n\t\t\tstd::cmp::Ordering::Equal => return Some(mid),\n\t\t\tstd::cmp::Ordering::Less => left = mid + 1,\n\t\t\tstd::cmp::Ordering::Greater => {\n\t\t\t\tif mid == 0 { break; }\n\t\t\t\tright = mid - 1;\n\t\t\t}\n\t\t}\n\t}\n\tNone\n}"
+    "code": "fn binary_search(arr: &[i32], target: i32) -> Option<usize> {\n\tlet (mut left, mut right) = (0, arr.len().saturating_sub(1));\n\twhile left <= right {\n\t\tlet mid = left + (right - left) / 2;\n\t\tmatch arr[mid].cmp(&target) {\n\t\t\tstd::cmp::Ordering::Equal => return Some(mid),\n\t\t\tstd::cmp::Ordering::Less => left = mid + 1,\n\t\t\tstd::cmp::Ordering::Greater => {\n\t\t\t\tif mid == 0 { break; }\n\t\t\t\tright = mid - 1;\n\t\t\t}\n\t\t}\n\t}\n\tNone\n}",
+    "length": "long"
   },
   {
     "id": "rust-struct-impl",
     "language": "rust",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "#[derive(Debug, Clone)]\nstruct Point {\n\tx: f64,\n\ty: f64,\n}\n\nimpl Point {\n\tfn new(x: f64, y: f64) -> Self {\n\t\tSelf { x, y }\n\t}\n\n\tfn distance(&self, other: &Point) -> f64 {\n\t\tlet dx = self.x - other.x;\n\t\tlet dy = self.y - other.y;\n\t\t(dx * dx + dy * dy).sqrt()\n\t}\n}\n\nimpl std::fmt::Display for Point {\n\tfn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {\n\t\twrite!(f, \"({}, {})\", self.x, self.y)\n\t}\n}"
+    "code": "#[derive(Debug, Clone)]\nstruct Point {\n\tx: f64,\n\ty: f64,\n}\n\nimpl Point {\n\tfn new(x: f64, y: f64) -> Self {\n\t\tSelf { x, y }\n\t}\n\n\tfn distance(&self, other: &Point) -> f64 {\n\t\tlet dx = self.x - other.x;\n\t\tlet dy = self.y - other.y;\n\t\t(dx * dx + dy * dy).sqrt()\n\t}\n}\n\nimpl std::fmt::Display for Point {\n\tfn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {\n\t\twrite!(f, \"({}, {})\", self.x, self.y)\n\t}\n}",
+    "length": "long"
   },
   {
     "id": "rust-enum-result",
     "language": "rust",
     "source": "error handling",
     "difficulty": "medium",
-    "code": "#[derive(Debug)]\nenum AppError {\n\tNotFound(String),\n\tParseError(String),\n}\n\nfn parse_age(s: &str) -> Result<u32, AppError> {\n\ts.parse::<u32>().map_err(|e| AppError::ParseError(e.to_string()))\n}\n\nfn get_user_age(\n\tid: &str,\n\tdb: &std::collections::HashMap<&str, String>,\n) -> Result<u32, AppError> {\n\tlet raw = db.get(id).ok_or_else(|| AppError::NotFound(id.to_string()))?;\n\tparse_age(raw)\n}"
+    "code": "#[derive(Debug)]\nenum AppError {\n\tNotFound(String),\n\tParseError(String),\n}\n\nfn parse_age(s: &str) -> Result<u32, AppError> {\n\ts.parse::<u32>().map_err(|e| AppError::ParseError(e.to_string()))\n}\n\nfn get_user_age(\n\tid: &str,\n\tdb: &std::collections::HashMap<&str, String>,\n) -> Result<u32, AppError> {\n\tlet raw = db.get(id).ok_or_else(|| AppError::NotFound(id.to_string()))?;\n\tparse_age(raw)\n}",
+    "length": "medium"
   },
   {
     "id": "rust-trait",
     "language": "rust",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "trait Summary {\n\tfn summarize(&self) -> String;\n}\n\nstruct Article {\n\ttitle: String,\n\tcontent: String,\n}\n\nimpl Summary for Article {\n\tfn summarize(&self) -> String {\n\t\tformat!(\"{}: {}\", self.title, self.content)\n\t}\n}\n\nfn notify(item: &impl Summary) {\n\tprintln!(\"Breaking: {}\", item.summarize());\n}"
+    "code": "trait Summary {\n\tfn summarize(&self) -> String;\n}\n\nstruct Article {\n\ttitle: String,\n\tcontent: String,\n}\n\nimpl Summary for Article {\n\tfn summarize(&self) -> String {\n\t\tformat!(\"{}: {}\", self.title, self.content)\n\t}\n}\n\nfn notify(item: &impl Summary) {\n\tprintln!(\"Breaking: {}\", item.summarize());\n}",
+    "length": "medium"
   },
   {
     "id": "rust-iterator",
     "language": "rust",
     "source": "functional programming",
     "difficulty": "easy",
-    "code": "fn word_lengths(text: &str) -> Vec<usize> {\n\ttext.split_whitespace()\n\t\t.map(|word| word.len())\n\t\t.collect()\n}\n\nfn top_n(nums: &[i32], n: usize) -> Vec<i32> {\n\tlet mut sorted = nums.to_vec();\n\tsorted.sort_unstable_by(|a, b| b.cmp(a));\n\tsorted.into_iter().take(n).collect()\n}"
+    "code": "fn word_lengths(text: &str) -> Vec<usize> {\n\ttext.split_whitespace()\n\t\t.map(|word| word.len())\n\t\t.collect()\n}\n\nfn top_n(nums: &[i32], n: usize) -> Vec<i32> {\n\tlet mut sorted = nums.to_vec();\n\tsorted.sort_unstable_by(|a, b| b.cmp(a));\n\tsorted.into_iter().take(n).collect()\n}",
+    "length": "short"
   },
   {
     "id": "rust-hashmap",
     "language": "rust",
     "source": "utility functions",
     "difficulty": "easy",
-    "code": "use std::collections::HashMap;\n\nfn word_count(text: &str) -> HashMap<&str, usize> {\n\tlet mut counts = HashMap::new();\n\tfor word in text.split_whitespace() {\n\t\t*counts.entry(word).or_insert(0) += 1;\n\t}\n\tcounts\n}"
+    "code": "use std::collections::HashMap;\n\nfn word_count(text: &str) -> HashMap<&str, usize> {\n\tlet mut counts = HashMap::new();\n\tfor word in text.split_whitespace() {\n\t\t*counts.entry(word).or_insert(0) += 1;\n\t}\n\tcounts\n}",
+    "length": "short"
   },
   {
     "id": "rust-two-sum",
     "language": "rust",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "use std::collections::HashMap;\n\nfn two_sum(nums: &[i32], target: i32) -> Option<(usize, usize)> {\n\tlet mut seen: HashMap<i32, usize> = HashMap::new();\n\tfor (i, &num) in nums.iter().enumerate() {\n\t\tlet complement = target - num;\n\t\tif let Some(&j) = seen.get(&complement) {\n\t\t\treturn Some((j, i));\n\t\t}\n\t\tseen.insert(num, i);\n\t}\n\tNone\n}"
+    "code": "use std::collections::HashMap;\n\nfn two_sum(nums: &[i32], target: i32) -> Option<(usize, usize)> {\n\tlet mut seen: HashMap<i32, usize> = HashMap::new();\n\tfor (i, &num) in nums.iter().enumerate() {\n\t\tlet complement = target - num;\n\t\tif let Some(&j) = seen.get(&complement) {\n\t\t\treturn Some((j, i));\n\t\t}\n\t\tseen.insert(num, i);\n\t}\n\tNone\n}",
+    "length": "medium"
   },
   {
     "id": "rust-closure",
     "language": "rust",
     "source": "functional programming",
     "difficulty": "medium",
-    "code": "fn apply_twice<F: Fn(i32) -> i32>(f: F, x: i32) -> i32 {\n\tf(f(x))\n}\n\nfn make_adder(n: i32) -> impl Fn(i32) -> i32 {\n\tmove |x| x + n\n}\n\nlet add5 = make_adder(5);\nlet result = apply_twice(add5, 3);"
+    "code": "fn apply_twice<F: Fn(i32) -> i32>(f: F, x: i32) -> i32 {\n\tf(f(x))\n}\n\nfn make_adder(n: i32) -> impl Fn(i32) -> i32 {\n\tmove |x| x + n\n}\n\nlet add5 = make_adder(5);\nlet result = apply_twice(add5, 3);",
+    "length": "short"
   },
   {
     "id": "rust-stack",
     "language": "rust",
     "source": "data structures",
     "difficulty": "easy",
-    "code": "pub struct Stack<T> {\n\tdata: Vec<T>,\n}\n\nimpl<T> Stack<T> {\n\tpub fn new() -> Self {\n\t\tSelf { data: Vec::new() }\n\t}\n\tpub fn push(&mut self, val: T) {\n\t\tself.data.push(val);\n\t}\n\tpub fn pop(&mut self) -> Option<T> {\n\t\tself.data.pop()\n\t}\n\tpub fn peek(&self) -> Option<&T> {\n\t\tself.data.last()\n\t}\n\tpub fn is_empty(&self) -> bool {\n\t\tself.data.is_empty()\n\t}\n}"
+    "code": "pub struct Stack<T> {\n\tdata: Vec<T>,\n}\n\nimpl<T> Stack<T> {\n\tpub fn new() -> Self {\n\t\tSelf { data: Vec::new() }\n\t}\n\tpub fn push(&mut self, val: T) {\n\t\tself.data.push(val);\n\t}\n\tpub fn pop(&mut self) -> Option<T> {\n\t\tself.data.pop()\n\t}\n\tpub fn peek(&self) -> Option<&T> {\n\t\tself.data.last()\n\t}\n\tpub fn is_empty(&self) -> bool {\n\t\tself.data.is_empty()\n\t}\n}",
+    "length": "medium"
   },
   {
     "id": "rust-merge-sort",
     "language": "rust",
     "source": "classic algorithm",
     "difficulty": "hard",
-    "code": "fn merge_sort(arr: &mut Vec<i32>) {\n\tlet len = arr.len();\n\tif len <= 1 { return; }\n\tlet mid = len / 2;\n\tlet mut left = arr[..mid].to_vec();\n\tlet mut right = arr[mid..].to_vec();\n\tmerge_sort(&mut left);\n\tmerge_sort(&mut right);\n\tlet (mut i, mut j, mut k) = (0, 0, 0);\n\twhile i < left.len() && j < right.len() {\n\t\tif left[i] <= right[j] { arr[k] = left[i]; i += 1; }\n\t\telse { arr[k] = right[j]; j += 1; }\n\t\tk += 1;\n\t}\n\twhile i < left.len() { arr[k] = left[i]; i += 1; k += 1; }\n\twhile j < right.len() { arr[k] = right[j]; j += 1; k += 1; }\n}"
+    "code": "fn merge_sort(arr: &mut Vec<i32>) {\n\tlet len = arr.len();\n\tif len <= 1 { return; }\n\tlet mid = len / 2;\n\tlet mut left = arr[..mid].to_vec();\n\tlet mut right = arr[mid..].to_vec();\n\tmerge_sort(&mut left);\n\tmerge_sort(&mut right);\n\tlet (mut i, mut j, mut k) = (0, 0, 0);\n\twhile i < left.len() && j < right.len() {\n\t\tif left[i] <= right[j] { arr[k] = left[i]; i += 1; }\n\t\telse { arr[k] = right[j]; j += 1; }\n\t\tk += 1;\n\t}\n\twhile i < left.len() { arr[k] = left[i]; i += 1; k += 1; }\n\twhile j < right.len() { arr[k] = right[j]; j += 1; k += 1; }\n}",
+    "length": "long"
   },
   {
     "id": "rust-option-chain",
     "language": "rust",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "fn parse_int_or_default(s: Option<&str>, default: i32) -> i32 {\n\ts.and_then(|v| v.parse().ok()).unwrap_or(default)\n}\n\nfn first_even(nums: &[i32]) -> Option<i32> {\n\tnums.iter()\n\t\t.find(|&&n| n % 2 == 0)\n\t\t.copied()\n}"
+    "code": "fn parse_int_or_default(s: Option<&str>, default: i32) -> i32 {\n\ts.and_then(|v| v.parse().ok()).unwrap_or(default)\n}\n\nfn first_even(nums: &[i32]) -> Option<i32> {\n\tnums.iter()\n\t\t.find(|&&n| n % 2 == 0)\n\t\t.copied()\n}",
+    "length": "short"
   },
   {
     "id": "rust-lifetime",
     "language": "rust",
     "source": "memory management",
     "difficulty": "hard",
-    "code": "struct StrSplit<'a> {\n\tremainder: &'a str,\n\tdelimiter: &'a str,\n}\n\nimpl<'a> Iterator for StrSplit<'a> {\n\ttype Item = &'a str;\n\n\tfn next(&mut self) -> Option<&'a str> {\n\t\tif let Some(idx) = self.remainder.find(self.delimiter) {\n\t\t\tlet part = &self.remainder[..idx];\n\t\t\tself.remainder = &self.remainder[idx + self.delimiter.len()..];\n\t\t\tSome(part)\n\t\t} else if !self.remainder.is_empty() {\n\t\t\tSome(std::mem::take(&mut self.remainder))\n\t\t} else {\n\t\t\tNone\n\t\t}\n\t}\n}"
+    "code": "struct StrSplit<'a> {\n\tremainder: &'a str,\n\tdelimiter: &'a str,\n}\n\nimpl<'a> Iterator for StrSplit<'a> {\n\ttype Item = &'a str;\n\n\tfn next(&mut self) -> Option<&'a str> {\n\t\tif let Some(idx) = self.remainder.find(self.delimiter) {\n\t\t\tlet part = &self.remainder[..idx];\n\t\t\tself.remainder = &self.remainder[idx + self.delimiter.len()..];\n\t\t\tSome(part)\n\t\t} else if !self.remainder.is_empty() {\n\t\t\tSome(std::mem::take(&mut self.remainder))\n\t\t} else {\n\t\t\tNone\n\t\t}\n\t}\n}",
+    "length": "long"
   },
   {
     "id": "rust-builder",
     "language": "rust",
     "source": "design patterns",
     "difficulty": "medium",
-    "code": "#[derive(Debug)]\nstruct Config {\n\thost: String,\n\tport: u16,\n}\n\nstruct ConfigBuilder {\n\thost: String,\n\tport: u16,\n}\n\nimpl ConfigBuilder {\n\tfn new() -> Self {\n\t\tSelf { host: \"localhost\".into(), port: 8080 }\n\t}\n\tfn host(mut self, host: &str) -> Self { self.host = host.into(); self }\n\tfn port(mut self, port: u16) -> Self { self.port = port; self }\n\tfn build(self) -> Config {\n\t\tConfig { host: self.host, port: self.port }\n\t}\n}"
+    "code": "#[derive(Debug)]\nstruct Config {\n\thost: String,\n\tport: u16,\n}\n\nstruct ConfigBuilder {\n\thost: String,\n\tport: u16,\n}\n\nimpl ConfigBuilder {\n\tfn new() -> Self {\n\t\tSelf { host: \"localhost\".into(), port: 8080 }\n\t}\n\tfn host(mut self, host: &str) -> Self { self.host = host.into(); self }\n\tfn port(mut self, port: u16) -> Self { self.port = port; self }\n\tfn build(self) -> Config {\n\t\tConfig { host: self.host, port: self.port }\n\t}\n}",
+    "length": "long"
   },
   {
     "id": "rust-valid-parens",
     "language": "rust",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "fn is_valid(s: &str) -> bool {\n\tlet mut stack = Vec::new();\n\tfor ch in s.chars() {\n\t\tmatch ch {\n\t\t\t'(' | '[' | '{' => stack.push(ch),\n\t\t\t')' => if stack.pop() != Some('(') { return false; },\n\t\t\t']' => if stack.pop() != Some('[') { return false; },\n\t\t\t'}' => if stack.pop() != Some('{') { return false; },\n\t\t\t_ => {}\n\t\t}\n\t}\n\tstack.is_empty()\n}"
+    "code": "fn is_valid(s: &str) -> bool {\n\tlet mut stack = Vec::new();\n\tfor ch in s.chars() {\n\t\tmatch ch {\n\t\t\t'(' | '[' | '{' => stack.push(ch),\n\t\t\t')' => if stack.pop() != Some('(') { return false; },\n\t\t\t']' => if stack.pop() != Some('[') { return false; },\n\t\t\t'}' => if stack.pop() != Some('{') { return false; },\n\t\t\t_ => {}\n\t\t}\n\t}\n\tstack.is_empty()\n}",
+    "length": "medium"
   }
 ]

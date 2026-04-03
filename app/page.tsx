@@ -11,7 +11,9 @@ import useEngine from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
 import { AnimatePresence, motion } from "framer-motion";
-import TypingSettingsSelector from "@/components/TypingSettingsSelector";
+import TypingSettingsSelector, {
+    testingType,
+} from "@/components/TypingSettingsSelector";
 
 import * as stats from "@/utils/stats";
 
@@ -61,7 +63,12 @@ export default function Home() {
     return (
         <>
             <main className="flex flex-col flex-1 items-center  gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
-                <TypingSettingsSelector></TypingSettingsSelector>
+                <TypingSettingsSelector
+                    testingType={"time"}
+                    onTestingTypeChange={function (type: testingType): void {
+                        throw new Error("Function not implemented.");
+                    }}
+                ></TypingSettingsSelector>
                 <div className="w-full flex flex-col gap-3 sm:gap-4 mt-[10vh]">
                     <div className="grid grid-cols-3 items-center w-full">
                         <CountdownTimer

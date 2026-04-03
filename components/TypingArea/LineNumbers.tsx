@@ -1,8 +1,10 @@
 export default function LineNumbers({
     lineCount,
+    startFrom = 1,
     className,
 }: {
     lineCount: number;
+    startFrom?: number;
     className?: string;
 }) {
     return (
@@ -12,7 +14,7 @@ export default function LineNumbers({
         >
             {Array.from({ length: lineCount }, (_, i) => (
                 <div key={i} className="text-left">
-                    {i + 1}
+                    {i + startFrom}
                 </div>
             ))}
         </div>

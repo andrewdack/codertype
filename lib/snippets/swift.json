@@ -4,104 +4,119 @@
     "language": "swift",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "func fibonacci(_ n: Int) -> Int {\n\tguard n > 1 else { return n }\n\tvar (a, b) = (0, 1)\n\tfor _ in 2...n {\n\t\t(a, b) = (b, a + b)\n\t}\n\treturn b\n}"
+    "code": "func fibonacci(_ n: Int) -> Int {\n\tguard n > 1 else { return n }\n\tvar (a, b) = (0, 1)\n\tfor _ in 2...n {\n\t\t(a, b) = (b, a + b)\n\t}\n\treturn b\n}",
+    "length": "short"
   },
   {
     "id": "swift-binary-search",
     "language": "swift",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "func binarySearch<T: Comparable>(_ arr: [T], target: T) -> Int? {\n\tvar left = 0, right = arr.count - 1\n\twhile left <= right {\n\t\tlet mid = left + (right - left) / 2\n\t\tif arr[mid] == target { return mid }\n\t\tif arr[mid] < target { left = mid + 1 }\n\t\telse { right = mid - 1 }\n\t}\n\treturn nil\n}"
+    "code": "func binarySearch<T: Comparable>(_ arr: [T], target: T) -> Int? {\n\tvar left = 0, right = arr.count - 1\n\twhile left <= right {\n\t\tlet mid = left + (right - left) / 2\n\t\tif arr[mid] == target { return mid }\n\t\tif arr[mid] < target { left = mid + 1 }\n\t\telse { right = mid - 1 }\n\t}\n\treturn nil\n}",
+    "length": "medium"
   },
   {
     "id": "swift-class",
     "language": "swift",
     "source": "object oriented",
     "difficulty": "easy",
-    "code": "class Animal {\n\tlet name: String\n\tlet sound: String\n\n\tinit(name: String, sound: String) {\n\t\tself.name = name\n\t\tself.sound = sound\n\t}\n\n\tfunc speak() -> String {\n\t\t\"\\(name) says \\(sound)\"\n\t}\n}\n\nclass Dog: Animal {\n\tinit(name: String) {\n\t\tsuper.init(name: name, sound: \"woof\")\n\t}\n\tfunc fetch() -> String { \"\\(name) fetches the ball!\" }\n}"
+    "code": "class Animal {\n\tlet name: String\n\tlet sound: String\n\n\tinit(name: String, sound: String) {\n\t\tself.name = name\n\t\tself.sound = sound\n\t}\n\n\tfunc speak() -> String {\n\t\t\"\\(name) says \\(sound)\"\n\t}\n}\n\nclass Dog: Animal {\n\tinit(name: String) {\n\t\tsuper.init(name: name, sound: \"woof\")\n\t}\n\tfunc fetch() -> String { \"\\(name) fetches the ball!\" }\n}",
+    "length": "long"
   },
   {
     "id": "swift-struct",
     "language": "swift",
     "source": "object oriented",
     "difficulty": "easy",
-    "code": "struct Point {\n\tvar x: Double\n\tvar y: Double\n\n\tfunc distance(to other: Point) -> Double {\n\t\tlet dx = x - other.x\n\t\tlet dy = y - other.y\n\t\treturn (dx * dx + dy * dy).squareRoot()\n\t}\n\n\tmutating func translate(by delta: Point) {\n\t\tx += delta.x\n\t\ty += delta.y\n\t}\n}"
+    "code": "struct Point {\n\tvar x: Double\n\tvar y: Double\n\n\tfunc distance(to other: Point) -> Double {\n\t\tlet dx = x - other.x\n\t\tlet dy = y - other.y\n\t\treturn (dx * dx + dy * dy).squareRoot()\n\t}\n\n\tmutating func translate(by delta: Point) {\n\t\tx += delta.x\n\t\ty += delta.y\n\t}\n}",
+    "length": "short"
   },
   {
     "id": "swift-protocol",
     "language": "swift",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "protocol Describable {\n\tvar description: String { get }\n\tfunc describe() -> String\n}\n\nextension Describable {\n\tfunc describe() -> String {\n\t\t\"[Describable: \\(description)]\"\n\t}\n}\n\nstruct Car: Describable {\n\tlet make: String\n\tlet model: String\n\tvar description: String { \"\\(make) \\(model)\" }\n}"
+    "code": "protocol Describable {\n\tvar description: String { get }\n\tfunc describe() -> String\n}\n\nextension Describable {\n\tfunc describe() -> String {\n\t\t\"[Describable: \\(description)]\"\n\t}\n}\n\nstruct Car: Describable {\n\tlet make: String\n\tlet model: String\n\tvar description: String { \"\\(make) \\(model)\" }\n}",
+    "length": "medium"
   },
   {
     "id": "swift-enum",
     "language": "swift",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "enum Direction {\n\tcase north, south, east, west\n\n\tvar opposite: Direction {\n\t\tswitch self {\n\t\tcase .north: return .south\n\t\tcase .south: return .north\n\t\tcase .east: return .west\n\t\tcase .west: return .east\n\t\t}\n\t}\n}\n\nenum Result<T> {\n\tcase success(T)\n\tcase failure(Error)\n}"
+    "code": "enum Direction {\n\tcase north, south, east, west\n\n\tvar opposite: Direction {\n\t\tswitch self {\n\t\tcase .north: return .south\n\t\tcase .south: return .north\n\t\tcase .east: return .west\n\t\tcase .west: return .east\n\t\t}\n\t}\n}\n\nenum Result<T> {\n\tcase success(T)\n\tcase failure(Error)\n}",
+    "length": "medium"
   },
   {
     "id": "swift-closures",
     "language": "swift",
     "source": "functional programming",
     "difficulty": "easy",
-    "code": "let numbers = [5, 2, 8, 1, 9, 3]\n\nlet sorted = numbers.sorted { $0 < $1 }\nlet doubled = numbers.map { $0 * 2 }\nlet evens = numbers.filter { $0 % 2 == 0 }\nlet total = numbers.reduce(0, +)\n\nfunc makeMultiplier(_ factor: Int) -> (Int) -> Int {\n\treturn { $0 * factor }\n}"
+    "code": "let numbers = [5, 2, 8, 1, 9, 3]\n\nlet sorted = numbers.sorted { $0 < $1 }\nlet doubled = numbers.map { $0 * 2 }\nlet evens = numbers.filter { $0 % 2 == 0 }\nlet total = numbers.reduce(0, +)\n\nfunc makeMultiplier(_ factor: Int) -> (Int) -> Int {\n\treturn { $0 * factor }\n}",
+    "length": "short"
   },
   {
     "id": "swift-optional",
     "language": "swift",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "struct Config {\n\tvar host: String?\n\tvar port: Int?\n}\n\nfunc buildURL(_ config: Config) -> String? {\n\tguard let host = config.host,\n\t\t  let port = config.port else {\n\t\treturn nil\n\t}\n\treturn \"\\(host):\\(port)\"\n}\n\nlet url = buildURL(Config(host: \"localhost\", port: 8080)) ?? \"invalid\""
+    "code": "struct Config {\n\tvar host: String?\n\tvar port: Int?\n}\n\nfunc buildURL(_ config: Config) -> String? {\n\tguard let host = config.host,\n\t\t  let port = config.port else {\n\t\treturn nil\n\t}\n\treturn \"\\(host):\\(port)\"\n}\n\nlet url = buildURL(Config(host: \"localhost\", port: 8080)) ?? \"invalid\"",
+    "length": "medium"
   },
   {
     "id": "swift-generics",
     "language": "swift",
     "source": "data structures",
     "difficulty": "medium",
-    "code": "struct Stack<T> {\n\tprivate var items: [T] = []\n\n\tmutating func push(_ item: T) {\n\t\titems.append(item)\n\t}\n\n\tmutating func pop() -> T? {\n\t\titems.popLast()\n\t}\n\n\tvar top: T? { items.last }\n\tvar isEmpty: Bool { items.isEmpty }\n}"
+    "code": "struct Stack<T> {\n\tprivate var items: [T] = []\n\n\tmutating func push(_ item: T) {\n\t\titems.append(item)\n\t}\n\n\tmutating func pop() -> T? {\n\t\titems.popLast()\n\t}\n\n\tvar top: T? { items.last }\n\tvar isEmpty: Bool { items.isEmpty }\n}",
+    "length": "short"
   },
   {
     "id": "swift-merge-sort",
     "language": "swift",
     "source": "classic algorithm",
     "difficulty": "medium",
-    "code": "func mergeSort(_ arr: [Int]) -> [Int] {\n\tguard arr.count > 1 else { return arr }\n\tlet mid = arr.count / 2\n\tlet left = mergeSort(Array(arr[..<mid]))\n\tlet right = mergeSort(Array(arr[mid...]))\n\treturn merge(left, right)\n}\n\nfunc merge(_ left: [Int], _ right: [Int]) -> [Int] {\n\tvar result: [Int] = []\n\tvar i = 0, j = 0\n\twhile i < left.count && j < right.count {\n\t\tif left[i] <= right[j] { result.append(left[i]); i += 1 }\n\t\telse { result.append(right[j]); j += 1 }\n\t}\n\treturn result + left[i...] + right[j...]\n}"
+    "code": "func mergeSort(_ arr: [Int]) -> [Int] {\n\tguard arr.count > 1 else { return arr }\n\tlet mid = arr.count / 2\n\tlet left = mergeSort(Array(arr[..<mid]))\n\tlet right = mergeSort(Array(arr[mid...]))\n\treturn merge(left, right)\n}\n\nfunc merge(_ left: [Int], _ right: [Int]) -> [Int] {\n\tvar result: [Int] = []\n\tvar i = 0, j = 0\n\twhile i < left.count && j < right.count {\n\t\tif left[i] <= right[j] { result.append(left[i]); i += 1 }\n\t\telse { result.append(right[j]); j += 1 }\n\t}\n\treturn result + left[i...] + right[j...]\n}",
+    "length": "long"
   },
   {
     "id": "swift-two-sum",
     "language": "swift",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "func twoSum(_ nums: [Int], _ target: Int) -> [Int]? {\n\tvar seen: [Int: Int] = [:]\n\tfor (i, num) in nums.enumerated() {\n\t\tlet complement = target - num\n\t\tif let j = seen[complement] {\n\t\t\treturn [j, i]\n\t\t}\n\t\tseen[num] = i\n\t}\n\treturn nil\n}"
+    "code": "func twoSum(_ nums: [Int], _ target: Int) -> [Int]? {\n\tvar seen: [Int: Int] = [:]\n\tfor (i, num) in nums.enumerated() {\n\t\tlet complement = target - num\n\t\tif let j = seen[complement] {\n\t\t\treturn [j, i]\n\t\t}\n\t\tseen[num] = i\n\t}\n\treturn nil\n}",
+    "length": "short"
   },
   {
     "id": "swift-error-handling",
     "language": "swift",
     "source": "error handling",
     "difficulty": "medium",
-    "code": "enum ParseError: Error {\n\tcase emptyInput\n\tcase invalidFormat(String)\n\tcase outOfRange(Int)\n}\n\nfunc parseAge(_ s: String) throws -> Int {\n\tguard !s.isEmpty else { throw ParseError.emptyInput }\n\tguard let age = Int(s) else { throw ParseError.invalidFormat(s) }\n\tguard (0...150).contains(age) else { throw ParseError.outOfRange(age) }\n\treturn age\n}"
+    "code": "enum ParseError: Error {\n\tcase emptyInput\n\tcase invalidFormat(String)\n\tcase outOfRange(Int)\n}\n\nfunc parseAge(_ s: String) throws -> Int {\n\tguard !s.isEmpty else { throw ParseError.emptyInput }\n\tguard let age = Int(s) else { throw ParseError.invalidFormat(s) }\n\tguard (0...150).contains(age) else { throw ParseError.outOfRange(age) }\n\treturn age\n}",
+    "length": "long"
   },
   {
     "id": "swift-linked-list",
     "language": "swift",
     "source": "data structures",
     "difficulty": "medium",
-    "code": "class ListNode<T> {\n\tvar val: T\n\tvar next: ListNode<T>?\n\tinit(_ val: T) { self.val = val }\n}\n\nclass LinkedList<T> {\n\tprivate var head: ListNode<T>?\n\n\tfunc append(_ val: T) {\n\t\tlet node = ListNode(val)\n\t\tguard let h = head else { head = node; return }\n\t\tvar curr = h\n\t\twhile let next = curr.next { curr = next }\n\t\tcurr.next = node\n\t}\n\n\tvar count: Int {\n\t\tvar n = 0; var curr = head\n\t\twhile curr != nil { n += 1; curr = curr?.next }\n\t\treturn n\n\t}\n}"
+    "code": "class ListNode<T> {\n\tvar val: T\n\tvar next: ListNode<T>?\n\tinit(_ val: T) { self.val = val }\n}\n\nclass LinkedList<T> {\n\tprivate var head: ListNode<T>?\n\n\tfunc append(_ val: T) {\n\t\tlet node = ListNode(val)\n\t\tguard let h = head else { head = node; return }\n\t\tvar curr = h\n\t\twhile let next = curr.next { curr = next }\n\t\tcurr.next = node\n\t}\n\n\tvar count: Int {\n\t\tvar n = 0; var curr = head\n\t\twhile curr != nil { n += 1; curr = curr?.next }\n\t\treturn n\n\t}\n}",
+    "length": "long"
   },
   {
     "id": "swift-observer",
     "language": "swift",
     "source": "design patterns",
     "difficulty": "medium",
-    "code": "class EventEmitter<T> {\n\tprivate var listeners: [(T) -> Void] = []\n\n\tfunc on(_ listener: @escaping (T) -> Void) {\n\t\tlisteners.append(listener)\n\t}\n\n\tfunc emit(_ value: T) {\n\t\tlisteners.forEach { $0(value) }\n\t}\n}\n\nlet emitter = EventEmitter<String>()\nemitter.on { print(\"received: \\($0)\") }\nemitter.emit(\"hello\")"
+    "code": "class EventEmitter<T> {\n\tprivate var listeners: [(T) -> Void] = []\n\n\tfunc on(_ listener: @escaping (T) -> Void) {\n\t\tlisteners.append(listener)\n\t}\n\n\tfunc emit(_ value: T) {\n\t\tlisteners.forEach { $0(value) }\n\t}\n}\n\nlet emitter = EventEmitter<String>()\nemitter.on { print(\"received: \\($0)\") }\nemitter.emit(\"hello\")",
+    "length": "medium"
   },
   {
     "id": "swift-higher-order",
     "language": "swift",
     "source": "functional programming",
     "difficulty": "hard",
-    "code": "func compose<A, B, C>(\n\t_ f: @escaping (B) -> C,\n\t_ g: @escaping (A) -> B\n) -> (A) -> C {\n\treturn { f(g($0)) }\n}\n\nfunc memoize<T: Hashable, U>(_ fn: @escaping (T) -> U) -> (T) -> U {\n\tvar cache: [T: U] = [:]\n\treturn { input in\n\t\tif let cached = cache[input] { return cached }\n\t\tlet result = fn(input)\n\t\tcache[input] = result\n\t\treturn result\n\t}\n}"
+    "code": "func compose<A, B, C>(\n\t_ f: @escaping (B) -> C,\n\t_ g: @escaping (A) -> B\n) -> (A) -> C {\n\treturn { f(g($0)) }\n}\n\nfunc memoize<T: Hashable, U>(_ fn: @escaping (T) -> U) -> (T) -> U {\n\tvar cache: [T: U] = [:]\n\treturn { input in\n\t\tif let cached = cache[input] { return cached }\n\t\tlet result = fn(input)\n\t\tcache[input] = result\n\t\treturn result\n\t}\n}",
+    "length": "long"
   }
 ]

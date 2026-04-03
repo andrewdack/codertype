@@ -4,104 +4,119 @@
     "language": "csharp",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "public static int BinarySearch(int[] arr, int target) {\n\tint left = 0, right = arr.Length - 1;\n\twhile (left <= right) {\n\t\tint mid = left + (right - left) / 2;\n\t\tif (arr[mid] == target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}"
+    "code": "public static int BinarySearch(int[] arr, int target) {\n\tint left = 0, right = arr.Length - 1;\n\twhile (left <= right) {\n\t\tint mid = left + (right - left) / 2;\n\t\tif (arr[mid] == target) return mid;\n\t\tif (arr[mid] < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}",
+    "length": "medium"
   },
   {
     "id": "csharp-generic-stack",
     "language": "csharp",
     "source": "data structures",
     "difficulty": "medium",
-    "code": "public class Stack<T> {\n\tprivate readonly List<T> _items = new();\n\n\tpublic void Push(T item) => _items.Add(item);\n\n\tpublic T Pop() {\n\t\tif (_items.Count == 0) throw new InvalidOperationException(\"stack is empty\");\n\t\tvar item = _items[^1];\n\t\t_items.RemoveAt(_items.Count - 1);\n\t\treturn item;\n\t}\n\n\tpublic T Peek() => _items.Count > 0 ? _items[^1]\n\t\t: throw new InvalidOperationException(\"stack is empty\");\n\n\tpublic bool IsEmpty => _items.Count == 0;\n}"
+    "code": "public class Stack<T> {\n\tprivate readonly List<T> _items = new();\n\n\tpublic void Push(T item) => _items.Add(item);\n\n\tpublic T Pop() {\n\t\tif (_items.Count == 0) throw new InvalidOperationException(\"stack is empty\");\n\t\tvar item = _items[^1];\n\t\t_items.RemoveAt(_items.Count - 1);\n\t\treturn item;\n\t}\n\n\tpublic T Peek() => _items.Count > 0 ? _items[^1]\n\t\t: throw new InvalidOperationException(\"stack is empty\");\n\n\tpublic bool IsEmpty => _items.Count == 0;\n}",
+    "length": "long"
   },
   {
     "id": "csharp-linq",
     "language": "csharp",
     "source": "functional programming",
     "difficulty": "medium",
-    "code": "var numbers = Enumerable.Range(1, 20);\n\nvar result = numbers\n\t.Where(n => n % 2 == 0)\n\t.Select(n => n * n)\n\t.Where(n => n > 50)\n\t.OrderByDescending(n => n)\n\t.Take(5)\n\t.ToList();"
+    "code": "var numbers = Enumerable.Range(1, 20);\n\nvar result = numbers\n\t.Where(n => n % 2 == 0)\n\t.Select(n => n * n)\n\t.Where(n => n > 50)\n\t.OrderByDescending(n => n)\n\t.Take(5)\n\t.ToList();",
+    "length": "short"
   },
   {
     "id": "csharp-async",
     "language": "csharp",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "public async Task<string> FetchDataAsync(string url) {\n\tusing var client = new HttpClient();\n\tvar response = await client.GetAsync(url);\n\tresponse.EnsureSuccessStatusCode();\n\treturn await response.Content.ReadAsStringAsync();\n}\n\npublic async Task ProcessAsync() {\n\tvar data = await FetchDataAsync(\"https://api.example.com/data\");\n\tConsole.WriteLine(data);\n}"
+    "code": "public async Task<string> FetchDataAsync(string url) {\n\tusing var client = new HttpClient();\n\tvar response = await client.GetAsync(url);\n\tresponse.EnsureSuccessStatusCode();\n\treturn await response.Content.ReadAsStringAsync();\n}\n\npublic async Task ProcessAsync() {\n\tvar data = await FetchDataAsync(\"https://api.example.com/data\");\n\tConsole.WriteLine(data);\n}",
+    "length": "medium"
   },
   {
     "id": "csharp-extension-methods",
     "language": "csharp",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "public static class StringExtensions {\n\tpublic static bool IsPalindrome(this string s) {\n\t\ts = s.ToLower();\n\t\tint left = 0, right = s.Length - 1;\n\t\twhile (left < right) {\n\t\t\tif (s[left++] != s[right--]) return false;\n\t\t}\n\t\treturn true;\n\t}\n\n\tpublic static string Truncate(this string s, int maxLength) =>\n\t\ts.Length <= maxLength ? s : s[..maxLength] + \"...\";\n}"
+    "code": "public static class StringExtensions {\n\tpublic static bool IsPalindrome(this string s) {\n\t\ts = s.ToLower();\n\t\tint left = 0, right = s.Length - 1;\n\t\twhile (left < right) {\n\t\t\tif (s[left++] != s[right--]) return false;\n\t\t}\n\t\treturn true;\n\t}\n\n\tpublic static string Truncate(this string s, int maxLength) =>\n\t\ts.Length <= maxLength ? s : s[..maxLength] + \"...\";\n}",
+    "length": "medium"
   },
   {
     "id": "csharp-record",
     "language": "csharp",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "public record Point(double X, double Y) {\n\tpublic double DistanceTo(Point other) {\n\t\tdouble dx = X - other.X;\n\t\tdouble dy = Y - other.Y;\n\t\treturn Math.Sqrt(dx * dx + dy * dy);\n\t}\n\n\tpublic Point Translate(double dx, double dy) => this with {\n\t\tX = X + dx,\n\t\tY = Y + dy\n\t};\n}"
+    "code": "public record Point(double X, double Y) {\n\tpublic double DistanceTo(Point other) {\n\t\tdouble dx = X - other.X;\n\t\tdouble dy = Y - other.Y;\n\t\treturn Math.Sqrt(dx * dx + dy * dy);\n\t}\n\n\tpublic Point Translate(double dx, double dy) => this with {\n\t\tX = X + dx,\n\t\tY = Y + dy\n\t};\n}",
+    "length": "medium"
   },
   {
     "id": "csharp-events",
     "language": "csharp",
     "source": "design patterns",
     "difficulty": "medium",
-    "code": "public class EventEmitter<T> {\n\tpublic event EventHandler<T>? Changed;\n\n\tprivate T _value;\n\tpublic T Value {\n\t\tget => _value;\n\t\tset {\n\t\t\t_value = value;\n\t\t\tChanged?.Invoke(this, value);\n\t\t}\n\t}\n\n\tpublic EventEmitter(T initial) => _value = initial;\n}"
+    "code": "public class EventEmitter<T> {\n\tpublic event EventHandler<T>? Changed;\n\n\tprivate T _value;\n\tpublic T Value {\n\t\tget => _value;\n\t\tset {\n\t\t\t_value = value;\n\t\t\tChanged?.Invoke(this, value);\n\t\t}\n\t}\n\n\tpublic EventEmitter(T initial) => _value = initial;\n}",
+    "length": "short"
   },
   {
     "id": "csharp-pattern-matching",
     "language": "csharp",
     "source": "utility functions",
     "difficulty": "medium",
-    "code": "public static string Describe(object obj) => obj switch {\n\tint n when n < 0 => \"negative int\",\n\tint n when n == 0 => \"zero\",\n\tint n => $\"positive int: {n}\",\n\tstring s when s.Length == 0 => \"empty string\",\n\tstring s => $\"string: {s}\",\n\tnull => \"null\",\n\t_ => $\"unknown: {obj.GetType().Name}\"\n};"
+    "code": "public static string Describe(object obj) => obj switch {\n\tint n when n < 0 => \"negative int\",\n\tint n when n == 0 => \"zero\",\n\tint n => $\"positive int: {n}\",\n\tstring s when s.Length == 0 => \"empty string\",\n\tstring s => $\"string: {s}\",\n\tnull => \"null\",\n\t_ => $\"unknown: {obj.GetType().Name}\"\n};",
+    "length": "medium"
   },
   {
     "id": "csharp-singleton",
     "language": "csharp",
     "source": "design patterns",
     "difficulty": "easy",
-    "code": "public sealed class Singleton {\n\tprivate static readonly Lazy<Singleton> _instance =\n\t\tnew(() => new Singleton());\n\n\tprivate Singleton() {}\n\n\tpublic static Singleton Instance => _instance.Value;\n\n\tpublic void DoWork() {\n\t\tConsole.WriteLine(\"working...\");\n\t}\n}"
+    "code": "public sealed class Singleton {\n\tprivate static readonly Lazy<Singleton> _instance =\n\t\tnew(() => new Singleton());\n\n\tprivate Singleton() {}\n\n\tpublic static Singleton Instance => _instance.Value;\n\n\tpublic void DoWork() {\n\t\tConsole.WriteLine(\"working...\");\n\t}\n}",
+    "length": "short"
   },
   {
     "id": "csharp-builder",
     "language": "csharp",
     "source": "design patterns",
     "difficulty": "medium",
-    "code": "public class QueryBuilder {\n\tprivate readonly List<string> _conditions = new();\n\tprivate string _table = string.Empty;\n\tprivate int _limit = 100;\n\n\tpublic QueryBuilder From(string table) { _table = table; return this; }\n\tpublic QueryBuilder Where(string cond) { _conditions.Add(cond); return this; }\n\tpublic QueryBuilder Limit(int limit) { _limit = limit; return this; }\n\n\tpublic string Build() {\n\t\tvar joined = string.Join(\" AND \", _conditions);\n\t\tvar where = _conditions.Any() ? $\" WHERE {joined}\" : \"\";\n\t\treturn $\"SELECT * FROM {_table}{where} LIMIT {_limit}\";\n\t}\n}"
+    "code": "public class QueryBuilder {\n\tprivate readonly List<string> _conditions = new();\n\tprivate string _table = string.Empty;\n\tprivate int _limit = 100;\n\n\tpublic QueryBuilder From(string table) { _table = table; return this; }\n\tpublic QueryBuilder Where(string cond) { _conditions.Add(cond); return this; }\n\tpublic QueryBuilder Limit(int limit) { _limit = limit; return this; }\n\n\tpublic string Build() {\n\t\tvar joined = string.Join(\" AND \", _conditions);\n\t\tvar where = _conditions.Any() ? $\" WHERE {joined}\" : \"\";\n\t\treturn $\"SELECT * FROM {_table}{where} LIMIT {_limit}\";\n\t}\n}",
+    "length": "long"
   },
   {
     "id": "csharp-fibonacci",
     "language": "csharp",
     "source": "classic algorithm",
     "difficulty": "easy",
-    "code": "public static IEnumerable<long> Fibonacci() {\n\tlong a = 0, b = 1;\n\twhile (true) {\n\t\tyield return a;\n\t\t(a, b) = (b, a + b);\n\t}\n}\n\nvar first10 = Fibonacci().Take(10).ToList();"
+    "code": "public static IEnumerable<long> Fibonacci() {\n\tlong a = 0, b = 1;\n\twhile (true) {\n\t\tyield return a;\n\t\t(a, b) = (b, a + b);\n\t}\n}\n\nvar first10 = Fibonacci().Take(10).ToList();",
+    "length": "short"
   },
   {
     "id": "csharp-two-sum",
     "language": "csharp",
     "source": "leetcode",
     "difficulty": "easy",
-    "code": "public int[] TwoSum(int[] nums, int target) {\n\tvar seen = new Dictionary<int, int>();\n\tfor (int i = 0; i < nums.Length; i++) {\n\t\tint complement = target - nums[i];\n\t\tif (seen.TryGetValue(complement, out int j)) {\n\t\t\treturn [j, i];\n\t\t}\n\t\tseen[nums[i]] = i;\n\t}\n\treturn [];\n}"
+    "code": "public int[] TwoSum(int[] nums, int target) {\n\tvar seen = new Dictionary<int, int>();\n\tfor (int i = 0; i < nums.Length; i++) {\n\t\tint complement = target - nums[i];\n\t\tif (seen.TryGetValue(complement, out int j)) {\n\t\t\treturn [j, i];\n\t\t}\n\t\tseen[nums[i]] = i;\n\t}\n\treturn [];\n}",
+    "length": "short"
   },
   {
     "id": "csharp-merge-sort",
     "language": "csharp",
     "source": "classic algorithm",
     "difficulty": "hard",
-    "code": "public static int[] MergeSort(int[] arr) {\n\tif (arr.Length <= 1) return arr;\n\tint mid = arr.Length / 2;\n\tvar left = MergeSort(arr[..mid]);\n\tvar right = MergeSort(arr[mid..]);\n\treturn Merge(left, right);\n}\n\nstatic int[] Merge(int[] left, int[] right) {\n\tvar result = new int[left.Length + right.Length];\n\tint i = 0, j = 0, k = 0;\n\twhile (i < left.Length && j < right.Length)\n\t\tresult[k++] = left[i] <= right[j] ? left[i++] : right[j++];\n\twhile (i < left.Length) result[k++] = left[i++];\n\twhile (j < right.Length) result[k++] = right[j++];\n\treturn result;\n}"
+    "code": "public static int[] MergeSort(int[] arr) {\n\tif (arr.Length <= 1) return arr;\n\tint mid = arr.Length / 2;\n\tvar left = MergeSort(arr[..mid]);\n\tvar right = MergeSort(arr[mid..]);\n\treturn Merge(left, right);\n}\n\nstatic int[] Merge(int[] left, int[] right) {\n\tvar result = new int[left.Length + right.Length];\n\tint i = 0, j = 0, k = 0;\n\twhile (i < left.Length && j < right.Length)\n\t\tresult[k++] = left[i] <= right[j] ? left[i++] : right[j++];\n\twhile (i < left.Length) result[k++] = left[i++];\n\twhile (j < right.Length) result[k++] = right[j++];\n\treturn result;\n}",
+    "length": "long"
   },
   {
     "id": "csharp-interface",
     "language": "csharp",
     "source": "object oriented",
     "difficulty": "medium",
-    "code": "public interface IRepository<T> {\n\tTask<T?> GetByIdAsync(int id);\n\tTask<IEnumerable<T>> GetAllAsync();\n\tTask AddAsync(T entity);\n\tTask DeleteAsync(int id);\n}\n\npublic class UserRepository : IRepository<User> {\n\tprivate readonly AppDbContext _db;\n\tpublic UserRepository(AppDbContext db) => _db = db;\n\tpublic async Task<User?> GetByIdAsync(int id) =>\n\t\tawait _db.Users.FindAsync(id);\n}"
+    "code": "public interface IRepository<T> {\n\tTask<T?> GetByIdAsync(int id);\n\tTask<IEnumerable<T>> GetAllAsync();\n\tTask AddAsync(T entity);\n\tTask DeleteAsync(int id);\n}\n\npublic class UserRepository : IRepository<User> {\n\tprivate readonly AppDbContext _db;\n\tpublic UserRepository(AppDbContext db) => _db = db;\n\tpublic async Task<User?> GetByIdAsync(int id) =>\n\t\tawait _db.Users.FindAsync(id);\n}",
+    "length": "long"
   },
   {
     "id": "csharp-observable",
     "language": "csharp",
     "source": "design patterns",
     "difficulty": "hard",
-    "code": "public class Observable<T> {\n\tprivate readonly List<Action<T>> _observers = new();\n\n\tpublic IDisposable Subscribe(Action<T> observer) {\n\t\t_observers.Add(observer);\n\t\treturn new Unsubscriber(() => _observers.Remove(observer));\n\t}\n\n\tpublic void Notify(T value) => _observers.ForEach(o => o(value));\n\n\tprivate class Unsubscriber(Action onDispose) : IDisposable {\n\t\tpublic void Dispose() => onDispose();\n\t}\n}"
+    "code": "public class Observable<T> {\n\tprivate readonly List<Action<T>> _observers = new();\n\n\tpublic IDisposable Subscribe(Action<T> observer) {\n\t\t_observers.Add(observer);\n\t\treturn new Unsubscriber(() => _observers.Remove(observer));\n\t}\n\n\tpublic void Notify(T value) => _observers.ForEach(o => o(value));\n\n\tprivate class Unsubscriber(Action onDispose) : IDisposable {\n\t\tpublic void Dispose() => onDispose();\n\t}\n}",
+    "length": "long"
   }
 ]

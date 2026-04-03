@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { State } from "@/hooks/useEngine";
 import LineNumbers from "./LineNumbers";
 import TypingOverlay from "./TypingOverlay";
+import useLineWindow, { VISIBLE_LINES } from "@/hooks/useLineWindow";
 
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -31,7 +32,36 @@ export default function CodeTypingArea({
     autoCompleteBrackets,
     theme = atomOneDark,
 }: TypingAreaProps) {
-    const lineCount = useMemo(() => code.split("\n").length, [code]);
+    const { windowStart, visibleCode, charOffset } = useLineWindow(code, typed);
+
+    // typed chars starting from the visible window
+    const visibleTyped = typed.slice(charOffset);
+
+    // remap bracket pair indices to be relative to the visible window
+    const visibleBracketPairs = useMemo(() => {
+        if (!bracketPairs) return undefined;
+        const visibleEnd = charOffset + visibleCode.length;
+        const adjusted = new Map<number, number>();
+        for (const [opening, closing] of bracketPairs) {
+            if (opening >= charOffset && closing < visibleEnd) {
+                adjusted.set(opening - charOffset, closing - charOffset);
+            }
+        }
+        return adjusted;
+    }, [bracketPairs, charOffset, visibleCode.length]);
+
+    // remap correctly-typed opening indices to be relative to the visible window
+    const visibleCorrectlyTypedOpenings = useMemo(() => {
+        if (!correctlyTypedOpenings) return undefined;
+        const adjusted = new Set<number>();
+        for (const opening of correctlyTypedOpenings) {
+            const relativeIdx = opening - charOffset;
+            if (relativeIdx >= 0 && relativeIdx < visibleCode.length) {
+                adjusted.add(relativeIdx);
+            }
+        }
+        return adjusted;
+    }, [correctlyTypedOpenings, charOffset, visibleCode.length]);
 
     // get rid of the bold and italic styles that mess up the overlay
     const fixedSyntaxStyle = useMemo(
@@ -50,7 +80,8 @@ export default function CodeTypingArea({
             <div className="font-mono text-md sm:text-lg md:text-xl lg:text-2xl xl:text-3xl w-full">
                 <div className="flex pr-2 pb-2sm:pr-3 sm:pb-3 md:pr-4 md:pb-4 w-full">
                     <LineNumbers
-                        lineCount={Math.max(lineCount, 10)}
+                        lineCount={VISIBLE_LINES}
+                        startFrom={windowStart + 1}
                         className="mr-2 sm:mr-3 md:mr-4"
                     />
                     <motion.div
@@ -64,7 +95,6 @@ export default function CodeTypingArea({
                         <SyntaxHighlighter
                             language={language}
                             style={fixedSyntaxStyle}
-                            // showLineNumbers={true}
                             lineNumberStyle={{ color: "#71717b" }}
                             customStyle={{
                                 background: "transparent",
@@ -74,14 +104,14 @@ export default function CodeTypingArea({
                                 overflow: "visible", // stops the scrollbar from cutting off stuff when too big
                             }}
                         >
-                            {code}
+                            {visibleCode}
                         </SyntaxHighlighter>
                         <TypingOverlay
-                            code={code}
-                            typed={typed}
+                            code={visibleCode}
+                            typed={visibleTyped}
                             state={state}
-                            bracketPairs={bracketPairs}
-                            correctlyTypedOpenings={correctlyTypedOpenings}
+                            bracketPairs={visibleBracketPairs}
+                            correctlyTypedOpenings={visibleCorrectlyTypedOpenings}
                             autoCompleteBrackets={autoCompleteBrackets}
                         />
                     </motion.div>
