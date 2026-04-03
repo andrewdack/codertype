@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Mail } from "lucide-react";
+import { GithubLogo, Envelope } from "@phosphor-icons/react";
 
 export default function LoginPage() {
     return (
@@ -17,12 +17,12 @@ export default function LoginPage() {
                 <div className="border border-border rounded-lg p-8">
                     <div className="space-y-4">
                         <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-border rounded-lg hover:bg-muted transition-colors">
-                            <Github className="w-5 h-5" />
+                            <GithubLogo weight="thin" className="w-5 h-5" />
                             <span>Continue with GitHub</span>
                         </button>
 
                         <button className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-border rounded-lg hover:bg-muted transition-colors">
-                            <Mail className="w-5 h-5" />
+                            <Envelope weight="thin" className="w-5 h-5" />
                             <span>Continue with Email</span>
                         </button>
                     </div>

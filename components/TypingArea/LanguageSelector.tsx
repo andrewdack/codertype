@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { ChevronDown } from "lucide-react";
+import { CaretDown } from "@phosphor-icons/react";
 import { Language, LANGUAGE_ICONS as ICONS } from "@/lib/snippets";
 import LanguageModal from "./LanguageModal";
 import { motion, AnimatePresence } from "framer-motion";
@@ -70,7 +70,7 @@ export default function LanguageSelector({
                             }
                         />
                         <span>{selectedLanguage}</span>
-                        <ChevronDown className="w-3 h-3" />
+                        <CaretDown weight="thin" className="w-3 h-3" />
                     </button>
                     <LanguageModal
                         isOpen={isOpen}

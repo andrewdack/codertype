@@ -7,6 +7,8 @@ interface TypingOverlayProps {
     code: string;
     typed: string;
     state: State;
+    charOffset?: number;    // where the visible window starts in the full code
+    visibleLength?: number; // how many chars of code to render
     bracketPairs?: Map<number, number>;
     correctlyTypedOpenings?: Set<number>;
     autoCompleteBrackets?: boolean;
@@ -16,27 +18,25 @@ export default function TypingOverlay({
     code,
     typed,
     state,
+    charOffset = 0,
+    visibleLength,
     bracketPairs = new Map(),
     correctlyTypedOpenings = new Set(),
     autoCompleteBrackets = true,
 }: TypingOverlayProps) {
-    const chars = code.split("");
+    const endOffset = visibleLength !== undefined ? charOffset + visibleLength : code.length;
+    const chars = code.split("").slice(charOffset, endOffset);
 
-    // Helper to check if index is a closing bracket for a correctly typed adjacent opening
-    const isAutoCompletedClosing = (index: number): boolean => {
+    // all indices here are full-code indices, matching bracketPairs and correctlyTypedOpenings
+    const isAutoCompletedClosing = (fullIndex: number): boolean => {
         if (!autoCompleteBrackets) return false;
         for (const [opening, closing] of bracketPairs.entries()) {
-            if (closing === index) {
-                // Check if the opening was typed correctly
-                // Note: typed.length - 1 is the cursor position (last typed char)
+            if (closing === fullIndex) {
                 const cursorPos = typed.length;
                 const openingTypedCorrectly =
-                    (cursorPos === opening + 1 && typed[opening] === code[opening]) || // Just typed the opening
-                    (typed.length > opening && typed[opening] === code[opening]); // Already typed correctly
-
-                if (openingTypedCorrectly) {
-                    return true;
-                }
+                    (cursorPos === opening + 1 && typed[opening] === code[opening]) ||
+                    (typed.length > opening && typed[opening] === code[opening]);
+                if (openingTypedCorrectly) return true;
             }
         }
         return false;
@@ -45,19 +45,17 @@ export default function TypingOverlay({
     return (
         <pre className="absolute inset-0 m-0">
             <code>
-                {chars.map((char, index) => {
-                    const isCursor = index === typed.length;
-                    const isTyped = index < typed.length;
-                    const isCorrect = isTyped && typed[index] === char;
+                {chars.map((char, i) => {
+                    const fullIndex = i + charOffset;
+                    const isCursor = fullIndex === typed.length;
+                    const isTyped = fullIndex < typed.length;
+                    const isCorrect = isTyped && typed[fullIndex] === char;
                     const isIncorrect = isTyped && !isCorrect;
                     const isNewline = char === "\n";
-                    const isSpace = char === " ";
-                    const isTab = char === "\t";
-                    const isAutoClosed =
-                        !isTyped && isAutoCompletedClosing(index);
+                    const isAutoClosed = !isTyped && isAutoCompletedClosing(fullIndex);
 
                     return (
-                        <Fragment key={index}>
+                        <Fragment key={fullIndex}>
                             {isCursor && <Caret blinking={state !== "run"} />}
                             {isNewline ? (
                                 // newline UI

@@ -16,8 +16,12 @@ export default function useLineWindow(code: string, typed: string): LineWindow {
     const lines = useMemo(() => code.split("\n"), [code]);
     const totalLines = lines.length;
 
-    // which line (0-indexed) the cursor is currently on
-    const cursorLine = useMemo(() => typed.split("\n").length - 1, [typed]);
+    // which line (0-indexed) the cursor is on, based on target code position rather than
+    // typed content — avoids stalling if user pressed a wrong key at a newline position
+    const cursorLine = useMemo(
+        () => code.slice(0, typed.length).split("\n").length - 1,
+        [code, typed],
+    );
 
     // reset when the snippet changes
     useEffect(() => {
@@ -27,8 +31,8 @@ export default function useLineWindow(code: string, typed: string): LineWindow {
     // advance the window when the cursor enters SCROLL_TRIGGER_LINE of the visible window
     useEffect(() => {
         const maxWindowStart = Math.max(0, totalLines - VISIBLE_LINES);
-        // after a shift, cursor should land on (SCROLL_TRIGGER_LINE - 1) of the new window,
-        // so: windowStart = cursorLine - (SCROLL_TRIGGER_LINE - 2)
+        // after a shift, cursor lands on (SCROLL_TRIGGER_LINE - 1) of the new window,
+        // so: desiredStart = cursorLine - (SCROLL_TRIGGER_LINE - 2)
         const desiredStart = cursorLine - (SCROLL_TRIGGER_LINE - 2);
         if (desiredStart > windowStart) {
             setWindowStart(Math.min(desiredStart, maxWindowStart));

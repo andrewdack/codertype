@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Terminal, Code2, Info, Settings, User, Trophy, SquareTerminal } from "lucide-react";
+import { SquareTerminal } from "lucide-react";
+import { Trophy, Info, Gear, User } from "@phosphor-icons/react/dist/ssr";
 
 export default function Navbar({ className }: { className?: string }) {
     return (
@@ -23,21 +24,21 @@ export default function Navbar({ className }: { className?: string }) {
                             className="text-muted-foreground hover:text-foreground transition-colors"
                             title="Code Library"
                         >
-                            <Trophy className="w-6 h-6 sm:w-8 sm:h-8" />
+                            <Trophy weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
                         </Link>
                         <Link
                             href="/about"
                             className="text-muted-foreground hover:text-foreground transition-colors"
                             title="About"
                         >
-                            <Info className="w-6 h-6 sm:w-8 sm:h-8" />
+                            <Info weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
                         </Link>
                         <Link
                             href="/settings"
                             className="text-muted-foreground hover:text-foreground transition-colors"
                             title="Settings"
                         >
-                            <Settings className="w-6 h-6 sm:w-8 sm:h-8" />
+                            <Gear weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
                         </Link>
                     </div>
                 </div>
@@ -48,7 +49,7 @@ export default function Navbar({ className }: { className?: string }) {
                     className="text-muted-foreground hover:text-foreground transition-colors"
                     title="Login"
                 >
-                    <User className="w-6 h-6 sm:w-8 sm:h-8" />
+                    <User weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
                 </Link>
             </div>
         </nav>

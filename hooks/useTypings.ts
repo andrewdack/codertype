@@ -105,7 +105,6 @@ export default function useTypings(
                         }
                         return newCursor;
                     });
-                    totalTyped.current -= 1;
                     break;
                 case "Tab":
                     setTyped((prevTypedKeys) => {
@@ -261,6 +260,7 @@ export default function useTypings(
 
     const resetTotalTyped = useCallback(() => {
         totalTyped.current = 0;
+        totalErrors.current = 0;
     }, []);
 
     useEffect(() => {

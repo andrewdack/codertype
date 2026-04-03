@@ -11,7 +11,7 @@ import {
     dark,
     nightOwl,
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Palette, ChevronUp, ChevronDown, X } from "lucide-react";
+import { CaretUp, CaretDown } from "@phosphor-icons/react";
 import { useRef, useState, useEffect, CSSProperties, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -106,9 +106,9 @@ export default function ThemeSelector({
                 {/* <Palette className="w-4 h-4 sm:w-6 sm:h-6" /> */}
                 <span className="hidden sm:inline">{selectedThemeName}</span>
                 {open ? (
-                    <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <CaretDown weight="thin" className="w-3 h-3 sm:w-4 sm:h-4" />
                 ) : (
-                    <ChevronUp className="w-3 h-3 sm:w-4 sm:h-4" />
+                    <CaretUp weight="thin" className="w-3 h-3 sm:w-4 sm:h-4" />
                 )}
             </button>
         </div>

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useCallback, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { X } from "@phosphor-icons/react";
 import { Language, LANGUAGES, LANGUAGE_ICONS as ICONS } from "@/lib/snippets";
 
 interface LanguageModalProps {
@@ -81,7 +81,7 @@ export default function LanguageModal({
                                 onClick={onClose}
                                 className="text-muted-foreground hover:text-foreground transition-colors"
                             >
-                                <X className="w-4 h-4" />
+                                <X weight="thin" className="w-4 h-4" />
                             </button>
                         </div>
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, Github } from "lucide-react";
+import { Envelope, GithubLogo } from "@phosphor-icons/react/dist/ssr";
 import ThemeSelector, { Theme } from "./ThemeSelector";
 
 interface FooterProps {
@@ -16,7 +16,7 @@ export default function Footer({ selectedThemeName, onSelectTheme }: FooterProps
                         href="mailto:dackcodes@gmail.com"
                         className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors"
                     >
-                        <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <Envelope weight="thin" className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">contact</span>
                     </Link>
                     <Link
@@ -24,7 +24,7 @@ export default function Footer({ selectedThemeName, onSelectTheme }: FooterProps
                         className="inline-flex items-center gap-1 leading-none hover:text-foreground transition-colors"
                         target="_blank"
                     >
-                        <Github className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <GithubLogo weight="thin" className="w-3 h-3 sm:w-4 sm:h-4" />
                         <span className="hidden sm:inline">gitHub</span>
                     </Link>
                 </div>

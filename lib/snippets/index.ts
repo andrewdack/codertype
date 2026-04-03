@@ -49,11 +49,14 @@ export const LABELS: Record<Language, string> = {
     swift: "Swift",
 };
 
+export type Length = "short" | "medium" | "long";
+
 export type Snippet = {
     id: string;
     language: Language;
     source: string;
     difficulty: Difficulty;
+    length: Length;
     code: string;
 };
 

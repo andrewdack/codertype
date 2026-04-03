@@ -1,4 +1,4 @@
-import { Terminal, Code2, Zap, Target } from "lucide-react";
+import { Terminal, Code, Lightning, Target } from "@phosphor-icons/react/dist/ssr";
 
 export default function AboutPage() {
     const features = [
@@ -9,13 +9,13 @@ export default function AboutPage() {
                 "Practice typing with actual code snippets from popular programming languages",
         },
         {
-            icon: Code2,
+            icon: Code,
             title: "Multiple Languages",
             description:
                 "Support for Python, JavaScript, Java, and more programming languages",
         },
         {
-            icon: Zap,
+            icon: Lightning,
             title: "Fast & Accurate",
             description:
                 "Track your WPM and accuracy with real-time feedback as you type",
@@ -46,7 +46,7 @@ export default function AboutPage() {
                             key={feature.title}
                             className="border border-border rounded-lg p-6"
                         >
-                            <feature.icon className="w-8 h-8 mb-4 text-muted-foreground" />
+                            <feature.icon weight="thin" className="w-8 h-8 mb-4 text-muted-foreground" />
                             <h3 className="text-lg font-semibold mb-2">
                                 {feature.title}
                             </h3>

@@ -34,35 +34,6 @@ export default function CodeTypingArea({
 }: TypingAreaProps) {
     const { windowStart, visibleCode, charOffset } = useLineWindow(code, typed);
 
-    // typed chars starting from the visible window
-    const visibleTyped = typed.slice(charOffset);
-
-    // remap bracket pair indices to be relative to the visible window
-    const visibleBracketPairs = useMemo(() => {
-        if (!bracketPairs) return undefined;
-        const visibleEnd = charOffset + visibleCode.length;
-        const adjusted = new Map<number, number>();
-        for (const [opening, closing] of bracketPairs) {
-            if (opening >= charOffset && closing < visibleEnd) {
-                adjusted.set(opening - charOffset, closing - charOffset);
-            }
-        }
-        return adjusted;
-    }, [bracketPairs, charOffset, visibleCode.length]);
-
-    // remap correctly-typed opening indices to be relative to the visible window
-    const visibleCorrectlyTypedOpenings = useMemo(() => {
-        if (!correctlyTypedOpenings) return undefined;
-        const adjusted = new Set<number>();
-        for (const opening of correctlyTypedOpenings) {
-            const relativeIdx = opening - charOffset;
-            if (relativeIdx >= 0 && relativeIdx < visibleCode.length) {
-                adjusted.add(relativeIdx);
-            }
-        }
-        return adjusted;
-    }, [correctlyTypedOpenings, charOffset, visibleCode.length]);
-
     // get rid of the bold and italic styles that mess up the overlay
     const fixedSyntaxStyle = useMemo(
         () =>
@@ -106,12 +77,15 @@ export default function CodeTypingArea({
                         >
                             {visibleCode}
                         </SyntaxHighlighter>
+                        {/* overlay receives full code/typed so bracket indices stay valid */}
                         <TypingOverlay
-                            code={visibleCode}
-                            typed={visibleTyped}
+                            code={code}
+                            typed={typed}
                             state={state}
-                            bracketPairs={visibleBracketPairs}
-                            correctlyTypedOpenings={visibleCorrectlyTypedOpenings}
+                            charOffset={charOffset}
+                            visibleLength={visibleCode.length}
+                            bracketPairs={bracketPairs}
+                            correctlyTypedOpenings={correctlyTypedOpenings}
                             autoCompleteBrackets={autoCompleteBrackets}
                         />
                     </motion.div>

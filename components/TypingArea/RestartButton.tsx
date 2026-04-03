@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import { RotateCw } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 
 export default function RestartButton({
     onRestart: handleRestart,
@@ -23,7 +23,7 @@ export default function RestartButton({
             className={`block rounded px-8 py-2 text-muted-foreground hover:text-foreground transition-colors ${className}`}
             onClick={handleClick}
         >
-            <RotateCw className="h-6 w-6" />
+            <RotateCcw className="h-5 w-5" strokeWidth={1.5} />
         </button>
     );
 }
