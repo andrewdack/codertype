@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import CountdownTimer from "@/components/CountdownTimer";
-import RestartButton from "@/components/RestartButton";
+import CountdownTimer from "@/components/TypingArea/CountdownTimer";
+import RestartButton from "@/components/TypingArea/RestartButton";
 import Footer from "@/components/Footer/Footer";
-import Results from "@/components/Results";
+import Results from "@/components/TypingArea/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
-import LanguageSelectorButton from "@/components/LanguageSelector";
+import LanguageSelectorButton from "@/components/TypingArea/LanguageSelector";
 import useEngine from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
