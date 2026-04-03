@@ -11,6 +11,7 @@ import useEngine from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
 import { AnimatePresence, motion } from "framer-motion";
+import TypingSettingsSelector from "@/components/TypingSettingsSelector";
 
 import * as stats from "@/utils/stats";
 
@@ -59,8 +60,9 @@ export default function Home() {
 
     return (
         <>
-            <main className="flex flex-col flex-1 items-center justify-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
-                <div className="w-full flex flex-col gap-3 sm:gap-4">
+            <main className="flex flex-col flex-1 items-center  gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
+                <TypingSettingsSelector></TypingSettingsSelector>
+                <div className="w-full flex flex-col gap-3 sm:gap-4 mt-[10vh]">
                     <div className="grid grid-cols-3 items-center w-full">
                         <CountdownTimer
                             timeLeft={timeLeft}
@@ -95,18 +97,6 @@ export default function Home() {
                             />
                         </motion.div>
                     </AnimatePresence>
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            className="flex justify-center"
-                            key={snippet.id}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.15 }}
-                        >
-                            <RestartButton onRestart={restart} />
-                        </motion.div>
-                    </AnimatePresence>
                 </div>
                 <Results
                     state={state}
@@ -117,6 +107,7 @@ export default function Home() {
                     adjwpm={parseFloat(adjwpm.toFixed(2))}
                     total={totalTyped}
                 />
+                <RestartButton onRestart={restart} />
             </main>
             <Footer
                 selectedThemeName={selectedThemeName}
