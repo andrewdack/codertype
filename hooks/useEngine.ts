@@ -1,36 +1,34 @@
 import { useCallback, useState, useEffect, useMemo } from "react";
-// import useWords from "./useWords";
 import useSnippet from "./useSnippet";
-import useCountdownTimer from "./useCountdownTimer";
+import useTimer, { TimerMode } from "./useTimer";
 import useTypings from "./useTypings";
-import { countErrors } from "@/utils/stats";
-import { type Language } from "@/lib/snippets";
+import { type Language, type Length } from "@/lib/snippets";
 import { generateBracketPairs } from "@/utils/bracketMatching";
 
 export type State = "start" | "run" | "finish";
-const COUNTDOWN_SECONDS = 30;
+export type { TimerMode };
 
-export default function useEngine(language: Language = "javascript") {
+
+    
+export default function useEngine(
+    language: Language = "javascript",
+    timerMode: TimerMode,
+    countdownSeconds: number,
+    lengthFilter?: Length,
+) {
     const [state, setState] = useState<State>("start");
-    const { snippet, nextSnippet } = useSnippet(language);
-    const { timeLeft, startCountdown, resetCountdown } =
-        useCountdownTimer(COUNTDOWN_SECONDS);
+    const { snippet, nextSnippet } = useSnippet(language, lengthFilter);
+    const { value: timerValue, start: startTimer, reset: resetTimer } = useTimer(timerMode, countdownSeconds);
 
-    // Auto-complete brackets toggle
     const [autoCompleteBrackets, setAutoCompleteBrackets] = useState(true);
 
     const words = snippet.code;
     const [startTime, setStartTime] = useState(-1);
     const [endTime, setEndTime] = useState(-1);
-    // Generate bracket pairs map when snippet changes
-    const bracketPairs = useMemo(() => {
-        return generateBracketPairs(words);
-    }, [words]);
 
-    // Track which opening brackets have been correctly typed
-    const [correctlyTypedOpenings, setCorrectlyTypedOpenings] = useState<
-        Set<number>
-    >(new Set());
+    const bracketPairs = useMemo(() => generateBracketPairs(words), [words]);
+
+    const [correctlyTypedOpenings, setCorrectlyTypedOpenings] = useState<Set<number>>(new Set());
 
     const { typed, cursor, clearTyped, resetTotalTyped, totalTyped, totalErrors } =
         useTypings(
@@ -45,47 +43,33 @@ export default function useEngine(language: Language = "javascript") {
     const isStarting = state === "start" && cursor > 0;
     const areWordsFinished = typed.length === words.length;
 
-    // Calculate total errors: real-time tracking + additional errors from countErrors
-    const calculatedErrors = useMemo(() => {
-        // return totalErrors + countErrors(typed, words);
-        return totalErrors;
-    }, [totalErrors, typed, words]);
+    const calculatedErrors = useMemo(() => totalErrors, [totalErrors]);
 
     useEffect(() => {
         if (isStarting) {
             setState("run");
-            startCountdown();
+            startTimer();
             setStartTime(Date.now());
         }
-    }, [isStarting, startCountdown, cursor]);
+    }, [isStarting, startTimer, cursor]);
 
+    // only countdown mode ends the test when time runs out
     useEffect(() => {
-        if (timeLeft <= 0) {
-            console.log("timer up");
-            resetCountdown()
+        if (timerMode === "countdown" && timerValue <= 0) {
+            resetTimer();
             setState("finish");
             setEndTime(Date.now());
         }
-    }, [timeLeft]);
+    }, [timerValue, timerMode, resetTimer]);
 
-    // when the current snippet is finished, load the next one
     useEffect(() => {
         if (areWordsFinished) {
-            console.log("snippet finished, loading next...");
-            resetCountdown()
+            resetTimer();
             setState("finish");
             setEndTime(Date.now());
         }
-    }, [
-        cursor,
-        words,
-        clearTyped,
-        typed,
-        areWordsFinished,
-        nextSnippet,
-    ]);
+    }, [cursor, words, typed, areWordsFinished, resetTimer]);
 
-    // Clear correctly typed openings when auto-complete is turned off
     useEffect(() => {
         if (!autoCompleteBrackets) {
             setCorrectlyTypedOpenings(new Set());
@@ -93,18 +77,19 @@ export default function useEngine(language: Language = "javascript") {
     }, [autoCompleteBrackets]);
 
     const restart = useCallback(() => {
-        resetCountdown(); 
+        resetTimer();
         resetTotalTyped();
         setState("start");
         nextSnippet();
         clearTyped();
         setCorrectlyTypedOpenings(new Set());
-    }, [clearTyped, nextSnippet, resetCountdown, resetTotalTyped]);
+    }, [clearTyped, nextSnippet, resetTimer, resetTotalTyped]);
 
     return {
         state,
         words,
-        timeLeft,
+        timerValue,
+        timerMode,
         typed,
         errors: calculatedErrors,
         durationMilliseconds: endTime - startTime,

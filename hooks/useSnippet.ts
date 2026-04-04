@@ -1,45 +1,47 @@
 "use client";
 
-import { useCallback, useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect } from "react";
 import {
     type Language,
+    type Length,
     type Snippet,
     snippetsByLanguage,
 } from "@/lib/snippets";
 
-function pickRandom(language: Language): Snippet {
-    const pool = snippetsByLanguage[language];
+function pickRandomFromPool(pool: Snippet[]): Snippet {
     return pool[Math.floor(Math.random() * pool.length)];
 }
 
-export default function useSnippet(language: Language = "python") {
-    const [snippet, setSnippet] = useState<Snippet>(snippetsByLanguage[language][0]);
-    const isMounted = useRef(false);
+export default function useSnippet(language: Language = "python", lengthFilter?: Length) {
+    const getPool = useCallback(() => {
+        const all = snippetsByLanguage[language];
+        if (!lengthFilter) return all;
+        const filtered = all.filter((s) => s.length === lengthFilter);
+        return filtered.length > 0 ? filtered : all;
+    }, [language, lengthFilter]);
+
+    // deterministic initial value for SSR; randomized on client after hydration via effect
+    const [snippet, setSnippet] = useState<Snippet>(() => getPool()[0]);
 
     useEffect(() => {
-        if (!isMounted.current) {
-            isMounted.current = true;
-            return;
-        }
-        setSnippet(pickRandom(language));
-    }, [language]);
+        setSnippet(pickRandomFromPool(getPool()));
+    }, [language, lengthFilter, getPool]);
 
     const nextSnippet = useCallback(() => {
-        const pool = snippetsByLanguage[language];
+        const pool = getPool();
         if (pool.length <= 1) {
             setSnippet(pool[0]);
             return;
         }
-        // use functional update to access current state and avoid stale closure
         setSnippet((current) => {
-            let next = pickRandom(language);
+            let next = pickRandomFromPool(pool);
             let attempts = 0;
             while (next.id === current.id && attempts++ < 5) {
-                next = pickRandom(language);
+                next = pickRandomFromPool(pool);
             }
             return next;
         });
-    }, [language]);
+    }, [getPool]);
 
     return { snippet, nextSnippet };
 }

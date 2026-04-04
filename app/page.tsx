@@ -1,29 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import CountdownTimer from "@/components/TypingArea/CountdownTimer";
+import { useEffect, useState } from "react";
+import Timer from "@/components/TypingArea/Timer";
 import RestartButton from "@/components/TypingArea/RestartButton";
 import Footer from "@/components/Footer/Footer";
 import Results from "@/components/TypingArea/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
 import LanguageSelectorButton from "@/components/TypingArea/LanguageSelector";
-import useEngine from "@/hooks/useEngine";
-import { Language } from "@/lib/snippets";
+import useEngine, { TimerMode } from "@/hooks/useEngine";
+import { Language, Length } from "@/lib/snippets";
 import { DEFAULT_THEME, Theme } from "@/components/Footer/ThemeSelector";
 import { AnimatePresence, motion } from "framer-motion";
-import TypingSettingsSelector from "@/components/TypingSettingsSelector";
+import TypingSettingsSelector, { TypingSettings } from "@/components/TypingSettingsSelector";
 
 import * as stats from "@/utils/stats";
 
 export default function Home() {
-    const [selectedLanguage, setSelectedLanguage] =
-        useState<Language>("python");
-    const [selectedThemeName, setSelectedThemeName] = useState(
-        DEFAULT_THEME.name,
-    );
-    const [selectedThemeStyle, setSelectedThemeStyle] = useState<Theme>(
-        DEFAULT_THEME.style,
-    );
+    const [selectedLanguage, setSelectedLanguage] = useState<Language>("python");
+    const [selectedThemeName, setSelectedThemeName] = useState(DEFAULT_THEME.name);
+    const [selectedThemeStyle, setSelectedThemeStyle] = useState<Theme>(DEFAULT_THEME.style);
+    const [settings, setSettings] = useState<TypingSettings>({
+        type: "time",
+        time: 30,
+        length: "medium",
+    });
+
+    const timerMode: TimerMode =
+        settings.type === "length" || settings.time === "inf" ? "stopwatch" : "countdown";
+    const countdownSeconds =
+        settings.type === "time" && settings.time !== "inf" ? settings.time : 30;
+    const lengthFilter: Length | undefined =
+        settings.type === "length" ? settings.length : undefined;
 
     function handleSelectTheme(name: string, style: Theme) {
         setSelectedThemeName(name);
@@ -33,7 +40,7 @@ export default function Home() {
     const {
         state,
         words,
-        timeLeft,
+        timerValue,
         typed,
         errors,
         totalTyped,
@@ -44,12 +51,9 @@ export default function Home() {
         autoCompleteBrackets,
         setAutoCompleteBrackets,
         durationMilliseconds,
-    } = useEngine(selectedLanguage);
+    } = useEngine(selectedLanguage, timerMode, countdownSeconds, lengthFilter);
 
-    const accuracyPercent = stats.calculateAccuracyPercentage(
-        errors,
-        totalTyped,
-    );
+    const accuracyPercent = stats.calculateAccuracyPercentage(errors, totalTyped);
     const rawwpm = stats.calculateRawWPM(totalTyped, durationMilliseconds);
     const adjwpm = stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
 
@@ -60,10 +64,18 @@ export default function Home() {
 
     const isFinished = state === "finish";
 
+    useEffect(() => {
+        restart();
+    }, [settings, restart]);
+
     return (
         <>
             <main className="flex flex-col flex-1 items-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
-                <TypingSettingsSelector />
+                <TypingSettingsSelector
+                    settings={settings}
+                    onSettingsChange={setSettings}
+                    visible={state === "start"}
+                />
 
                 {/* typing area and results share the same space */}
                 <div className="relative w-full mt-[10vh]">
@@ -73,15 +85,15 @@ export default function Home() {
                         animate={{ opacity: isFinished ? 0 : 1 }}
                         transition={{
                             duration: 0.15,
-                            // delay fade-in on restart so the old snippet exits before anything is visible
                             delay: isFinished ? 0 : 0.15,
                         }}
                         className={isFinished ? "pointer-events-none" : ""}
                     >
                         <div className="flex flex-col gap-3 sm:gap-4">
                             <div className="grid grid-cols-3 items-center w-full">
-                                <CountdownTimer
-                                    timeLeft={timeLeft}
+                                <Timer
+                                    value={timerValue}
+                                    mode={timerMode}
                                     isVisible={state === "run"}
                                 />
                                 <div className="flex justify-center">
