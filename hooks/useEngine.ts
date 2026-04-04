@@ -34,6 +34,7 @@ export default function useEngine(
     timerMode: TimerMode,
     countdownSeconds: number,
     lengthFilter?: Length,
+    focused: boolean = true,
 ) {
     const [state, setState] = useState<State>("start");
     const { snippet, nextSnippet } = useSnippet(language, lengthFilter);
@@ -100,7 +101,7 @@ export default function useEngine(
         totalTyped,
         totalErrors,
     } = useTypings(
-        state !== "finish",
+        state !== "finish" && focused,
         words,
         bracketPairs,
         correctlyTypedOpenings,

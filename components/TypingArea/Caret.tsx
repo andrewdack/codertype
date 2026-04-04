@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
-export default function Caret({ blinking = true }: { blinking?: boolean }) {
+export default function Caret({ blinking = true, visible = true }: { blinking?: boolean; visible?: boolean }) {
+    if (!visible) return null;
     return (
         <motion.div
             aria-hidden={true}

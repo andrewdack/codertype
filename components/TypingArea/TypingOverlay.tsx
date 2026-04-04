@@ -12,6 +12,7 @@ interface TypingOverlayProps {
     bracketPairs?: Map<number, number>;
     correctlyTypedOpenings?: Set<number>;
     autoCompleteBrackets?: boolean;
+    focused?: boolean;
 }
 
 export default function TypingOverlay({
@@ -23,6 +24,7 @@ export default function TypingOverlay({
     bracketPairs = new Map(),
     correctlyTypedOpenings = new Set(),
     autoCompleteBrackets = true,
+    focused = true,
 }: TypingOverlayProps) {
     const endOffset = visibleLength !== undefined ? charOffset + visibleLength : code.length;
     const chars = code.split("").slice(charOffset, endOffset);
@@ -56,7 +58,7 @@ export default function TypingOverlay({
 
                     return (
                         <Fragment key={fullIndex}>
-                            {isCursor && <Caret blinking={state !== "run"} />}
+                            {isCursor && <Caret blinking={state !== "run"} visible={focused} />}
                             {isNewline ? (
                                 // newline UI
                                 <span
@@ -88,7 +90,7 @@ export default function TypingOverlay({
                         </Fragment>
                     );
                 })}
-                {typed.length >= code.length && <Caret />}
+                {typed.length >= code.length && <Caret visible={focused} />}
             </code>
         </pre>
     );

@@ -59,7 +59,7 @@ function SecondaryStat({
             <span className="text-xs sm:text-sm text-muted-foreground">
                 {label}
             </span>
-            <span className="text-xl font-semibold text-vscode-blue leading-none tabular-nums">
+            <span className="text-xl sm:text-3xl font-bold text-vscode-blue leading-none tabular-nums">
                 {value}
             </span>
             {sub && (

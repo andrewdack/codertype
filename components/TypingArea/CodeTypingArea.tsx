@@ -20,6 +20,7 @@ interface TypingAreaProps {
     correctlyTypedOpenings?: Set<number>;
     autoCompleteBrackets?: boolean;
     theme?: Theme;
+    focused?: boolean;
 }
 
 export default function CodeTypingArea({
@@ -31,6 +32,7 @@ export default function CodeTypingArea({
     correctlyTypedOpenings,
     autoCompleteBrackets,
     theme = atomOneDark,
+    focused = true,
 }: TypingAreaProps) {
     const { windowStart, visibleCode, charOffset } = useLineWindow(code, typed);
 
@@ -87,6 +89,7 @@ export default function CodeTypingArea({
                             bracketPairs={bracketPairs}
                             correctlyTypedOpenings={correctlyTypedOpenings}
                             autoCompleteBrackets={autoCompleteBrackets}
+                            focused={focused}
                         />
                     </motion.div>
                 </div>

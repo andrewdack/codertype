@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Timer from "@/components/TypingArea/Timer";
 import RestartButton from "@/components/TypingArea/RestartButton";
 import FinishButton from "@/components/TypingArea/FinishButton";
+import NextButton from "@/components/TypingArea/NextButton";
 import Footer from "@/components/Footer/Footer";
 import Results from "@/components/TypingArea/Results/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
@@ -25,6 +26,20 @@ export default function Home() {
         time: 30,
         length: "medium",
     });
+    const [focused, setFocused] = useState(true);
+    const typingAreaRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleMouseDown(e: MouseEvent) {
+            if (typingAreaRef.current?.contains(e.target as Node)) {
+                setFocused(true);
+            } else {
+                setFocused(false);
+            }
+        }
+        document.addEventListener("mousedown", handleMouseDown);
+        return () => document.removeEventListener("mousedown", handleMouseDown);
+    }, []);
 
     const timerMode: TimerMode =
         settings.type === "length" || settings.time === "inf" ? "stopwatch" : "countdown";
@@ -54,22 +69,28 @@ export default function Home() {
         setAutoCompleteBrackets,
         durationMilliseconds,
         wpmHistory
-    } = useEngine(selectedLanguage, timerMode, countdownSeconds, lengthFilter);
+    } = useEngine(selectedLanguage, timerMode, countdownSeconds, lengthFilter, focused);
 
     const accuracyPercent = stats.calculateAccuracyPercentage(errors, totalTyped);
 
     const rawwpm = stats.calculateRawWPM(totalTyped, durationMilliseconds);
     const adjwpm = accuracyPercent < 50 ? 0 : stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
 
+    function handleRestart() {
+        restart();
+        setFocused(true);
+    }
+
     function handleSelectLanguage(lang: Language) {
         setSelectedLanguage(lang);
-        restart();
+        handleRestart();
     }
 
     const isFinished = state === "finish";
 
     useEffect(() => {
         restart();
+        setFocused(true);
     }, [settings, restart]);
 
     return (
@@ -81,61 +102,61 @@ export default function Home() {
                     visible={state === "start"}
                 />
 
-                {/* typing area and results share the same space */}
-                <div className="relative w-full mt-[10vh]">
-
-                    {/* typing area: fades out on finish but stays in flow to hold height */}
-                    <motion.div
-                        animate={{ opacity: isFinished ? 0 : 1 }}
-                        transition={{
-                            duration: 0.15,
-                            delay: isFinished ? 0 : 0.15,
-                        }}
-                        className={isFinished ? "pointer-events-none" : ""}
-                    >
-                        <div className="flex flex-col gap-3 sm:gap-4">
-                            <div className="grid grid-cols-3 items-center w-full">
-                                <Timer
-                                    value={timerValue}
-                                    mode={timerMode}
-                                    isVisible={state === "run"}
-                                />
-                                <div className="flex justify-center">
-                                    <LanguageSelectorButton
-                                        visible={state !== "run"}
-                                        snippetId={snippet.id}
-                                        selectedLanguage={selectedLanguage}
-                                        onSelectLanguage={handleSelectLanguage}
-                                    />
-                                </div>
-                            </div>
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={`${snippet.id}-${selectedThemeName}`}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.15 }}
-                                >
-                                    <CodeTypingArea
-                                        code={words}
-                                        typed={typed}
-                                        language={snippet.language}
-                                        state={state}
-                                        bracketPairs={bracketPairs}
-                                        correctlyTypedOpenings={correctlyTypedOpenings}
-                                        autoCompleteBrackets={autoCompleteBrackets}
-                                        theme={selectedThemeStyle}
-                                    />
-                                </motion.div>
-                            </AnimatePresence>
-                        </div>
-                    </motion.div>
-
-                    <AnimatePresence>
-                        {isFinished && (
+                {/* typing area and results swap via AnimatePresence */}
+                <div className="w-full mt-[10vh]">
+                    <AnimatePresence mode="wait">
+                        {!isFinished ? (
                             <motion.div
-                                className="absolute inset-0 flex items-center justify-center"
+                                key="typing"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.15 }}
+                            >
+                                <div className="flex flex-col gap-3 sm:gap-4">
+                                    <div className="grid grid-cols-3 items-center w-full">
+                                        <Timer
+                                            value={timerValue}
+                                            mode={timerMode}
+                                            isVisible={state === "run"}
+                                        />
+                                        <div className="flex justify-center">
+                                            <LanguageSelectorButton
+                                                visible={state !== "run"}
+                                                snippetId={snippet.id}
+                                                selectedLanguage={selectedLanguage}
+                                                onSelectLanguage={handleSelectLanguage}
+                                            />
+                                        </div>
+                                    </div>
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={`${snippet.id}-${selectedThemeName}`}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            transition={{ duration: 0.15 }}
+                                        >
+                                            <div ref={typingAreaRef}>
+                                                <CodeTypingArea
+                                                    code={words}
+                                                    typed={typed}
+                                                    language={snippet.language}
+                                                    state={state}
+                                                    bracketPairs={bracketPairs}
+                                                    correctlyTypedOpenings={correctlyTypedOpenings}
+                                                    autoCompleteBrackets={autoCompleteBrackets}
+                                                    theme={selectedThemeStyle}
+                                                    focused={focused}
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    </AnimatePresence>
+                                </div>
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="results"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
@@ -159,7 +180,10 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center">
-                    <RestartButton onRestart={restart} />
+                    {isFinished && (
+                        <NextButton onNext={handleRestart} />
+                    )}
+                    <RestartButton onRestart={handleRestart} />
                     {settings.time === "inf" && state === "run" && (
                         <FinishButton onFinish={finish} />
                     )}
