@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useMemo } from "react";
+import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import useSnippet from "./useSnippet";
 import useTimer, { TimerMode } from "./useTimer";
 import useTypings from "./useTypings";
@@ -70,6 +70,20 @@ export default function useEngine(
 
     const calculatedErrors = useMemo(() => totalErrors, [totalErrors]);
 
+    // refs so the interval always reads current values without being a dep
+    const totalTypedRef = useRef(totalTyped);
+    const totalErrorsRef = useRef(totalErrors);
+    const startTimeRef = useRef(startTime);
+    useEffect(() => {
+        totalTypedRef.current = totalTyped;
+    }, [totalTyped]);
+    useEffect(() => {
+        totalErrorsRef.current = totalErrors;
+    }, [totalErrors]);
+    useEffect(() => {
+        startTimeRef.current = startTime;
+    }, [startTime]);
+
     useEffect(() => {
         if (isStarting) {
             setState("run");
@@ -101,22 +115,21 @@ export default function useEngine(
         }
     }, [autoCompleteBrackets]);
 
-    // wpm tracking over time
+    // wpm tracking over time — only restarts when state changes, reads latest values via refs
     useEffect(() => {
-        if (state !== "run") {
-            return;
-        }
+        if (state !== "run") return;
 
         const interval = setInterval(() => {
-            const now = Date.now();
-            const elapsed = now - startTime;
-
+            const elapsed = Date.now() - startTimeRef.current;
             if (elapsed <= 0) return;
 
-            const rawWpm = calculateRawWPM(totalTyped, elapsed);
+            const rawWpm = calculateRawWPM(totalTypedRef.current, elapsed);
             const adjWpm = calculateAdjustedWPM(
                 rawWpm,
-                calculateAccuracyPercentage(totalErrors, totalTyped),
+                calculateAccuracyPercentage(
+                    totalErrorsRef.current,
+                    totalTypedRef.current,
+                ),
             );
             setWpmHistory((prev) => {
                 const newHistory = [
@@ -125,8 +138,8 @@ export default function useEngine(
                         timeMs: elapsed,
                         rawWpm,
                         adjWpm,
-                        errors: totalErrors,
-                        totalTyped: totalTyped,
+                        errors: totalErrorsRef.current,
+                        totalTyped: totalTypedRef.current,
                     },
                 ];
                 console.log(newHistory);
@@ -134,7 +147,7 @@ export default function useEngine(
             });
         }, 1000);
         return () => clearInterval(interval);
-    }, [state, startTime, totalTyped, totalErrors]);
+    }, [state]);
 
     const restart = useCallback(() => {
         resetTimer();
@@ -143,6 +156,7 @@ export default function useEngine(
         nextSnippet();
         clearTyped();
         setCorrectlyTypedOpenings(new Set());
+        setWpmHistory([]);
     }, [clearTyped, nextSnippet, resetTimer, resetTotalTyped]);
 
     return {
