@@ -27,6 +27,7 @@ export default function Home() {
         length: "medium",
     });
     const [focused, setFocused] = useState(true);
+    const [restartCount, setRestartCount] = useState(0);
     const typingAreaRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -79,6 +80,7 @@ export default function Home() {
     function handleRestart() {
         restart();
         setFocused(true);
+        setRestartCount((c) => c + 1);
     }
 
     function handleSelectLanguage(lang: Language) {
@@ -180,13 +182,19 @@ export default function Home() {
                 </div>
 
                 <div className="flex items-center">
-                    {isFinished && (
-                        <NextButton onNext={handleRestart} />
-                    )}
-                    <RestartButton onRestart={handleRestart} />
-                    {settings.time === "inf" && state === "run" && (
-                        <FinishButton onFinish={finish} />
-                    )}
+                    <AnimatePresence>
+                        {isFinished && (
+                            <NextButton key="next" onNext={handleRestart} />
+                        )}
+                    </AnimatePresence>
+                    <AnimatePresence mode="wait">
+                        <RestartButton key={restartCount} onRestart={handleRestart} />
+                    </AnimatePresence>
+                    <AnimatePresence>
+                        {settings.time === "inf" && state === "run" && (
+                            <FinishButton key="finish" onFinish={finish} />
+                        )}
+                    </AnimatePresence>
                 </div>
             </main>
             <Footer
