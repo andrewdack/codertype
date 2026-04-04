@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import Timer from "@/components/TypingArea/Timer";
 import RestartButton from "@/components/TypingArea/RestartButton";
+import FinishButton from "@/components/TypingArea/FinishButton";
 import Footer from "@/components/Footer/Footer";
-import Results from "@/components/TypingArea/Results";
+import Results from "@/components/TypingArea/Results/Results";
 import CodeTypingArea from "@/components/TypingArea/CodeTypingArea";
 import LanguageSelectorButton from "@/components/TypingArea/LanguageSelector";
 import useEngine, { TimerMode } from "@/hooks/useEngine";
@@ -45,12 +46,14 @@ export default function Home() {
         errors,
         totalTyped,
         restart,
+        finish,
         snippet,
         bracketPairs,
         correctlyTypedOpenings,
         autoCompleteBrackets,
         setAutoCompleteBrackets,
         durationMilliseconds,
+        wpmHistory
     } = useEngine(selectedLanguage, timerMode, countdownSeconds, lengthFilter);
 
     const accuracyPercent = stats.calculateAccuracyPercentage(errors, totalTyped);
@@ -148,13 +151,19 @@ export default function Home() {
                                     durationMilliseconds={durationMilliseconds}
                                     settings={settings}
                                     language={selectedLanguage}
+                                    wpmHistory={wpmHistory}
                                 />
                             </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
 
-                <RestartButton onRestart={restart} />
+                <div className="flex items-center">
+                    <RestartButton onRestart={restart} />
+                    {settings.time === "inf" && state === "run" && (
+                        <FinishButton onFinish={finish} />
+                    )}
+                </div>
             </main>
             <Footer
                 selectedThemeName={selectedThemeName}

@@ -1,6 +1,7 @@
-import { State } from "@/hooks/useEngine";
+import { State, WPMpoint } from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { TypingSettings } from "@/components/TypingSettingsSelector";
+import StatChart from "./StatChart";
 
 interface ResultsProps {
     state: State;
@@ -12,6 +13,7 @@ interface ResultsProps {
     durationMilliseconds: number;
     settings: TypingSettings;
     language: Language;
+    wpmHistory: WPMpoint[];
     className?: string;
 }
 
@@ -79,6 +81,7 @@ export default function Results({
     durationMilliseconds,
     settings,
     language,
+    wpmHistory,
     className,
 }: ResultsProps) {
     if (state !== "finish") return null;
@@ -86,14 +89,15 @@ export default function Results({
     const timeSec = durationMilliseconds / 1000;
     const modeLabel =
         settings.type === "time"
-            ? `time ${settings.time === "inf" ? "∞" : settings.time}s`
+            ? `time ${settings.time === "inf" ? "infinite" : `${settings.time}s`}`
             : settings.length;
 
     return (
         <div className="w-full flex flex-col gap-10">
             {/* placeholder for graph*/}
-
-            <div className="w-full bg-card h-60"></div>
+            <div className="w-full bg-card h-60 rounded-md">
+                <StatChart statHistory={wpmHistory} />
+            </div>
             {/* stats  */}
             <div
                 className={`flex items-center gap-16 md:gap-20 w-full ${className ?? ""}`}
@@ -101,7 +105,11 @@ export default function Results({
                 {/* main stats */}
                 <div className="flex gap-14 md:gap-16 shrink-0">
                     <MainStat value={adjwpm} label="wpm" />
-                    <MainStat value={accuracyPercentage} label="acc" suffix="%" />
+                    <MainStat
+                        value={accuracyPercentage}
+                        label="acc"
+                        suffix="%"
+                    />
                 </div>
                 {/* divider */}
                 <div className="w-px self-stretch bg-border" />
@@ -112,11 +120,30 @@ export default function Results({
                         value={Math.floor(rawwpm)}
                         sub={rawwpm.toFixed(2)}
                     />
-                    <SecondaryStat label="characters" value={total} className="justify-self-center" />
-                    <SecondaryStat label="errors" value={errors} className="justify-self-end" />
-                    <SecondaryStat label="time" value={`${timeSec.toFixed(1)}s`} />
-                    <SecondaryStat label="mode" value={modeLabel} className="justify-self-center" />
-                    <SecondaryStat label="language" value={language} className="justify-self-end" />
+                    <SecondaryStat
+                        label="characters"
+                        value={total}
+                        className="text-center"
+                    />
+                    <SecondaryStat
+                        label="errors"
+                        value={errors}
+                        className="text-right"
+                    />
+                    <SecondaryStat
+                        label="time"
+                        value={`${timeSec.toFixed(1)}s`}
+                    />
+                    <SecondaryStat
+                        label="mode"
+                        value={modeLabel}
+                        className="text-center"
+                    />
+                    <SecondaryStat
+                        label="language"
+                        value={language}
+                        className="text-right"
+                    />
                 </div>
             </div>
         </div>

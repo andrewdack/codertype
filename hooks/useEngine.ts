@@ -19,10 +19,12 @@ import {
 export type State = "start" | "run" | "finish";
 export type { TimerMode };
 
-type WPMpoint = {
+export type WPMpoint = {
     timeMs: number;
+    timeSec: number;
     rawWpm: number;
     adjWpm: number;
+    burstWpm: number;
     errors: number;
     totalTyped: number;
 };
@@ -175,12 +177,19 @@ export default function useEngine(
     }, [autoCompleteBrackets]);
 
     // wpm tracking over time — only restarts when state changes, reads latest values via refs
+    const prevTotalTypedRef = useRef(0);
+    const prevTotalErrorsRef = useRef(0);
     useEffect(() => {
         if (state !== "run") return;
 
+        // reset burst baselines when the interval starts
+        prevTotalTypedRef.current = totalTypedRef.current;
+        prevTotalErrorsRef.current = totalErrorsRef.current;
+
         const interval = setInterval(() => {
             const elapsed = Date.now() - startTimeRef.current;
-            if (elapsed <= 0) return;
+            const seconds = Math.floor(elapsed / 1000);
+            if (elapsed <= 0 || seconds <= 0) return;
 
             const rawWpm = parseFloat(
                 calculateRawWPM(totalTypedRef.current, elapsed).toFixed(2),
@@ -194,22 +203,40 @@ export default function useEngine(
                     ),
                 ).toFixed(2),
             );
-            setWpmHistory((prev) => {
-                const newHistory = [
-                    ...prev,
-                    {
-                        timeMs: elapsed,
-                        rawWpm,
-                        adjWpm,
-                        errors: totalErrorsRef.current,
-                        totalTyped: totalTypedRef.current,
-                    },
-                ];
-                return newHistory;
-            });
+
+            // chars and errors in the last 1 second → accuracy-adjusted burst wpm
+            const burstTyped = totalTypedRef.current - prevTotalTypedRef.current;
+            const burstErrors = totalErrorsRef.current - prevTotalErrorsRef.current;
+            const burstWpm = parseFloat(
+                calculateAdjustedWPM(
+                    calculateRawWPM(burstTyped, 1000),
+                    calculateAccuracyPercentage(burstErrors, burstTyped),
+                ).toFixed(2),
+            );
+            prevTotalTypedRef.current = totalTypedRef.current;
+            prevTotalErrorsRef.current = totalErrorsRef.current;
+
+            setWpmHistory((prev) => [
+                ...prev,
+                {
+                    timeMs: elapsed,
+                    timeSec: seconds,
+                    rawWpm,
+                    adjWpm,
+                    burstWpm,
+                    errors: totalErrorsRef.current,
+                    totalTyped: totalTypedRef.current,
+                },
+            ]);
         }, 1000);
         return () => clearInterval(interval);
     }, [state]);
+
+    const finish = useCallback(() => {
+        resetTimer();
+        setState("finish");
+        setEndTime(Date.now());
+    }, [resetTimer]);
 
     const restart = useCallback(() => {
         resetTimer();
@@ -231,6 +258,7 @@ export default function useEngine(
         errors: calculatedErrors,
         durationMilliseconds: endTime - startTime,
         totalTyped,
+        finish,
         restart,
         snippet,
         bracketPairs,

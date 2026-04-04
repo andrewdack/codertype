@@ -45,7 +45,7 @@ export default function Navbar({ className }: { className?: string }) {
 
                 {/* Right side */}
                 <Link
-                    href="/login"
+                    href="/signin"
                     className="text-muted-foreground hover:text-foreground transition-colors"
                     title="Login"
                 >
