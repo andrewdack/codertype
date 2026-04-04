@@ -2,8 +2,14 @@ import { useCallback, useState, useEffect, useMemo, useRef } from "react";
 import useSnippet from "./useSnippet";
 import useTimer, { TimerMode } from "./useTimer";
 import useTypings from "./useTypings";
-import { type Language, type Length } from "@/lib/snippets";
+import {
+    type Language,
+    type Length,
+    type Snippet,
+    snippetsByLanguage,
+} from "@/lib/snippets";
 import { generateBracketPairs } from "@/utils/bracketMatching";
+import { VISIBLE_LINES } from "./useLineWindow";
 import {
     calculateAccuracyPercentage,
     calculateAdjustedWPM,
@@ -37,7 +43,42 @@ export default function useEngine(
 
     const [autoCompleteBrackets, setAutoCompleteBrackets] = useState(true);
 
-    const words = snippet.code;
+    // true for countdown and infinite-time stopwatch (not length mode)
+    const useInfiniteSnippets = timerMode === "countdown" || (timerMode === "stopwatch" && !lengthFilter);
+
+    // appended snippets for infinite countdown mode
+    const [appendedSnippets, setAppendedSnippets] = useState<Snippet[]>([]);
+    const lastAppendedIdRef = useRef<string>(snippet.id);
+
+    const appendNextSnippet = useCallback(() => {
+        const pool = snippetsByLanguage[language];
+        let next = pool[Math.floor(Math.random() * pool.length)];
+        let attempts = 0;
+        while (next.id === lastAppendedIdRef.current && attempts++ < 5) {
+            next = pool[Math.floor(Math.random() * pool.length)];
+        }
+        lastAppendedIdRef.current = next.id;
+        setAppendedSnippets((prev) => [...prev, next]);
+    }, [language]);
+
+    // reset appended snippets when base snippet changes (restart / language change);
+    // pre-append if base snippet is too short to fill the visible window
+    useEffect(() => {
+        setAppendedSnippets([]);
+        lastAppendedIdRef.current = snippet.id;
+        if (useInfiniteSnippets && snippet.code.split("\n").length < VISIBLE_LINES) {
+            appendNextSnippet();
+        }
+    }, [snippet.id, snippet.code, appendNextSnippet, useInfiniteSnippets]);
+
+    const words = useMemo(
+        () => 
+        appendedSnippets.length === 0
+            ? snippet.code
+            : [snippet.code, ...appendedSnippets.map((s) => s.code)].join("\n\n"),
+        [snippet.code, appendedSnippets],
+    );
+
     const [startTime, setStartTime] = useState(-1);
     const [endTime, setEndTime] = useState(-1);
 
@@ -101,13 +142,31 @@ export default function useEngine(
         }
     }, [timerValue, timerMode, resetTimer]);
 
+    // in infinite-snippet modes, append before the user reaches the end
     useEffect(() => {
-        if (areWordsFinished) {
+        if (!useInfiniteSnippets || state !== "run") return;
+        const linesRemaining = words.slice(typed.length).split("\n").length;
+        if (linesRemaining > VISIBLE_LINES * 2) return;
+        appendNextSnippet();
+    }, [typed, words, useInfiniteSnippets, state, appendNextSnippet]);
+
+    // words finishing only ends the run in non-infinite modes (length mode)
+    useEffect(() => {
+        if (areWordsFinished && !useInfiniteSnippets) {
             resetTimer();
             setState("finish");
             setEndTime(Date.now());
         }
-    }, [cursor, words, typed, areWordsFinished, resetTimer]);
+    }, [cursor, words, typed, areWordsFinished, resetTimer, useInfiniteSnippets]);
+
+    // stopwatch modes cap at 5 minutes
+    useEffect(() => {
+        if (timerMode === "stopwatch" && timerValue >= 300) {
+            resetTimer();
+            setState("finish");
+            setEndTime(Date.now());
+        }
+    }, [timerValue, timerMode, resetTimer]);
 
     useEffect(() => {
         if (!autoCompleteBrackets) {
@@ -123,13 +182,17 @@ export default function useEngine(
             const elapsed = Date.now() - startTimeRef.current;
             if (elapsed <= 0) return;
 
-            const rawWpm = calculateRawWPM(totalTypedRef.current, elapsed);
-            const adjWpm = calculateAdjustedWPM(
-                rawWpm,
-                calculateAccuracyPercentage(
-                    totalErrorsRef.current,
-                    totalTypedRef.current,
-                ),
+            const rawWpm = parseFloat(
+                calculateRawWPM(totalTypedRef.current, elapsed).toFixed(2),
+            );
+            const adjWpm = parseFloat(
+                calculateAdjustedWPM(
+                    rawWpm,
+                    calculateAccuracyPercentage(
+                        totalErrorsRef.current,
+                        totalTypedRef.current,
+                    ),
+                ).toFixed(2),
             );
             setWpmHistory((prev) => {
                 const newHistory = [
@@ -157,6 +220,7 @@ export default function useEngine(
         clearTyped();
         setCorrectlyTypedOpenings(new Set());
         setWpmHistory([]);
+        setAppendedSnippets([]);
     }, [clearTyped, nextSnippet, resetTimer, resetTotalTyped]);
 
     return {

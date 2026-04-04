@@ -54,8 +54,9 @@ export default function Home() {
     } = useEngine(selectedLanguage, timerMode, countdownSeconds, lengthFilter);
 
     const accuracyPercent = stats.calculateAccuracyPercentage(errors, totalTyped);
+
     const rawwpm = stats.calculateRawWPM(totalTyped, durationMilliseconds);
-    const adjwpm = stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
+    const adjwpm = accuracyPercent < 50 ? 0 : stats.calculateAdjustedWPM(rawwpm, accuracyPercent);
 
     function handleSelectLanguage(lang: Language) {
         setSelectedLanguage(lang);
@@ -128,7 +129,6 @@ export default function Home() {
                         </div>
                     </motion.div>
 
-                    {/* results: absolutely overlaid, fades in on finish */}
                     <AnimatePresence>
                         {isFinished && (
                             <motion.div
@@ -145,6 +145,9 @@ export default function Home() {
                                     rawwpm={parseFloat(rawwpm.toFixed(2))}
                                     adjwpm={parseFloat(adjwpm.toFixed(2))}
                                     total={totalTyped}
+                                    durationMilliseconds={durationMilliseconds}
+                                    settings={settings}
+                                    language={selectedLanguage}
                                 />
                             </motion.div>
                         )}

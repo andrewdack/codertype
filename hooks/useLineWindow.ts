@@ -23,10 +23,13 @@ export default function useLineWindow(code: string, typed: string): LineWindow {
         [code, typed],
     );
 
-    // reset when the snippet changes
+    // reset when typed is cleared (restart) — not on code change, since appending
+    // new snippets to the buffer also changes code but must not scroll back to the top
     useEffect(() => {
-        setWindowStart(0);
-    }, [code]);
+        if (typed.length === 0) {
+            setWindowStart(0);
+        }
+    }, [typed]);
 
     // advance the window when the cursor enters SCROLL_TRIGGER_LINE of the visible window
     useEffect(() => {
