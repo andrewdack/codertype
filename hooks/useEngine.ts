@@ -205,7 +205,6 @@ export default function useEngine(
                         totalTyped: totalTypedRef.current,
                     },
                 ];
-                console.log(newHistory);
                 return newHistory;
             });
         }, 1000);
@@ -238,5 +237,6 @@ export default function useEngine(
         correctlyTypedOpenings,
         autoCompleteBrackets,
         setAutoCompleteBrackets,
+        wpmHistory
     };
 }
