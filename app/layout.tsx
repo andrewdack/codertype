@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import { Analytics } from "@vercel/analytics/next";
 
 const jetbrainsMono = JetBrains_Mono({
     subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
             <body className="font-mono antialiased dark min-h-screen flex flex-col">
                 <Navbar />
                 {children}
+                <Analytics />
             </body>
         </html>
     );
