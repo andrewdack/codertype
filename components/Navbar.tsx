@@ -16,41 +16,7 @@ export default function Navbar({ className }: { className?: string }) {
                         <SquareTerminal className="w-10 h-8 sm:w-12 sm:h-12 text-vscode-blue" />
                         <span className="font-extrabold text-xl sm:text-3xl text-foreground">codertype</span>
                     </Link>
-
-                    {/* Navigation links */}
-                    <div className="flex items-center gap-3 sm:gap-6">
-                        <Link
-                            href="/code-library"
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                            title="Code Library"
-                        >
-                            <Trophy weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
-                        </Link>
-                        <Link
-                            href="/about"
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                            title="About"
-                        >
-                            <Info weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
-                        </Link>
-                        <Link
-                            href="/settings"
-                            className="text-muted-foreground hover:text-foreground transition-colors"
-                            title="Settings"
-                        >
-                            <Gear weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
-                        </Link>
-                    </div>
                 </div>
-
-                {/* Right side */}
-                <Link
-                    href="/signin"
-                    className="text-muted-foreground hover:text-foreground transition-colors"
-                    title="Login"
-                >
-                    <User weight="thin" className="w-6 h-6 sm:w-8 sm:h-8" />
-                </Link>
             </div>
         </nav>
     );
