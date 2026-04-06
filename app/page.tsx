@@ -95,6 +95,14 @@ export default function Home() {
         setFocused(true);
     }, [settings, restart]);
 
+    useEffect(() => {
+        function handleLogoRestart() {
+            handleRestart();
+        }
+        window.addEventListener("codertype:restart", handleLogoRestart);
+        return () => window.removeEventListener("codertype:restart", handleLogoRestart);
+    }, []);
+
     return (
         <>
             <main className="flex flex-col flex-1 items-center gap-3 sm:gap-4 px-4 sm:px-6 md:px-8 py-4 sm:py-8 w-full max-w-360 mx-auto">
