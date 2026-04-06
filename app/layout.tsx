@@ -11,8 +11,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "codertype",
-    description: "minimalist typing test for programmers",
+    title: "Codertype | Minimalist typing practice for programmers",
+    description: "Minimalist typing practice for programmers",
     icons: {
         icon: "/icon.svg",
     }
