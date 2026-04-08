@@ -1,0 +1,82 @@
+[
+  {
+    "id": "go-binary-search",
+    "language": "go",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "length": "medium",
+    "code": "func binarySearch(arr []int, target int) int {\n\tleft, right := 0, len(arr)-1\n\tfor left <= right {\n\t\tmid := (left + right) / 2\n\t\tif arr[mid] == target {\n\t\t\treturn mid\n\t\t} else if arr[mid] < target {\n\t\t\tleft = mid + 1\n\t\t} else {\n\t\t\tright = mid - 1\n\t\t}\n\t}\n\treturn -1\n}"
+  },
+  {
+    "id": "go-fibonacci",
+    "language": "go",
+    "source": "classic algorithm",
+    "difficulty": "easy",
+    "length": "short",
+    "code": "func fib(n int) int {\n\tif n < 2 {\n\t\treturn n\n\t}\n\treturn fib(n-1) + fib(n-2)\n}"
+  },
+  {
+    "id": "go-two-sum",
+    "language": "go",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "length": "short",
+    "code": "func twoSum(nums []int, target int) []int {\n\tseen := make(map[int]int)\n\tfor i, num := range nums {\n\t\tif j, ok := seen[target-num]; ok {\n\t\t\treturn []int{j, i}\n\t\t}\n\t\tseen[num] = i\n\t}\n\treturn nil\n}"
+  },
+  {
+    "id": "go-stack",
+    "language": "go",
+    "source": "data structures",
+    "difficulty": "easy",
+    "length": "medium",
+    "code": "type Stack[T any] struct {\n\titems []T\n}\n\nfunc (s *Stack[T]) Push(item T) {\n\ts.items = append(s.items, item)\n}\n\nfunc (s *Stack[T]) Pop() (T, bool) {\n\tif len(s.items) == 0 {\n\t\tvar zero T\n\t\treturn zero, false\n\t}\n\tn := len(s.items) - 1\n\titem := s.items[n]\n\ts.items = s.items[:n]\n\treturn item, true\n}"
+  },
+  {
+    "id": "go-word-count",
+    "language": "go",
+    "source": "string processing",
+    "difficulty": "easy",
+    "length": "short",
+    "code": "func wordCount(s string) map[string]int {\n\tcounts := make(map[string]int)\n\tfor _, word := range strings.Fields(strings.ToLower(s)) {\n\t\tcounts[word]++\n\t}\n\treturn counts\n}"
+  },
+  {
+    "id": "go-valid-parens",
+    "language": "go",
+    "source": "leetcode",
+    "difficulty": "easy",
+    "length": "medium",
+    "code": "func isValid(s string) bool {\n\tstack := []rune{}\n\tpairs := map[rune]rune{')': '(', ']': '[', '}': '{'}\n\tfor _, ch := range s {\n\t\tif ch == '(' || ch == '[' || ch == '{' {\n\t\t\tstack = append(stack, ch)\n\t\t} else if open, ok := pairs[ch]; ok {\n\t\t\tif len(stack) == 0 || stack[len(stack)-1] != open {\n\t\t\t\treturn false\n\t\t\t}\n\t\t\tstack = stack[:len(stack)-1]\n\t\t}\n\t}\n\treturn len(stack) == 0\n}"
+  },
+  {
+    "id": "go-merge-sort",
+    "language": "go",
+    "source": "classic algorithm",
+    "difficulty": "medium",
+    "length": "long",
+    "code": "func mergeSort(arr []int) []int {\n\tif len(arr) <= 1 {\n\t\treturn arr\n\t}\n\tmid := len(arr) / 2\n\tleft := mergeSort(arr[:mid])\n\tright := mergeSort(arr[mid:])\n\treturn merge(left, right)\n}\n\nfunc merge(left, right []int) []int {\n\tresult := make([]int, 0, len(left)+len(right))\n\ti, j := 0, 0\n\tfor i < len(left) && j < len(right) {\n\t\tif left[i] <= right[j] {\n\t\t\tresult = append(result, left[i])\n\t\t\ti++\n\t\t} else {\n\t\t\tresult = append(result, right[j])\n\t\t\tj++\n\t\t}\n\t}\n\treturn append(append(result, left[i:]...), right[j:]...)\n}"
+  },
+  {
+    "id": "go-linked-list",
+    "language": "go",
+    "source": "data structures",
+    "difficulty": "medium",
+    "length": "long",
+    "code": "type Node struct {\n\tVal  int\n\tNext *Node\n}\n\ntype LinkedList struct {\n\tHead *Node\n}\n\nfunc (l *LinkedList) Append(val int) {\n\tnode := &Node{Val: val}\n\tif l.Head == nil {\n\t\tl.Head = node\n\t\treturn\n\t}\n\tcurr := l.Head\n\tfor curr.Next != nil {\n\t\tcurr = curr.Next\n\t}\n\tcurr.Next = node\n}"
+  },
+  {
+    "id": "go-goroutine-pipeline",
+    "language": "go",
+    "source": "concurrency",
+    "difficulty": "medium",
+    "length": "long",
+    "code": "func generate(nums ...int) <-chan int {\n\tout := make(chan int)\n\tgo func() {\n\t\tfor _, n := range nums {\n\t\t\tout <- n\n\t\t}\n\t\tclose(out)\n\t}()\n\treturn out\n}\n\nfunc square(in <-chan int) <-chan int {\n\tout := make(chan int)\n\tgo func() {\n\t\tfor n := range in {\n\t\t\tout <- n * n\n\t\t}\n\t\tclose(out)\n\t}()\n\treturn out\n}"
+  },
+  {
+    "id": "go-dfs",
+    "language": "go",
+    "source": "classic algorithm",
+    "difficulty": "medium",
+    "length": "medium",
+    "code": "func dfs(graph map[int][]int, start int, visited map[int]bool) {\n\tvisited[start] = true\n\tfor _, neighbor := range graph[start] {\n\t\tif !visited[neighbor] {\n\t\t\tdfs(graph, neighbor, visited)\n\t\t}\n\t}\n}"
+  }
+]
