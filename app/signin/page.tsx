@@ -27,9 +27,9 @@ export default function SigninPage() {
 
                 {/* divider */}
                 <div className="flex items-center gap-4">
-                    <div className="flex-1 h-[4px] bg-border rounded" />
+                    <div className="flex-1 h-1 bg-border rounded" />
                     <span className="text-md text-foreground">or</span>
-                    <div className="flex-1 h-[4px] bg-border rounded" />
+                    <div className="flex-1 h-1 bg-border rounded" />
                 </div>
 
                 {/* form */}
