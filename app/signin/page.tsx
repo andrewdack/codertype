@@ -1,5 +1,7 @@
+"use client"
 import { GoogleOriginalIcon, GithubOriginalIcon } from "@devicon/react";
 import Link from "next/link";
+import { signInWithGithub, signInWithGoogle } from "@/lib/supabase/auth";
 
 export default function SigninPage() {
     return (
@@ -15,11 +17,11 @@ export default function SigninPage() {
 
                 {/* oauth buttons */}
                 <div className="flex flex-col gap-3">
-                    <button className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium">
+                    <button onClick={signInWithGoogle } className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium cursor-pointer">
                         <GoogleOriginalIcon className="w-5 h-5" />
                         continue with google
                     </button>
-                    <button className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium">
+                    <button onClick={signInWithGithub} className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium cursor-pointer">
                         <GithubOriginalIcon color="white" className="w-5 h-5" />
                         continue with github
                     </button>
