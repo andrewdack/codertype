@@ -48,8 +48,6 @@ export default function useTypings(
         [targetCode],
     );
 
-    useEffect(() => {console.log(totalErrors.current)}, [cursor]);
-
     const keydownHandler = useCallback(
         (e: KeyboardEvent) => {
             if (!enabled || !isKeyboardCharacterAllowed(e.code)) {

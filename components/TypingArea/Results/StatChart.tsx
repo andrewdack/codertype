@@ -1,3 +1,5 @@
+"use client";
+
 import {
     LineChart,
     Line,
@@ -59,7 +61,7 @@ export default function StatChart({
                 <YAxis
                     yAxisId="left"
                     dataKey={highestWpmType}
-                    width="auto"
+                    width={60}
                     label={{
                         value: "words per minute",
                         angle: -90,
