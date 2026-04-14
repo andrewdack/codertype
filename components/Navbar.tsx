@@ -2,12 +2,28 @@
 
 import Link from "next/link";
 import { SquareTerminal } from "lucide-react";
+import { useEffect, useState } from "react";
 import UserIcon from "./icons/UserIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import TrophyIcon from "./icons/TrophyIcon";
 import LeaderboardRoundedIcon from "./icons/LeaderboardIcon";
+import { supabase } from "@/lib/supabase/client";
 
 export default function Navbar({ className }: { className?: string }) {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data }) => {
+            setIsLoggedIn(!!data.session);
+        });
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+            setIsLoggedIn(!!session);
+        });
+
+        return () => subscription.unsubscribe();
+    }, []);
+
     return (
         <nav className="border-border w-full ">
             <div className="max-w-360 mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
@@ -25,13 +41,13 @@ export default function Navbar({ className }: { className?: string }) {
                     </Link>
                 </div>
                 <div className="flex items-center gap-4 sm:gap-8 ">
-                    <Link href="/settings" className="cursor-pointer">
+                    <Link href="/leaderboard" className="cursor-pointer">
                         <LeaderboardRoundedIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground " />
                     </Link>
                     <Link href="/settings" className="cursor-pointer">
                         <SettingsIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
                     </Link>
-                    <Link href="/signin" className="cursor-pointer">
+                    <Link href={isLoggedIn ? "/account" : "/signin"} className="cursor-pointer">
                         <UserIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
                     </Link>
                 </div>

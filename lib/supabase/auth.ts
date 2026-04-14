@@ -16,6 +16,16 @@ export async function signInWithGoogle() {
     });
 }
 
+// manual sign in
+export async function signInWithEmail({ email, password }: {email: string, password: string}) {
+    return supabase.auth.signInWithPassword({email, password})
+}
+
+// manual sign up
+export async function signUpWithEmail({ email, password }: {email: string, password: string}) {
+    return supabase.auth.signUp({ email, password });
+}
+
 // sign out
 export async function signOutUser() {
     return supabase.auth.signOut();

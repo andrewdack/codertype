@@ -1,9 +1,37 @@
 "use client"
 import { GoogleOriginalIcon, GithubOriginalIcon } from "@devicon/react";
 import Link from "next/link";
-import { signInWithGithub, signInWithGoogle } from "@/lib/supabase/auth";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signInWithGithub, signInWithGoogle, signInWithEmail } from "@/lib/supabase/auth";
 
 export default function SigninPage() {
+    const router = useRouter();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    async function handleSubmit(e: { preventDefault: () => void }) {
+        e.preventDefault();
+        setError(null);
+
+        if (!email || !password) {
+            setError("please fill in all fields");
+            return;
+        }
+
+        setLoading(true);
+        const { error } = await signInWithEmail({ email, password });
+        setLoading(false);
+
+        if (error) {
+            setError(error.message.toLowerCase());
+        } else {
+            router.push("/account");
+        }
+    }
+
     return (
         <main className="flex-1 flex items-center justify-center">
             <div className="w-full max-w-sm flex flex-col gap-8">
@@ -17,7 +45,7 @@ export default function SigninPage() {
 
                 {/* oauth buttons */}
                 <div className="flex flex-col gap-3">
-                    <button onClick={signInWithGoogle } className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium cursor-pointer">
+                    <button onClick={signInWithGoogle} className="flex items-center justify-center gap-3 px-4 py-3 bg-card rounded-lg hover:bg-muted transition-colors text-foreground font-medium cursor-pointer">
                         <GoogleOriginalIcon className="w-5 h-5" />
                         continue with google
                     </button>
@@ -35,12 +63,14 @@ export default function SigninPage() {
                 </div>
 
                 {/* form */}
-                <div className="flex flex-col gap-4">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div className="flex flex-col gap-1.5">
                         <label className="text-xs text-muted-foreground">email</label>
                         <input
                             type="email"
                             placeholder="you@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="bg-card rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground outline-none text-sm"
                         />
                     </div>
@@ -49,13 +79,20 @@ export default function SigninPage() {
                         <input
                             type="password"
                             placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="bg-card rounded-lg px-4 py-3 text-foreground placeholder:text-muted-foreground outline-none text-sm"
                         />
                     </div>
-                    <button className="mt-1 px-4 py-3 bg-foreground rounded-lg hover:bg-white transition-colors text-muted-foreground font-semibold">
-                        sign in
+                    {error && <p className="text-sm text-red-400">{error}</p>}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="mt-1 px-4 py-3 bg-foreground rounded-lg hover:bg-white transition-colors text-muted-foreground font-semibold disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                        {loading ? "signing in..." : "sign in"}
                     </button>
-                </div>
+                </form>
 
                 <p className="text-center text-sm text-muted-foreground">
                     don&apos;t have an account?{" "}

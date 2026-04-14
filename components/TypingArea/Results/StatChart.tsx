@@ -45,7 +45,7 @@ export default function StatChart({
 
     const highestWpmType = getHighestWpmType();
     return (
-        <ResponsiveContainer width="100%" height="100%" className="pl-4 pt-5">
+        <ResponsiveContainer width="100%" height={240} className="pl-4 pt-5">
             <ComposedChart
                 data={statHistory}
                 margin={{
