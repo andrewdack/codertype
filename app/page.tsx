@@ -120,7 +120,7 @@ export default function Home() {
                 accuracy: parseFloat(accuracyPercent.toFixed(2)),
                 language: selectedLanguage,
                 mode,
-                duration: Math.round(durationMilliseconds / 1000),
+                duration: parseFloat((durationMilliseconds / 1000).toFixed(2)),
             }),
         });
     }, [state, isLoggedIn, adjwpm, accuracyPercent, selectedLanguage, settings, durationMilliseconds]);
