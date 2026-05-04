@@ -15,6 +15,9 @@ export async function POST(request: Request) {
         .from("results")
         .insert({ user_id: user.id, wpm, accuracy, language, mode, duration });
 
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error) {
+        console.error("results insert error:", error.message, error.code);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
     return NextResponse.json({ success: true }, { status: 201 });
 }

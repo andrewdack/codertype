@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { supabase } from "@/lib/supabase/client";
 import Timer from "@/components/TypingArea/Timer";
 import RestartButton from "@/components/TypingArea/RestartButton";
 import FinishButton from "@/components/TypingArea/FinishButton";
@@ -28,6 +29,8 @@ export default function Home() {
     });
     const [focused, setFocused] = useState(true);
     const [restartCount, setRestartCount] = useState(0);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const resultSubmittedRef = useRef(false);
     const typingAreaRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -81,6 +84,7 @@ export default function Home() {
         restart();
         setFocused(true);
         setRestartCount((c) => c + 1);
+        resultSubmittedRef.current = false;
     }
 
     function handleSelectLanguage(lang: Language) {
@@ -89,6 +93,37 @@ export default function Home() {
     }
 
     const isFinished = state === "finish";
+
+    // track login state
+    useEffect(() => {
+        supabase.auth.getSession().then(({ data }) => setIsLoggedIn(!!data.session));
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+            setIsLoggedIn(!!session);
+        });
+        return () => subscription.unsubscribe();
+    }, []);
+
+    // submit result when test finishes
+    useEffect(() => {
+        if (state !== "finish" || !isLoggedIn || resultSubmittedRef.current) return;
+        resultSubmittedRef.current = true;
+
+        const mode = settings.type === "time"
+            ? (settings.time === "inf" ? "infinite" : `${settings.time}s`)
+            : settings.length;
+
+        fetch("/api/results", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                wpm: parseFloat(adjwpm.toFixed(2)),
+                accuracy: parseFloat(accuracyPercent.toFixed(2)),
+                language: selectedLanguage,
+                mode,
+                duration: Math.round(durationMilliseconds / 1000),
+            }),
+        });
+    }, [state, isLoggedIn, adjwpm, accuracyPercent, selectedLanguage, settings, durationMilliseconds]);
 
     useEffect(() => {
         restart();
@@ -183,6 +218,7 @@ export default function Home() {
                                     settings={settings}
                                     language={selectedLanguage}
                                     wpmHistory={wpmHistory}
+                                    isLoggedIn={isLoggedIn}
                                 />
                             </motion.div>
                         )}

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { State, WPMpoint } from "@/hooks/useEngine";
 import { Language } from "@/lib/snippets";
 import { TypingSettings } from "@/components/TypingSettingsSelector";
@@ -14,6 +15,7 @@ interface ResultsProps {
     settings: TypingSettings;
     language: Language;
     wpmHistory: WPMpoint[];
+    isLoggedIn: boolean;
     className?: string;
 }
 
@@ -82,6 +84,7 @@ export default function Results({
     settings,
     language,
     wpmHistory,
+    isLoggedIn,
     className,
 }: ResultsProps) {
     if (state !== "finish") return null;
@@ -146,6 +149,16 @@ export default function Results({
                     />
                 </div>
             </div>
+            {!isLoggedIn ? (
+                <p className="text-sm text-muted-foreground text-center">
+                    <Link href="/signin" className="text-foreground hover:text-vscode-blue transition-colors">
+                        sign in
+                    </Link>
+                    {" "}to save your results
+                </p>
+            ) : (<div className="text-sm text-muted-foreground text-center">
+                your results have been saved to your account
+            </div>)}
         </div>
     );
 }

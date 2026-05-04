@@ -8,9 +8,13 @@ import SettingsIcon from "./icons/SettingsIcon";
 import TrophyIcon from "./icons/TrophyIcon";
 import LeaderboardRoundedIcon from "./icons/LeaderboardIcon";
 import { supabase } from "@/lib/supabase/client";
+import { signOutUser } from "@/lib/supabase/auth";
+import { useRouter } from "next/navigation";
 
 export default function Navbar({ className }: { className?: string }) {
+    const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [showLogout, setShowLogout] = useState(false);
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data }) => {
@@ -47,9 +51,32 @@ export default function Navbar({ className }: { className?: string }) {
                     <Link href="/settings" className="cursor-pointer">
                         <SettingsIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
                     </Link>
-                    <Link href={isLoggedIn ? "/account" : "/signin"} className="cursor-pointer">
-                        <UserIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
-                    </Link>
+                    {isLoggedIn ? (
+                        <div
+                            className="relative cursor-pointer"
+                            onMouseEnter={() => setShowLogout(true)}
+                            onMouseLeave={() => setShowLogout(false)}
+                        >
+                            <Link href="/account">
+                                <UserIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
+                            </Link>
+                            {showLogout && (
+                                <button
+                                    onClick={async () => {
+                                        await signOutUser();
+                                        router.push("/signin");
+                                    }}
+                                    className="absolute right-0 top-8 text-xs text-muted-foreground hover:text-foreground bg-card border border-border rounded-md px-3 py-1.5 whitespace-nowrap"
+                                >
+                                    sign out
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <Link href="/signin" className="cursor-pointer">
+                            <UserIcon className="size-6 transition-colors text-muted-foreground hover:text-foreground" />
+                        </Link>
+                    )}
                 </div>
             </div>
         </nav>

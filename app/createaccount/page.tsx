@@ -27,7 +27,7 @@ export default function CreateAccountPage() {
         }
 
         setLoading(true);
-        const { error } = await signUpWithEmail({ email, password });
+        const { error } = await signUpWithEmail({ email, password, username });
         setLoading(false);
 
         if (error) {
