@@ -42,3 +42,8 @@ next-env.d.ts
 
 .claude
 CLAUDE.md
+.venv
+
+# python
+__pycache__/
+*.pyc
