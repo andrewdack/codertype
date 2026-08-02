@@ -1,30 +1,58 @@
-from fastapi import FastAPI, HTTPException
-from fastapi import Query
-
-from os import environ
-from postgrest import APIError
-from supabase import create_client, Client
-
 # File for the FastAPI backend, which is ported over from old Typescript routes
 # the route uses /api/py prefix for backwards compatibility with TS routes
 # that use /api prefix.
 
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Query
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+from os import environ
+from postgrest import APIError
+from pydantic import BaseModel
+from supabase import create_client, Client
+from dataclasses import dataclass
+from supabase_auth import User
 
 # initialize supabase environment variables
-supabase_anon_key = environ["NEXT_PUBLIC_SUPABASE_ANON_KEY"]
-supabase_url = environ["NEXT_PUBLIC_SUPABASE_URL"]
+SUPABASE_ANON_KEY = environ["NEXT_PUBLIC_SUPABASE_ANON_KEY"]
+SUPABASE_URL = environ["NEXT_PUBLIC_SUPABASE_URL"]
+# create the global supabase client
+supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
 
-# create the supabase client
-supabase: Client = create_client(
-    supabase_url=supabase_url,
-    supabase_key=supabase_anon_key
-)
+@dataclass
+class AuthedUser:
+    user: User
+    client: Client
 
+bearer_scheme = HTTPBearer()
+
+async def get_authed_user(credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme)) -> AuthedUser:
+    # Retrieve the JWT
+    token = credentials.credentials
+    
+    # ask supabase who this token belongs to - returns None if invalid
+    # later use the .user attribute to return the AuthedUser
+    user_response = supabase.auth.get_user(token)
+    if user_response is None or user_response.user is None:
+        raise HTTPException(status_code=401, detail="unauthorized")
+    
+    # fresh client per request instead of the global `supabase` - so its
+    # postgrest auth header scoped to this one request only
+    request_client = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+    request_client.postgrest.auth(token)
+    
+    # Create authed user to return
+    # Useful b/c we need both the user and the client to enforce RLS
+    # Avoids double calls to supabase Auth
+    authed_user = AuthedUser(user = user_response.user, client=request_client)
+    return authed_user
+    
+    
 # initialize fastapi app instance
 app = FastAPI()
 
 @app.get("/api/py/index")
-def read_root():
+async def read_root():
     return {"message": "hello world"}
 
 # Leaderboard route
@@ -50,9 +78,30 @@ async def get_leaderboard(
             status_code=500,
             detail=e.message
         )
+
+class ResultsModel(BaseModel):
+    wpm: float
+    accuracy: float
+    language: str
+    mode: str
+    duration: float
+    
+# Post results of a typing test to the database
+@app.post("/api/py/results", status_code=201)
+async def post_results(payload: ResultsModel, authed: AuthedUser = Depends(get_authed_user)):
+    try:
+        request_payload = authed.client.table("results").insert({
+            "user_id": authed.user.id,
+            "wpm": payload.wpm,
+            "accuracy": payload.accuracy,
+            "language": payload.language,
+            "mode": payload.mode,
+            "duration": payload.duration
+        })
         
-# post results of test route
-@app.post("/api/py/results")
-async def post_results():
-    return {"results": "testing"}
+        request_payload.execute()
+    except APIError as e:
+        raise HTTPException(status_code=500, detail=e.message)
+    
+    return 
     
